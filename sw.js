@@ -1,4 +1,4 @@
-const CACHE = 'planner-v9', FONTS = 'planner-fonts';
+const CACHE = 'planner-v12', FONTS = 'planner-fonts';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-180.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
@@ -22,4 +22,11 @@ self.addEventListener('fetch', e => {
       return m || f;
     })));
   }
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+    for (const c of list) { if ('focus' in c) return c.focus(); }
+    return self.clients.openWindow('./#todo');
+  }));
 });
