@@ -718,6 +718,181 @@ select.txt{padding-block:0}
 .todo .mrow:has(.tpop){z-index:6}
 .todo section[data-period]:has(.tpop){z-index:6}
 .todo .mrow .tpop{background:var(--surface); z-index:7}
+
+/* v29 sub-goals on the map */
+.mrow.msub{min-height:96px}
+.mrow .snode{position:absolute; left:calc(var(--x) - 24px); top:2px; width:48px; height:48px; z-index:2; border-radius:14px; transform:rotate(45deg); border:3px solid #7a4f1c; background:#fff6dc; color:#7a4f1c; display:grid; place-items:center; padding:0; cursor:pointer; box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.mrow .snode b,.mrow .snode i{transform:rotate(-45deg); display:grid; place-items:center}
+.mrow .snode i{display:none}
+.mrow .snode[aria-pressed="true"]{background:#7a4f1c; color:#fff6dc}
+.mrow .snode[aria-pressed="true"] b{display:none} .mrow .snode[aria-pressed="true"] i{display:grid}
+.mrow .snode .ic{width:20px; height:20px}
+.mrow.msub.mL .stbody,.mrow.msub.mR .stbody{margin-top:2px}
+.sbox{background:rgba(255,248,225,.92); border:1.5px dashed #8a6a3a; border-radius:12px; padding:4px 8px 6px; color:#3b2a10}
+.sbox .nhead{display:flex; align-items:center; gap:6px}
+.sbox .nhead .lbl{font-size:11px; color:#7a4f1c; font-weight:600}
+.sbox .nhead .mbtn{margin-inline-start:auto; width:24px; height:24px; min-width:0; min-height:0; padding:0; background:transparent; border:0; box-shadow:none}
+.sbox .nhead .mbtn .ic{width:16px; height:16px}
+.sbox .chip,.rstep .chip{font-size:10.5px; min-height:18px; padding:0 7px; font-weight:500}
+.sbox .scnt{font-size:11px; color:#7a4f1c; font-weight:600}
+.sbox .stitle{width:100%; border:0; background:transparent; font:inherit; font-weight:700; font-size:14px; color:#3b2a10; padding:2px 0; outline:none}
+.sbox .stitle:focus{background:rgba(255,255,255,.6); border-radius:6px}
+.mrow.msub.done .stitle{text-decoration:line-through; opacity:.65}
+.sbox .stime{margin-top:4px}
+.ssel{flex:0 1 auto; max-width:40%; font-size:13px}
+.subadd{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line); display:flex; flex-direction:column; gap:6px}
+.subadd h4{margin:0; font-size:15px}
+.subadd .sub{margin:0}
+.rstep .pnote textarea.txt{field-sizing:content; min-height:0; overflow:hidden}
+.sbox .nhead{flex-wrap:nowrap; min-height:22px}
+.sbox .chip{white-space:nowrap}
+.sbox .stitle{white-space:normal; resize:none; overflow:hidden; display:block; line-height:1.4}
+form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
+.addrow .ssel{flex:1 1 100%; max-width:none}
+
+/* v30 small side-by-side todo buttons */
+.todo .tbtns{display:flex; flex-wrap:nowrap; gap:6px; align-items:center}
+.todo .tbtns .btn{min-height:30px; height:auto; padding:4px 9px; font-size:12px; gap:4px; border-radius:99px; white-space:nowrap; flex:0 1 auto; min-width:0}
+.todo .tbtns .btn .ic{width:14px; height:14px}
+.todo .tbtns .btn span:not(.ic){overflow:hidden; text-overflow:ellipsis}
+
+/* v32 treasure map */
+.roadmap.tmap{display:block; padding:0; margin:12px 0 10px; overflow:hidden}
+.roadmap.tmap::before{inset:4px}
+.tmap .mpath{position:absolute; left:0; top:0; pointer-events:none; z-index:1}
+.tmap .tdeco{position:absolute; width:52px; height:52px; z-index:0; opacity:.95; pointer-events:none}
+.tmap .tdeco svg{width:100%; height:100%; display:block}
+.tmap .tcomp{left:5%; top:14px; width:58px; height:58px}
+.tmap .tcloud{width:70px; height:26px} .tmap .tcloud.sm{width:50px; height:19px; opacity:.8}
+.tmap .tsun{width:50px; height:50px}
+.tmap .tnode,.tmap .tsub,.tmap .tstart,.tmap .tx{position:absolute; transform:translate(-50%,-50%); z-index:3}
+.tmap .tnode{width:40px; height:40px; border-radius:50%; border:2.5px solid #2b2b2b; background:rgba(255,248,225,.9); color:#2b2b2b; display:grid; place-items:center; padding:0; font:inherit; font-weight:700; font-size:17px; cursor:pointer}
+.tmap .tnode i,.tmap .tsub i{display:none}
+.tmap .tnode.done{background:#2b2b2b; color:#fff6dc}
+.tmap .tnode.done b,.tmap .tsub.done b{display:none} .tmap .tnode.done i,.tmap .tsub.done i{display:grid}
+.tmap .tnode .ic,.tmap .tsub .ic{width:18px; height:18px}
+.tmap .tnode.sel,.tmap .tsub.sel{box-shadow:0 0 0 4px rgba(210,64,44,.45)}
+.tmap .tsub{width:46px; height:46px; border-radius:12px; border:2.5px solid #7a4f1c; background:#fff6dc; color:#7a4f1c; display:grid; place-items:center; padding:0; cursor:pointer; rotate:45deg; box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.tmap .tsub b,.tmap .tsub i{rotate:-45deg; display:grid; place-items:center}
+.tmap .tsub.done{background:#7a4f1c; color:#fff6dc}
+.tmap .tstart{width:16px; height:16px; border-radius:50%; background:#2b2b2b}
+.tmap .tx{width:50px; height:50px}
+.tmap .tx svg{width:100%; height:100%; display:block}
+.tmap .tlab{position:absolute; transform:translateY(-50%); z-index:2; background:transparent; border:0; padding:0; font:inherit; color:#3b2a10; display:flex; flex-direction:column; gap:1px; cursor:pointer; line-height:1.3}
+.tmap .tlab.lft{text-align:right; align-items:flex-end}
+.tmap .tlab.rgt{text-align:right; align-items:flex-start}
+.tmap .tlab b{font-size:12.5px; font-weight:600; text-shadow:0 0 4px rgba(255,246,220,.9); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.tmap .tlab .tdate{font-size:10px; color:#7a4f1c; background:rgba(255,248,225,.85); border-radius:99px; padding:0 6px}
+.tmap .tlab .tdate.late{color:#b3261e}
+.tmap .tlab.done b{text-decoration:line-through; opacity:.6}
+.tmap .tlab.issub b{font-weight:800; font-size:13px}
+.tmap .tlab.tend b{font-weight:800; font-size:13px; background:rgba(255,248,225,.85); padding:1px 8px; border-radius:8px}
+.tdetail{margin:4px 0 12px}
+.tdetail .thint{text-align:center; margin:0}
+.tcardd{background:var(--sheet); border:1.5px dashed var(--mapline,#8a6a3a); border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; gap:8px}
+.tcardd .nhead{display:flex; align-items:center; gap:8px}
+.tcardd .tdbadge{width:28px; height:28px; border-radius:50%; border:2px solid #2b2b2b; display:grid; place-items:center; font-weight:700; font-size:14px; flex:none}
+.tcardd.issub .tdbadge{border-radius:8px; border-color:#7a4f1c; color:#7a4f1c}
+.tcardd .tdbadge .ic{width:15px; height:15px}
+.tcardd .tdtitle{font-size:14px}
+.tcardd .chip{font-size:11px; min-height:20px; padding:0 8px}
+.tcardd .mbtn{margin-inline-start:auto; width:28px; height:28px; min-width:0; min-height:0; padding:0; background:transparent; border:0; box-shadow:none}
+.tcardd .mbtn .ic{width:16px; height:16px}
+.tcardd .tpop{left:0; right:auto}
+.tmap .tsub i{display:none} .tmap .tsub.done b{display:none} .tmap .tsub.done i{display:grid}
+.tmap .tsun{width:42px; height:42px}
+
+/* v33 map: tap a circle for options */
+.roadmap.tmap{overflow:visible}
+.tmap .tpop{position:absolute; z-index:40; min-width:200px; max-width:250px; background:var(--surface); opacity:1}
+.tmap .tpop .titem{min-height:36px; font-size:14px; padding:4px 10px}
+.tmap .tpop .tsep{padding:6px 10px 2px}
+.tmap .tpop .tsep:first-child{font-weight:700; color:var(--ink); font-size:13px; white-space:normal}
+.tmap .tnode.done b{display:grid} .tmap .tnode.done i{display:none}
+.tmap .tnode{width:36px; height:36px; font-size:16px}
+.tmap .tnode[aria-expanded="true"],.tmap .tsub[aria-expanded="true"]{box-shadow:0 0 0 4px rgba(210,64,44,.45)}
+.tmap .tlab b{font-size:11.5px; font-weight:600}
+.tmap .tlab.issub b{font-size:12px; font-weight:800}
+.tmap .tlab .tdate{font-size:9px; padding:0 5px}
+.tmap .hidpick{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; z-index:0}
+.tmap .hidpick.show{width:150px; height:36px; opacity:1; pointer-events:auto; z-index:41; transform:translate(-50%,24px)}
+.tmap .tren{font:inherit; font-size:12px; padding:2px 6px; border:1.5px solid #7a4f1c; border-radius:8px; background:#fff8e1; color:#3b2a10; width:150px; max-width:100%}
+
+/* v33 punishments as small notes */
+.punish .snote .pstk{width:34px; height:34px; cursor:default}
+.punish .snote .nhead .stamp{font-size:10px; padding:1px 6px; margin-inline-start:auto; transform:rotate(-6deg); border:1.5px solid currentColor; border-radius:6px; color:#8a5a12; font-weight:700}
+.punish .snote .nhead .mbtn{margin-inline-start:auto}
+.punish .snote .nhead .stamp:not([hidden])+.mbtn{margin-inline-start:0}
+.punish .snote.isdone .txt{text-decoration:line-through; opacity:.6}
+.punish .snote .chips{display:flex; flex-wrap:wrap; gap:4px}
+.punish .snote .chips .chip{font-size:10px; min-height:18px; padding:0 6px}
+.punish .snote .reppanel{font-size:12px}
+.punish .snote .reppanel .row{flex-wrap:wrap}
+.punish .snote .reppanel .txt{min-height:32px; font-size:12px; flex:1 1 100%}
+.sboard.punish .snote{aspect-ratio:auto; min-height:118px}
+.sboard.punish .snote textarea.txt{height:auto!important; min-height:52px}
+.punish .snote .nhead .stamp{font-size:9.5px; padding:0 5px; line-height:1.5; white-space:nowrap}
+.punish .snote .reppanel{padding:6px 0 0; border:0; background:transparent; box-shadow:none; margin:0}
+.punish .snote .reppanel .lbl{font-size:11px}
+.punish .snote .reppanel .btn{min-height:28px; padding:2px 8px; font-size:11.5px}
+
+/* v34 thought record */
+.thwrap{margin:10px 0 6px}
+.thtable{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1.5px solid var(--line); border-radius:14px; background:var(--surface); scroll-snap-type:x proximity}
+.throw{display:grid; grid-template-columns:96px repeat(7,190px); min-width:max-content}
+.thc .note-row{flex-direction:column}
+.thc .penbtn{align-self:flex-end; order:2}
+.thc{padding:8px; border-inline-start:1px solid var(--line); min-width:0; scroll-snap-align:start}
+.thc:first-child{border-inline-start:0}
+.thhead .thc{background:var(--c); color:var(--on); font-weight:700; font-size:13px; text-align:center; padding:9px 6px}
+.thhead .thc:first-child{border-start-start-radius:12px} .thhead .thc:last-child{border-start-end-radius:12px}
+.throw:not(.thhead) .thc{vertical-align:top; background:var(--sheet); min-height:200px}
+.thc .penbtn span:not(.ic){display:none}
+.thc .penbtn{width:30px; height:30px; min-height:30px; padding:0; border-radius:8px}
+.thc .note-row{align-items:flex-start; gap:4px}
+.thc textarea.txt{font-size:14px; line-height:1.55; min-height:150px; background:transparent; border:1px dashed var(--line); padding:6px}
+.thdate{display:flex; flex-direction:column; align-items:center; gap:2px; padding-top:10px; text-align:center}
+.thdate b{font-size:15px} .thdate small{color:var(--muted); font-size:12px}
+.cpick{display:flex; flex-direction:column; gap:6px}
+.cpsel{display:flex; flex-wrap:wrap; gap:5px}
+.cpchip{display:inline-flex; align-items:center; gap:3px; border:0; border-radius:99px; background:var(--c); color:var(--on); padding:3px 9px; font:inherit; font-size:12.5px; cursor:pointer}
+.cpchip .ic{width:12px; height:12px}
+.cpadd{display:inline-flex; align-items:center; gap:4px; align-self:flex-start; border:1.5px dashed var(--c); color:var(--c); background:transparent; border-radius:99px; padding:3px 10px; font:inherit; font-size:12.5px; cursor:pointer}
+.cpadd .ic{width:14px; height:14px}
+.cpall{display:flex; flex-direction:column; gap:4px; max-height:280px; overflow:auto; padding:6px; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+.cpall[hidden]{display:none}
+.cpopt{display:flex; flex-direction:column; align-items:flex-start; gap:1px; text-align:right; border:1px solid var(--line); background:var(--field); border-radius:9px; padding:5px 8px; font:inherit; cursor:pointer; color:var(--ink)}
+.cpopt b{font-size:13px; font-weight:600} .cpopt small{font-size:11px; color:var(--muted); line-height:1.4}
+.cpopt[aria-pressed="true"]{background:var(--cs); border-color:var(--c)}
+.cpopt[aria-pressed="true"] b::after{content:" ✓"; color:var(--c)}
+.cpotherrow{display:flex; gap:4px; align-items:center}
+.cpother{min-height:32px; font-size:13px; flex:1}
+.cpdone{border:0; background:var(--c); color:var(--on); border-radius:8px; padding:5px 12px; font:inherit; font-size:13px; cursor:pointer}
+.thnote{font-size:12px; text-align:center; margin:6px 0 0}
+.thpast{display:flex; flex-direction:column; gap:6px}
+.thitem{display:grid; grid-template-columns:auto 1fr; gap:2px 10px; align-items:center; text-align:right; border:1px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 10px; font:inherit; color:var(--ink); cursor:pointer}
+.thid{display:flex; flex-direction:column; grid-row:span 2} .thid b{font-size:13px} .thid small{font-size:11px; color:var(--muted)}
+.thsn{font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.thtags{font-size:11px; color:var(--muted)}
+
+/* v35 thought record per document */
+.thhead .thc{display:flex; flex-direction:column; gap:3px; justify-content:flex-start}
+.thhead .thc b{font-size:13.5px} .thhead .thc small{font-weight:400; font-size:10.5px; opacity:.9; line-height:1.4}
+.thhead .thc-date{background:#2f3a45} .thhead .thc-event{background:#2a7ab8} .thhead .thc-auto{background:#c0392b} .thhead .thc-arrow{background:#d35400}
+.thhead .thc-feel{background:#e67e22} .thhead .thc-dist{background:#8e44ad} .thhead .thc-alt{background:#27ae60} .thhead .thc-res{background:#16a085}
+.throw:not(.thhead) .thc{display:flex; flex-direction:column; gap:6px}
+.thq{font-size:11.5px; font-weight:700; color:var(--muted)}
+.thc textarea.txt{min-height:90px}
+.thdate .txt{min-height:34px; font-size:13px; padding:2px 4px; width:100%}
+.cpg{font-size:11.5px; font-weight:700; color:var(--c); padding:6px 2px 2px; position:sticky; top:-6px; background:var(--surface); z-index:1}
+.cpex{color:var(--c)!important; font-style:normal}
+.pctf{display:flex; flex-direction:column; gap:2px}
+.pcth{display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; color:var(--muted)}
+.pcth .pctv{margin-inline-start:auto; color:var(--ink); font-size:13px}
+.pctclr{border:0; background:transparent; color:var(--muted); width:22px; height:22px; padding:0; display:grid; place-items:center; cursor:pointer}
+.pctclr .ic{width:13px; height:13px}
+.pctr{width:100%; accent-color:var(--c)}
+.pctr.unset{opacity:.45}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -858,9 +1033,9 @@ function mkGoal(img,title,freq,hue){return {id:'g_'+(img||uid()),img:img||'',tit
 function defaults(){return {
   habits:{checks:{}},
   goals:GOAL_SEEDS.map(function(g){return mkGoal(g[0],g[1],g[2],g[3])}),
-  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[]
+  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}
 }}
-var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn'];
+var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts'];
 var S=defaults(), BLOBS={};
 function imgSrc(k){return IMG[k]||''}
 function goalSrc(g){var b=g.pic&&BLOBS[g.pic]; return (b&&b.src)||(g.img&&imgSrc(g.img))||''}
@@ -1125,9 +1300,10 @@ var SECS=[
  {id:'promise',label:'وعد الأسبوع',hue:'violet',ic:'heart',img:'promise',sub:'وعد واحد واضح لهذا الأسبوع.'},
  {id:'review',label:'تقييم الأسبوع',hue:'magenta',ic:'star',img:'review',sub:'راجعي أسبوعك بهدوء قبل أن يبدأ التالي.'},
  {id:'ideas',label:'كتابة الأفكار',hue:'gold',ic:'bulb',img:'idea',sub:'اكتبي الفكرة أو ارسميها قبل أن تضيع.'},
+ {id:'thoughts',label:'سجل الأفكار',hue:'blue',ic:'pen',sub:''},
  {id:'learn',label:'أشياء أريد أن أتعلمها',hue:'teal',ic:'book',img:'learnArt',sub:'قائمة ما أريد تعلّمه. شطّبيه عند الإنجاز وحدّدي له وقتًا.'},
  {id:'shop',label:'أشياء أريد شرائها',hue:'orange',ic:'bag',img:'shop',sub:'قائمة ما أريد شراءه ومجموع أسعاره.'},
- {id:'obstacles',label:'العقابات',hue:'terracotta',ic:'mountain',img:'obstacles',sub:'اكتبي العقابات وكيف أتغلب عليها.'},
+ {id:'obstacles',label:'العقابات',hue:'terracotta',ic:'mountain',img:'obstacles',sub:'اكتبي العقابات.'},
  {id:'wins',label:'الإنجازات',hue:'olive',ic:'trophy',img:'wins',sub:'سجّلي إنجازك وأنشئي له صورة تحفظينها.'},
  {id:'rewards',label:'مكافآتي',hue:'rose',ic:'gift',img:'rewards',sub:'ما أكافئ به نفسي عند الإنجاز.'}
 ];
@@ -1375,11 +1551,11 @@ VIEWS.plan=function(root,meta){
   var gsrc=goalSrc(g);
   root.append(h('div',{class:'gnav t-'+g.hue,role:'group','aria-label':'التنقل بين الأهداف'},
     h('button',{type:'button',class:'iconbtn gnavb','aria-label':'الهدف السابق',onclick:function(){stepGoal(-1)}},ic('right')),
-    h('div',{class:'gnavc'},gsrc?h('img',{src:gsrc,alt:''}):null,h('b',{},g.title),h('span',{class:'sub'},n(gi0+1)+' من '+n(gcnt))),
+    h('div',{class:'gnavc'},h('b',{},g.title),h('span',{class:'sub'},n(gi0+1)+' من '+n(gcnt))),
     h('button',{type:'button',class:'iconbtn gnavb','aria-label':'الهدف التالي',onclick:function(){stepGoal(1)}},ic('left'))));
   var wrap=h('div',{class:'t-'+g.hue+' list'}); root.append(wrap);
   var p=goalProg(g), bar=h('i',{style:'width:'+(g.done?100:p.pct)+'%'}), plab=h('span',{class:'sub'},'');
-  function prog(){var q=goalProg(g); bar.style.width=(g.done?100:q.pct)+'%'; plab.textContent=g.done?'تحقق الهدف':(q.t?n(q.d)+' من '+n(q.t)+' خطوات ('+n(q.pct)+'٪)':'أضيفي خطوتك الأولى');}
+  function prog(){var q=goalProg(g); bar.style.width=(g.done?100:q.pct)+'%'; (subPaints||[]).forEach(function(f){f()}); plab.textContent=g.done?'تحقق الهدف':(q.t?n(q.d)+' من '+n(q.t)+' خطوات ('+n(q.pct)+'٪)':'أضيفي خطوتك الأولى');}
   var title=h('input',{class:'txt big',value:g.title,'aria-label':'عنوان الهدف'}); title.addEventListener('input',function(){g.title=title.value; touch('goals')});
   var freq=h('input',{class:'txt',value:g.freq,placeholder:'كم مرة؟ (سنويًا، شهريًا…)','aria-label':'التكرار'}); freq.addEventListener('input',function(){g.freq=freq.value; touch('goals')});
   var due=h('input',{class:'txt',type:'date',value:g.due,'aria-label':'الموعد المستهدف'}); var left=h('span',{class:'sub'},'');
@@ -1393,69 +1569,176 @@ VIEWS.plan=function(root,meta){
     h('div',{class:'field'},h('label',{class:'lbl'},'لماذا هذا الهدف؟'),noteField({obj:g,key:'why',inkKey:'whyInk',sec:'goals',ph:'اكتبي سببك…',label:'لماذا هذا الهدف؟',rows:2})),
     h('div',{class:'bar'},bar),plab));
   prog();
-  var steps=h('div',{class:'roadmap'}), MAPX=[80,30,68,22,74,38,62,26];
+  var steps=h('div',{class:'roadmap tmap'}), mapPts=[], labs={}, subPaints=[];
+  function hsh(str){var x=2166136261; for(var i=0;i<str.length;i++){x^=str.charCodeAt(i); x=Math.imul(x,16777619);} return x>>>0;}
+  function lateOf(d0,tm,done){
+    var d=parseKey(d0), now=today(), tmid=new Date(now.getFullYear(),now.getMonth(),now.getDate()); if(!d||done) return false;
+    var k=Math.round((d-tmid)/864e5); if(k<0) return true;
+    if(k===0&&tm){var q=tm.split(':'); return +q[0]*60+ +q[1]<now.getHours()*60+now.getMinutes();} return false;
+  }
+  function whenTxt(d0,tm){var d=parseKey(d0), t=d?fmtDate(d):''; if(tm) t=(t?t+' · ':'')+fmtTime(tm); return t;}
+  function svgEl(markup,cls,style){var d=document.createElement('div'); d.className=cls; if(style) d.setAttribute('style',style); d.setAttribute('aria-hidden','true'); d.innerHTML=markup; return d;}
+  var DECO=[
+    '<svg viewBox="0 0 60 60"><path d="M30 58c-1-14 0-26 4-38" stroke="#8a5a2b" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M34 20c-8-8-20-8-26-2 9-2 17 0 26 2zM34 20c2-10 12-16 22-14-8 3-15 8-22 14zM34 20c9-4 20-2 24 6-8-4-16-5-24-6zM34 20c-10-1-20 5-22 14 6-7 14-11 22-14z" fill="#3f9a4a"/><path d="M14 58c4-8 12-10 16-10s12 2 16 10z" fill="#6cbf5a"/></svg>',
+    '<svg viewBox="0 0 80 50"><path d="M4 48L26 12l22 36z" fill="#9a6a3c"/><path d="M26 12l7 12-7-3-7 3z" fill="#f4ead6"/><path d="M30 48L52 6l24 42z" fill="#b07a45"/><path d="M52 6l8 14-8-4-8 4z" fill="#f4ead6"/><path d="M26 12l22 36H30z" fill="#7d532c" opacity=".55"/></svg>',
+    '<svg viewBox="0 0 80 44"><path d="M8 24c0-12 16-18 32-16s34 6 32 18-20 16-36 14S8 36 8 24z" fill="#6aa8b8"/><path d="M20 22c6-4 14-5 20-3" stroke="#d6eef2" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>',
+    '<svg viewBox="0 0 60 40"><path d="M6 38c2-10 8-16 12-16 2-8 8-12 12-6 4-6 12-4 12 4 6 0 12 8 12 18z" fill="#4f9e48"/><path d="M18 30l3-10M30 30l1-12M42 30l-2-10" stroke="#2f6e2c" stroke-width="2" stroke-linecap="round"/></svg>',
+    '<svg viewBox="0 0 60 60"><path d="M30 58c-1-14 0-26 4-38" stroke="#8a5a2b" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M34 20c-8-8-20-8-26-2 9-2 17 0 26 2zM34 20c2-10 12-16 22-14-8 3-15 8-22 14zM34 20c9-4 20-2 24 6-8-4-16-5-24-6zM34 20c-10-1-20 5-22 14 6-7 14-11 22-14z" fill="#3f9a4a"/><path d="M14 58c4-8 12-10 16-10s12 2 16 10z" fill="#6cbf5a"/></svg>',
+    '<svg viewBox="0 0 70 56"><path d="M30 4h26l8 30H24z" fill="#9a6a3c"/><path d="M36 8h14l2 30H34z" fill="#5fb3d0"/><path d="M40 10v26M46 10v26" stroke="#d6eef2" stroke-width="2.5"/><path d="M8 48c6-10 18-12 30-10s24 2 28 10c-8 6-50 6-58 0z" fill="#5fb3d0"/><path d="M20 46c6-3 14-3 20 0" stroke="#d6eef2" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>'
+  ];
+  var COMPASS='<svg viewBox="0 0 64 64"><path d="M32 4l5 23-5 5-5-5z" fill="#2b2b2b"/><path d="M32 60l-5-23 5-5 5 5z" fill="#2b2b2b"/><path d="M4 32l23-5 5 5-5 5z" fill="#2b2b2b"/><path d="M60 32l-23 5-5-5 5-5z" fill="#2b2b2b"/><path d="M32 14l3 15-3 3-3-3zM32 50l-3-15 3-3 3 3zM14 32l15-3 3 3-3 3zM50 32l-15 3-3-3 3-3z" fill="#7a5a3a" transform="rotate(45 32 32)"/><circle cx="32" cy="32" r="3" fill="#f4ead6"/></svg>';
+  var SUN='<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="11" fill="#f4b733"/><g stroke="#f4b733" stroke-width="3" stroke-linecap="round"><path d="M30 6v8M30 46v8M6 30h8M46 30h8M13 13l6 6M41 41l6 6M13 47l6-6M41 19l6-6"/></g></svg>';
+  var CLOUD='<svg viewBox="0 0 90 34"><path d="M10 30c-8 0-8-12 2-12 0-10 14-14 22-6 4-10 22-10 26 2 10-4 22 4 18 16z" fill="#fff" opacity=".9"/></svg>';
+  var XMARK='<svg viewBox="0 0 60 60"><path d="M12 12l36 36M48 12L12 48" stroke="#d2402c" stroke-width="10" stroke-linecap="round"/></svg>';
   function drawPath(){
-    if(!steps.isConnected) return;
+    if(!steps.isConnected||!mapPts.length) return;
     var NS='http://www.w3.org/2000/svg', svg=steps.querySelector('svg.mpath');
     if(!svg){svg=document.createElementNS(NS,'svg'); svg.setAttribute('class','mpath'); svg.setAttribute('aria-hidden','true'); steps.insertBefore(svg,steps.firstChild);}
-    var br=steps.getBoundingClientRect(), W=Math.round(br.width), H=Math.round(steps.scrollHeight);
+    var W=steps.clientWidth, H=steps.clientHeight;
     svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox','0 0 '+W+' '+H);
-    var pts=[].slice.call(steps.querySelectorAll('.mnode')).map(function(nd){var r=nd.getBoundingClientRect(); return [r.left-br.left+r.width/2, r.top-br.top+r.height/2];});
-    if(pts.length<2){svg.replaceChildren(); return;}
-    var d='M'+pts[0][0]+' '+pts[0][1], i;
-    for(i=1;i<pts.length;i++){var a0=pts[i-1], b0=pts[i], my=(a0[1]+b0[1])/2; d+=' C'+a0[0]+' '+my+' '+b0[0]+' '+my+' '+b0[0]+' '+b0[1];}
-    var path=document.createElementNS(NS,'path'); path.setAttribute('d',d); path.setAttribute('fill','none'); path.setAttribute('stroke','#7a4f1c'); path.setAttribute('stroke-width','4'); path.setAttribute('stroke-dasharray','2 9'); path.setAttribute('stroke-linecap','round');
-    svg.replaceChildren(path);
+    var P=mapPts.map(function(p){return [p.x/100*W,p.y,p.hv]});
+    var d='M'+P[0][0]+' '+P[0][1], i;
+    for(i=1;i<P.length;i++){
+      var a=P[i-1], b=P[i], dy=b[1]-a[1], sw=((b[2]>>3)%110)-55; if(b[2]%5===0) sw*=1.8;
+      var cl=function(v){return Math.max(14,Math.min(W-14,v))};
+      var c1x=cl(a[0]+sw), c1y=a[1]+dy*.6, c2x=cl(b[0]-sw), c2y=b[1]-dy*.6, bx=b[0], by=b[1];
+      if(i===P.length-1){var vx=bx-c2x, vy=by-c2y, L=Math.sqrt(vx*vx+vy*vy)||1; bx-=vx/L*30; by-=vy/L*30;}
+      d+=' C'+c1x+' '+c1y+' '+c2x+' '+c2y+' '+bx+' '+by;
+    }
+    svg.innerHTML='<defs><marker id="tarrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M1 1L9 5 1 9" fill="none" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
+    var path=document.createElementNS(NS,'path'); path.setAttribute('d',d); path.setAttribute('fill','none'); path.setAttribute('stroke','#2b2b2b'); path.setAttribute('stroke-width','3.5'); path.setAttribute('stroke-dasharray','11 9'); path.setAttribute('stroke-linecap','round'); path.setAttribute('marker-end','url(#tarrow)');
+    svg.append(path);
   }
   window.addEventListener('resize',function(){drawPath()});
-  function drawSteps(){
-    steps.replaceChildren();
-    steps.append(h('div',{class:'mrow mstart mL',style:'--x:'+MAPX[0]+'%'},h('span',{class:'rdot mnode'},ic('flag')),h('div',{class:'mlab'},h('b',{},'البداية'))));
-    g.steps.forEach(function(st,si){
-      var mx=MAPX[(si+1)%MAPX.length];
-      var chip=h('span',{class:'chip'},''), clr, open=false, panel;
-      function stChip(){
-        var d=parseKey(st.d), now=today(), tmid=new Date(now.getFullYear(),now.getMonth(),now.getDate()), late=false, txt='';
-        chip.className='chip'; clr.hidden=!(d||st.tm); panel.hidden=!open; setTimeout(drawPath,0);
-        if(!d&&!st.tm){chip.hidden=true; return;}
-        chip.hidden=false;
-        if(d){
-          var k=Math.round((d-tmid)/864e5);
-          txt=k===0?'اليوم':(k===1?'غدًا':(k>1?'بعد '+n(k)+' أيام':fmtDate(d)));
-          if(k<0) late=true; else if(k===0&&st.tm){var q=st.tm.split(':'); if(+q[0]*60+ +q[1]<now.getHours()*60+now.getMinutes()) late=true;}
-        }
-        if(st.tm) txt=(txt?txt+' ':'')+'الساعة '+fmtTime(st.tm);
-        if(late&&!st.done){chip.classList.add('warn'); txt='فات موعدها';}
-        chip.textContent=txt;
-      }
-      var chk=h('button',{type:'button',class:'rnode mnode','aria-pressed':st.done?'true':'false','aria-label':'تمت الخطوة',onclick:function(){st.done=!st.done; touch('goals'); chk.setAttribute('aria-pressed',st.done?'true':'false'); row.classList.toggle('done',st.done); prog(); stChip();}},h('b',{},n(si+1)),h('i',{},ic('check'))); void(h('b',{},ic('check')));
-      var row;
-      var dIn=h('input',{class:'txt',type:'date',value:st.d||'','aria-label':'تاريخ الخطوة'}), tIn=h('input',{class:'txt',type:'time',value:st.tm||'','aria-label':'وقت الخطوة'});
-      dIn.addEventListener('change',function(){st.d=dIn.value; touch('goals'); stChip();});
-      tIn.addEventListener('change',function(){st.tm=tIn.value; touch('goals'); stChip();});
-      clr=btn('مسح الموعد',{icon:'x',cls:'small ghost',aria:'مسح موعد الخطوة',on:function(){st.d=''; st.tm=''; dIn.value=''; tIn.value=''; open=false; touch('goals'); stChip();}});
-      var okB=btn('تم',{icon:'check',cls:'small',on:function(){open=false; stChip();}});
-      panel=h('div',{class:'stime',role:'group','aria-label':'موعد الخطوة'},dIn,tIn,okB);
-      var nf=noteField({obj:st,key:'t',inkKey:'ink',sec:'goals',ph:'تفاصيل الخطوة…',label:'الخطوة',rows:1});
-      var menu=menuButton('خيارات الخطوة',function(){return [
-        {label:'الكتابة بخط اليد',icon:'pen',on:penOf(nf)},
-        {label:(st.d||st.tm)?'تعديل الموعد':'تحديد الموعد',icon:'bell',on:function(){open=true; stChip(); try{dIn.focus()}catch(e){}}},
-        (st.d||st.tm)?{label:'مسح الموعد',icon:'x',on:function(){clr.click()}}:null,
-        {label:st.done?'لم تتم بعد':'تمت الخطوة',icon:'check',on:function(){chk.click()}},
-        {label:'حذف الخطوة',icon:'trash',danger:true,on:function(){paperConfirm(row,'حذف هذه الخطوة نهائيًا؟',function(){dropBlobs(st); g.steps=g.steps.filter(function(x){return x!==st}); touch('goals'); drawSteps(); prog();})}}].filter(Boolean);});
-      row=h('div',{class:'stepr rstep mrow '+(mx>=50?'mL':'mR')+(st.done?' done':''),style:'--x:'+mx+'%'},chk,
-        h('div',{class:'stbody pnote'},h('div',{class:'nhead'},h('span',{class:'lbl'},'الخطوة '+n(si+1)),chip,menu),nf,panel));
-      stChip();
-      steps.append(row);
+  function stepName(x){return (x.t||'').trim()||(x.ink?'✎ بخط اليد':'خطوة')}
+  function paintLab(id){
+    var L=labs[id]; if(!L) return; var x=L.obj;
+    if(L.kind==='sub'){
+      var m=g.steps.filter(function(s){return s.sub===x.id}), dn=m.filter(function(s){return s.done}).length;
+      L.b.textContent=(x.t||'هدف فرعي'); L.d.textContent=[whenTxt(x.d,''),m.length?n(dn)+'/'+n(m.length):''].filter(Boolean).join(' · ');
+    } else {
+      L.b.textContent=stepName(x); L.d.textContent=whenTxt(x.d,x.tm); L.d.classList.toggle('late',lateOf(x.d,x.tm,x.done));
+    }
+    L.d.hidden=!L.d.textContent;
+    L.node.setAttribute('aria-pressed',x.done?'true':'false'); L.node.classList.toggle('done',!!x.done); L.lab.classList.toggle('done',!!x.done);
+  }
+  var delAsk='';
+  function pick(x,kind,field,p){
+    var inp=h('input',{class:'hidpick',type:field==='tm'?'time':'date',value:x[field]||'',tabindex:'-1','aria-label':field==='tm'?'الوقت':'التاريخ',style:'left:'+p.x+'%;top:'+p.y+'px'});
+    inp.addEventListener('change',function(){x[field]=inp.value; touch('goals'); paintLab(x.id); setTimeout(function(){inp.remove()},0);});
+    inp.addEventListener('blur',function(){setTimeout(function(){if(inp.isConnected) inp.remove()},400)});
+    steps.append(inp);
+    try{ if(inp.showPicker) inp.showPicker(); else {inp.focus(); inp.click();} }catch(e){ inp.classList.add('show'); try{inp.focus()}catch(_){} }
+  }
+  function rename(x,kind){
+    var L=labs[x.id]; if(!L) return;
+    var inp=h('input',{class:'tren',value:x.t||'','aria-label':kind==='sub'?'اسم الهدف الفرعي':'اسم الخطوة'});
+    var saved=false;
+    function save(){ if(saved||!inp.isConnected) return; saved=true; x.t=inp.value.trim()||x.t; touch('goals'); inp.replaceWith(L.b); paintLab(x.id); if(kind==='sub') fillSel(); }
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); save();} if(e.key==='Escape'){inp.value=x.t||''; save();}});
+    inp.addEventListener('blur',save); inp.addEventListener('click',function(e){e.stopPropagation()});
+    L.b.replaceWith(inp); setTimeout(function(){try{inp.focus(); inp.select()}catch(e){}},0);
+  }
+  function postpone(x,k){var base=parseKey(x.d)||today(); x.d=dkey(addDays(base,k)); touch('goals'); paintLab(x.id); toast('تأجّلت إلى '+fmtDate(parseKey(x.d)));}
+  function menuItems(x,kind,p,node){
+    var nm=kind==='sub'?(x.t||'هدف فرعي'):stepName(x);
+    if(delAsk===x.id){ delAsk='';
+      return [{head:kind==='sub'?'حذف الهدف الفرعي؟ خطواته تبقى في الهدف الرئيسي.':'حذف هذه الخطوة نهائيًا؟'},
+        {label:'نعم، احذفي',icon:'trash',danger:true,on:function(){
+          if(kind==='sub'){g.steps.forEach(function(s){if(s.sub===x.id) s.sub=''}); g.subs=g.subs.filter(function(s){return s!==x}); fillSel();}
+          else {dropBlobs(x); g.steps=g.steps.filter(function(s){return s!==x});}
+          touch('goals'); drawSteps(); prog();}},
+        {label:'إلغاء',icon:'x',on:function(){}}];
+    }
+    var has=!!(x.d||x.tm), its=[{head:(nm.length>34?nm.slice(0,34)+'…':nm)}];
+    its.push({label:x.done?(kind==='sub'?'لم يتحقق بعد':'لم تتم بعد'):(kind==='sub'?'تحقق الهدف الفرعي':'تمت الخطوة'),icon:'check',on:function(){x.done=!x.done; touch('goals'); paintLab(x.id); subPaints.forEach(function(f){f()}); prog(); if(x.done) toast(kind==='sub'?'أحسنتِ، تحقق الهدف الفرعي':'أحسنتِ، تمت الخطوة');}});
+    if(!x.done){
+      its.push({label:has&&x.d?'تأجيل يومًا':'تأجيل إلى الغد',icon:'right',on:function(){postpone(x,1)}});
+      its.push({label:'تأجيل أسبوعًا',icon:'right',on:function(){postpone(x,7)}});
+    }
+    its.push({label:kind==='sub'?'تعديل الاسم':'تعديل الخطوة',icon:'pen',on:function(){rename(x,kind)}});
+    its.push({label:x.d?'تغيير التاريخ':'تحديد التاريخ',icon:'bell',on:function(){pick(x,kind,'d',p)}});
+    if(kind==='step') its.push({label:x.tm?'تغيير الوقت':'تحديد الوقت',icon:'bell',on:function(){pick(x,kind,'tm',p)}});
+    if(has) its.push({label:'مسح الموعد',icon:'x',on:function(){x.d=''; if(kind==='step') x.tm=''; touch('goals'); paintLab(x.id);}});
+    if(kind==='step'&&g.subs.length){
+      its.push({head:'نقل إلى'});
+      if(x.sub) its.push({label:'الهدف الرئيسي',icon:'right',on:function(){x.sub=''; touch('goals'); drawSteps();}});
+      g.subs.filter(function(sb){return sb.id!==x.sub}).forEach(function(sb){its.push({label:sb.t||'هدف فرعي',icon:'right',on:function(){x.sub=sb.id; touch('goals'); drawSteps();}})});
+    }
+    its.push({label:kind==='sub'?'حذف الهدف الفرعي':'حذف الخطوة',icon:'trash',danger:true,on:function(){delAsk=x.id; setTimeout(function(){node.click()},0);}});
+    return its;
+  }
+  function nodeMenu(x,kind,p,label,kids,cls){
+    var node=menuButton(label,function(){return menuItems(x,kind,p,node)});
+    node.className=cls+' mnode'; node.setAttribute('style','left:'+p.x+'%;top:'+p.y+'px'); node.replaceChildren.apply(node,kids);
+    node.addEventListener('click',function(){
+      if(!openMenu||openMenu.btn!==node) return;
+      var pop=openMenu.pop, W=steps.clientWidth, px=p.x/100*W, pw=pop.offsetWidth||220;
+      pop.style.left=Math.max(4,Math.min(W-pw-4,px-pw/2))+'px'; pop.style.top=(p.y+28)+'px'; pop.style.right='auto';
     });
-    var ex=MAPX[(g.steps.length+1)%MAPX.length];
-    steps.append(h('div',{class:'mrow mend '+(ex>=50?'mL':'mR')+(g.done?' done':''),style:'--x:'+ex+'%'},h('span',{class:'rdot mnode'},ic('trophy')),h('div',{class:'mlab'},h('b',{},g.title||'الهدف'))));
+    return node;
+  }
+  function drawSteps(){
+    steps.replaceChildren(); labs={}; subPaints=[];
+    if(!g.subs) g.subs=[];
+    var subIds={}; g.subs.forEach(function(sb){subIds[sb.id]=1});
+    var order=g.steps.filter(function(x){return !x.sub||!subIds[x.sub]}).map(function(x){return {st:x}});
+    g.subs.forEach(function(sb){order.push({sb:sb}); g.steps.forEach(function(x){if(x.sub===sb.id) order.push({st:x})});});
+    var all=[{start:1}].concat(order,[{end:1}]), GAP=104, TOP=78, prevX=74;
+    mapPts=all.map(function(it,i){
+      var key=it.start?'start':(it.end?'end':(it.st||it.sb).id), hv=hsh(g.id+':'+key), x;
+      if(it.start) x=74; else { x=16+hv%68; if(Math.abs(x-prevX)<28) x=prevX>=50?prevX-30-(hv>>9)%22:prevX+30+(hv>>9)%22; }
+      x=Math.max(14,Math.min(86,x)); prevX=x;
+      return {x:x,y:TOP+i*GAP+((hv>>5)%27-13),hv:hv,it:it};
+    });
+    var H=mapPts[mapPts.length-1].y+70; steps.style.height=H+'px';
+    steps.append(svgEl(COMPASS,'tdeco tcomp'),svgEl(CLOUD,'tdeco tcloud','left:30%;top:14px'),svgEl(CLOUD,'tdeco tcloud sm','left:52%;top:36px'));
+    steps.append(svgEl(SUN,'tdeco tsun','right:4%;top:8px'));
+    for(var i=0;i<mapPts.length-1;i++){
+      var a=mapPts[i], b=mapPts[i+1], hv=hsh(g.id+'#'+i); if(hv%4===0) continue;
+      var mid=(a.x+b.x)/2, dx=mid<50?(74+hv%10):(6+hv%8), my=(a.y+b.y)/2-22;
+      steps.append(svgEl(DECO[hv%DECO.length],'tdeco','left:'+dx+'%;top:'+my+'px'));
+    }
+    var num=0;
+    mapPts.forEach(function(p){
+      var it=p.it, side=p.x>=50?'lft':'rgt';
+      var lstyle='top:'+p.y+'px;'+(side==='lft'?'right:calc('+(100-p.x)+'% + 32px);max-width:calc('+p.x+'% - 40px)':'left:calc('+p.x+'% + 32px);max-width:calc('+(100-p.x)+'% - 40px)');
+      var pos='left:'+p.x+'%;top:'+p.y+'px';
+      if(it.start){
+        steps.append(h('span',{class:'tstart mnode',style:pos,'aria-hidden':'true'}),h('div',{class:'tlab '+side,style:lstyle},h('b',{},'البداية')));
+        return;
+      }
+      if(it.end){
+        var xe=svgEl(XMARK,'tx mnode'+(g.done?' done':''),pos);
+        steps.append(xe,h('div',{class:'tlab tend '+side,style:lstyle},h('b',{},g.title||'الهدف')));
+        return;
+      }
+      var x=it.st||it.sb, kind=it.sb?'sub':'step'; if(kind==='step') num++;
+      var node=nodeMenu(x,kind,p,kind==='sub'?('هدف فرعي: '+(x.t||'')):('خيارات الخطوة '+n(num)),[kind==='sub'?h('b',{},ic('star')):h('b',{},n(num)),h('i',{},ic('check'))],kind==='sub'?'tsub':'tnode');
+      var bb=h('b',{}), dd=h('span',{class:'tdate'});
+      var lab=h('div',{role:'button',class:'tlab '+side+(kind==='sub'?' issub':''),style:lstyle,tabindex:'-1',onclick:function(e){e.stopPropagation(); node.click();}},bb,dd);
+      labs[x.id]={obj:x,kind:kind,num:num,node:node,lab:lab,b:bb,d:dd};
+      steps.append(node,lab); paintLab(x.id);
+      if(kind==='sub') subPaints.push(function(){paintLab(x.id)});
+    });
     setTimeout(drawPath,0);
   }
   drawSteps();
   var sin=h('input',{class:'txt',placeholder:'خطوة جديدة…','aria-label':'خطوة جديدة'});
-  wrap.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'خريطة الخطوات'),h('p',{class:'sub'},'الخطوة التي تحدّدين لها تاريخًا تظهر تلقائيًا في «المهام اليومية».'),steps,
-    h('form',{class:'addrow',onsubmit:function(e){e.preventDefault(); var v=sin.value.trim(); if(!v) return; g.steps.push({id:uid(),t:v,done:false,ink:'',d:'',tm:''}); sin.value=''; touch('goals'); drawSteps(); prog(); sin.focus();}},sin,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'}))));
+  var ssel=h('select',{class:'txt ssel','aria-label':'الخطوة تابعة لـ'});
+  function fillSel(){
+    var v=ssel.value; ssel.replaceChildren(h('option',{value:''},'للهدف الرئيسي'));
+    (g.subs||[]).forEach(function(sb){ssel.append(h('option',{value:sb.id},'لـ '+(sb.t||'هدف فرعي')))});
+    ssel.value=v; if(ssel.value!==v) ssel.value=''; ssel.hidden=!(g.subs&&g.subs.length);
+  }
+  fillSel(); ssel.addEventListener('focus',fillSel);
+  var subIn=h('input',{class:'txt',placeholder:'هدف فرعي جديد… (مثل: هدف هذا الشهر)','aria-label':'هدف فرعي جديد'});
+  var subD=h('input',{class:'txt',type:'date','aria-label':'موعد الهدف الفرعي الجديد'});
+  var subForm=h('form',{class:'subadd',onsubmit:function(e){e.preventDefault(); var v=subIn.value.trim(); if(!v) return; if(!g.subs) g.subs=[]; var sb={id:uid(),t:v,d:subD.value||'',done:false}; g.subs.push(sb); subIn.value=''; subD.value=''; touch('goals'); drawSteps(); fillSel(); ssel.value=sb.id; toast('أُضيف الهدف الفرعي');}},
+    h('h4',{class:'lbl'},'الأهداف الفرعية'),h('p',{class:'sub'},'قسّمي هدفك الكبير إلى أهداف أصغر، مثل هدف لكل شهر، ثم أضيفي لكل منها خطواته.'),
+    h('div',{class:'addrow'},subIn,btn('إضافة',{icon:'plus',type:'submit'})),h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),subD));
+  wrap.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'خريطة الخطوات'),steps,
+    h('form',{class:'addrow',onsubmit:function(e){e.preventDefault(); var v=sin.value.trim(); if(!v) return; var ns={id:uid(),t:v,done:false,ink:'',d:'',tm:'',sub:ssel.hidden?'':ssel.value}; g.steps.push(ns); sin.value=''; touch('goals'); drawSteps(); prog(); sin.focus();}},ssel,sin,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'})),subForm));
   wrap.append(h('section',{class:'card field'},h('label',{class:'lbl'},'ملاحظات'),noteField({obj:g,key:'note',inkKey:'noteInk',sec:'goals',ph:'ملاحظات الخطة…',label:'ملاحظات الخطة',rows:4})));
   var doneB=btn(g.done?'تحقق الهدف':'تحقق الهدف؟',{icon:'flag',cls:'primary'}); doneB.setAttribute('aria-pressed',g.done?'true':'false');
   doneB.addEventListener('click',function(){g.done=!g.done; touch('goals'); doneB.setAttribute('aria-pressed',g.done?'true':'false'); doneB.querySelector('span:not(.ic)').textContent=g.done?'تحقق الهدف':'تحقق الهدف؟'; prog(); dueTxt(); if(g.done) toast('ما شاء الله، تحقق الهدف');});
@@ -1592,23 +1875,21 @@ VIEWS.shop=function(root,meta){
 };
 VIEWS.obstacles=function(root,meta){
   root.append(secHead(meta),addBar('عقاب جديد',function(){addEntry('obstacles',{id:uid(),text:'',ink:'',fix:'',fixInk:'',goal:'',solved:false,d:'',tm:''})}));
-  if(!S.obstacles.length){root.append(emptyMsg('لا توجد عقابات. اكتبي ما يعطّلك، ثم اكتبي حلّه.')); return;}
-  var grid=h('div',{class:'npgrid'});
+  if(!S.obstacles.length){root.append(emptyMsg('لا توجد عقابات بعد.')); return;}
+  var grid=h('div',{class:'sboard ideas punish'});
   S.obstacles.forEach(function(it,i){
-    var nf=noteField({obj:it,key:'text',inkKey:'ink',sec:'obstacles',ph:'ما الذي يعطّلني؟',label:'العقاب',rows:3});
-    var ff=noteField({obj:it,key:'fix',inkKey:'fixInk',sec:'obstacles',ph:'كيف أتغلب عليه؟',label:'كيف أتغلب عليه',rows:2});
-    var paper, chips=h('div',{class:'chips'}), panel=h('div',{class:'reppanel',hidden:true}), stamp=h('span',{class:'stamp'},'تم تجاوزه');
+    var nf=noteField({obj:it,key:'text',inkKey:'ink',sec:'obstacles',ph:'اكتبي العقاب…',label:'العقاب',rows:3});
+    var paper, chips=h('div',{class:'chips'}), panel=h('div',{class:'reppanel',hidden:true}), stamp=h('span',{class:'stamp'},'تم تنفيذه');
     function paintChips(){
       chips.replaceChildren(); var di=dueInfo(it.d,it.tm,it.solved);
       if(di) chips.append(h('span',{class:'chip'+(di.late?' warn':'')},'ينفذ: '+di.txt));
-      var g=S.goals.filter(function(x){return x.id===it.goal})[0]; if(g) chips.append(h('span',{class:'chip t-'+g.hue},'الهدف: '+g.title));
       paper.classList.toggle('isdone',!!it.solved); stamp.hidden=!it.solved;
     }
     function openDue(){
       panel.replaceChildren();
       var dIn=h('input',{class:'txt',type:'date',value:it.d||'','aria-label':'تاريخ التنفيذ'}), tIn=h('input',{class:'txt',type:'time',value:it.tm||'','aria-label':'وقت التنفيذ'});
       dIn.addEventListener('change',function(){it.d=dIn.value; touch('obstacles'); paintChips();}); tIn.addEventListener('change',function(){it.tm=tIn.value; touch('obstacles'); paintChips();});
-      panel.append(h('div',{class:'field'},h('label',{class:'lbl'},'متى أنفّذ الحل؟'),h('div',{class:'row'},dIn,tIn)),
+      panel.append(h('div',{class:'field'},h('label',{class:'lbl'},'متى أنفّذ العقاب؟'),h('div',{class:'row'},dIn,tIn)),
         h('div',{class:'row'},btn('مسح الموعد',{cls:'small ghost',on:function(){it.d=''; it.tm=''; touch('obstacles'); paintChips(); panel.hidden=true;}}),btn('إغلاق',{cls:'small ghost',on:function(){panel.hidden=true}})));
       panel.hidden=false;
     }
@@ -1617,15 +1898,13 @@ VIEWS.obstacles=function(root,meta){
       panel.hidden=false;
     }
     var menu=menuButton('خيارات العقاب',function(){return [
-      {label:'الكتابة بخط اليد: العقاب',icon:'pen',on:penOf(nf)},
-      {label:'الكتابة بخط اليد: الحل',icon:'pen',on:penOf(ff)},
-      {label:'متى أنفّذ الحل؟',icon:'bell',on:openDue},
-      {label:'الهدف المتأثر',icon:'flag',on:openGoal},
-      {label:it.solved?'إلغاء «تم تجاوزه»':'تم تجاوزه',icon:'check',on:function(){it.solved=!it.solved; touch('obstacles'); paintChips();}},
+      {label:'الكتابة بخط اليد',icon:'pen',on:penOf(nf)},
+      {label:(it.d||it.tm)?'تعديل موعد التنفيذ':'موعد التنفيذ',icon:'bell',on:openDue},
+      {label:it.solved?'لم يُنفَّذ بعد':'تم تنفيذه',icon:'check',on:function(){it.solved=!it.solved; touch('obstacles'); paintChips();}},
       {label:'حذف العقاب',icon:'trash',danger:true,on:function(){paperConfirm(paper,'حذف هذا العقاب نهائيًا؟',function(){delEntry('obstacles',it)})}}];});
-    paper=h('article',{class:'npaper t-'+HUE_CYCLE[(i+3)%HUE_CYCLE.length],'data-id':it.id},
-      h('div',{class:'nhead'},h('span',{class:'when'},'عقاب'),stamp,menu),
-      h('label',{class:'lbl'},'العقاب'),nf,h('label',{class:'lbl'},'كيف أتغلب عليه؟'),ff,chips,panel);
+    paper=h('article',{class:'snote t-'+HUE_CYCLE[(i+3)%HUE_CYCLE.length],'data-id':it.id},
+      h('div',{class:'nhead'},h('span',{class:'sico pstk','aria-hidden':'true'},h('img',{src:imgSrc('obstacles'),alt:''})),stamp,menu),
+      nf,chips,panel);
     paintChips(); grid.append(paper);
   });
   root.append(grid);
@@ -1714,7 +1993,7 @@ function reminderItems(fromDay,toDay){
     if(st.d&&st.tm&&st.d>=fromDay&&st.d<=toDay&&hasTxt(st)&&!st.done) out.push({key:'s:'+st.id+':'+st.d,title:remLabel(st),body:'خطوة من هدف «'+g.title+'»',at:atOf(st.d,st.tm),lead:0,tm:st.tm,day:st.d});
   })});
   S.obstacles.forEach(function(it){
-    if(it.d&&it.tm&&it.d>=fromDay&&it.d<=toDay&&hasTxt(it)&&!it.solved) out.push({key:'o:'+it.id+':'+it.d,title:remLabel(it),body:'موعد تنفيذ حل عقاب',at:atOf(it.d,it.tm),lead:0,tm:it.tm,day:it.d});
+    if(it.d&&it.tm&&it.d>=fromDay&&it.d<=toDay&&hasTxt(it)&&!it.solved) out.push({key:'o:'+it.id+':'+it.d,title:remLabel(it),body:'موعد تنفيذ العقاب',at:atOf(it.d,it.tm),lead:0,tm:it.tm,day:it.d});
   });
   S.learn.forEach(function(it){
     if(it.d&&it.tm&&it.d>=fromDay&&it.d<=toDay&&hasTxt(it)&&!it.done) out.push({key:'l:'+it.id+':'+it.d,title:remLabel(it),body:'شيء أريد أن أتعلمه',at:atOf(it.d,it.tm),lead:0,tm:it.tm,day:it.d});
@@ -1794,6 +2073,141 @@ function menuButton(label,getItems){
   });
   return b;
 }
+/* ---------- thought record ---------- */
+var TH_BODY=[
+ {g:'القلب والتنفس والدورة الدموية',items:[['تسارع ضربات القلب'],['كتمة وضيق بالصدر'],['سرعة التنفس أو اللهث'],['ثقل أو انقباض في وسط الصدر'],['نبض قوي في الرقبة أو الصدغين']]},
+ {g:'الرأس والجهاز العصبي',items:[['صداع أو ضغط حول الرأس'],['دوخة أو دوار أو ثقل في الرأس'],['تشتت وتشوش ذهني'],['طنين في الأذنين'],['انفصال مؤقت عن الواقع والمحيط']]},
+ {g:'العضلات والمفاصل',items:[['شد في الرقبة والكتفين'],['ضغط على الفك وإطباق الأسنان'],['رجفة في اليدين أو الركبتين'],['إحكام قبضة اليد'],['ألم في الظهر وثقل في الحركة']]},
+ {g:'الجهاز الهضمي والبطن',items:[['مغص واضطراب في المعدة'],['غثيان أو فقدان للشهية'],['عسر هضم أو حموضة'],['حاجة متكررة لدخول الحمام'],['هبوط أو فراغ في البطن']]},
+ {g:'الحلق والجلد والحرارة',items:[['جفاف الفم والحلق'],['غصة أو كتلة في الحلق'],['تعرق اليدين أو القدمين'],['سخونة واحمرار الوجه'],['قشعريرة أو برودة الأطراف']]},
+ {g:'الطاقة والنشاط العام',items:[['تعب ووهن مفاجئ'],['أرق وصعوبة النوم'],['تململ وعدم القدرة على الجلوس'],['تثاؤب متكرر'],['تنميل في الأصابع أو الشفاه']]}
+];
+var TH_FEEL=[
+ {g:'القلق والخوف',items:[['قلق','انشغال البال وترقب وتوجس من القادم.'],['توتر','ضغط عصبي وتشنج وعدم ارتياح.'],['خوف','إحساس مباشر بوجود خطر أو تهديد.'],['فزع / هلع','ذعر ورعب مفاجئ وشديد جدًا.'],['ارتباك / حيرة','صعوبة التركيز واتخاذ القرار.'],['وجل','خشية وتردد قبل مواجهة الموقف.']]},
+ {g:'الحزن والألم',items:[['حزن','كآبة وألم نفسي لفقدان أو موقف صعب.'],['إحباط','خيبة أمل بسبب تعطل النتائج والخطط.'],['يأس','انعدام الأمل وشعور بانغلاق الأبواب.'],['عجز','إحساس بعدم القدرة على فعل أي شيء.'],['انكسار','جرح عاطفي عميق وشعور بالهشاشة.'],['أسى','حسرة ولوعة داخلية على أمر مؤلم.']]},
+ {g:'الغضب والاستياء',items:[['غضب','انفعال شديد واستثارة تجاه تصرف أو موقف.'],['حنق / غيظ','شعور حارق بالظلم والإجحاف.'],['استياء','نفور وعدم رضا عن تصرف معين.'],['انزعاج / تضجر','ضيق ونفاد صبر من ظرف مستمر.'],['مرارة','استياء وخيبة مكتومة بالداخل.'],['عدائية','رغبة في الهجوم أو الرد الحاد.']]},
+ {g:'الذنب وتدني الذات',items:[['شعور بالذنب','وخز ضمير لشعورك بالتقصير أو الخطأ.'],['خجل / إحراج','حرج وارتباك من نظرة الآخرين لك.'],['عار','إحساس مؤلم بأنك معيب أو غير مقبول.'],['ندم','حسرة وتمني لو أن الماضي لم يحدث.'],['دونية','شعور بأنك أقل كفاءة أو قيمة من غيرك.'],['لوم الذات','توجيه أصابع الاتهام لنفسك دائمًا.']]},
+ {g:'الوحدة والخواء',items:[['وحدة','شعور بالعزلة وعدم وجود من يفهمك.'],['غربة','إحساس بالانفصال وعدم الانتماء للمكان.'],['خذلان','صدمة وانكسار ثقة في شخص مقرب.'],['خواء / تبلد','فراغ داخلي وصعوبة الإحساس بالمحيط.'],['إهمال','إحساس بأنك غير مرئي أو غير مهم لأحد.'],['فقد','وجع وحنين لغياب مصدر أمان أو راحة.']]},
+ {g:'مشاعر الاستقرار البديلة',items:[['ارتياح','زوال العبء وثقل التفكير بعد العقلنة.'],['سكينة / هدوء','صفاء ذهني واستقرار داخلي متوازن.'],['أمل','تفاؤل واستبشار بتيسير الأمور القادمة.'],['قبول','تقبل الواقع والذات بلطف ودون قسوة.'],['أمان','اطمئنان وسلام نفسي داخلي محمي.'],['ثقة','يقين بقدرتك على التعامل مع الصعوبات.']]}
+];
+var TH_DIST=[
+ ['الكل أو اللاشيء','رؤية الأمور بمنظور الأبيض والأسود فقط؛ إما إتقان ونجاح تام أو فشل كلي وذريع.','مثال: أكل ملعقة آيس كريم أثناء الحمية: «أفسدت الدايت كليًا ولن ينقص وزني أبدًا».'],
+ ['المبالغة في التعميم','الخروج بحكم عام ودائم من موقف واحد عابر (تكرار: دائمًا، أبدًا، لا أحد، الكل).','مثال: التعرض لرفض في موقف: «الجميع يرفضونني دائمًا ولا أحد يريدني».'],
+ ['التصفية الذهنية','التركيز المفرط على تفصيل سلبي واحد وتجاهل كل الجوانب والنتائج الإيجابية الأخرى.','مثال: تلقي ١٠ تعليقات إيجابية، وقضاء اليوم بالحزن على تعليق واحد سلبي.'],
+ ['التغاضي عن الإيجابي','رفض التجارب الجيدة والتقليل من شأن الإنجاز باعتباره «غير كافٍ أو مجرد صدفة».','مثال: القيام بعمل جيد: «أي شخص يستطيع فعل هذا، كان يجب أن يكون أدائي كاملًا».'],
+ ['القفز إلى الاستنتاجات','حسم الأمور سلبيًا دون دليل: التنجيم (توقع الأسوأ مسبقًا) أو قراءة الأفكار (الجزم بما يظنه غيرك).','مثال: الجزم بالسقوط قبل الامتحان، أو افتراض أن شخصًا يسخر منك دون دليل.'],
+ ['التهويل والتصغير','النظر بعدسة مكبرة للأخطاء والسلبيات، وبعدسة مصغرة للإمكانات والإنجازات.','مثال: «هذه الصعوبة مستحيلة، وقدراتي أضعف بكثير من التغلب عليها».'],
+ ['التفكير العاطفي','الاعتقاد بأن ما تشعر به داخليًا هو الحقيقة الواقعية («أنا أشعر بهذا، إذن هو حقيقة»).','مثال: «أشعر بالقلق والارتباك من هذه المهمة، إذن أنا إنسان غير كفء في عملي».'],
+ ['التصنيف (الوصف الجائر)','إلصاق ملصق سلبي قاطع على كامل الذات أو الآخرين عند وقوع خطأ بدلًا من وصف الخطأ ذاته.','مثال: ارتكاب خطأ عابر في العمل: «أنا إنسان فاشل» بدلًا من «لقد أخطأت وسأصلحه».'],
+ ['اللوازم (يجب / ينبغي)','محاكمة النفس والآخرين بقواعد صارمة بكلمات: (يجب، لا يجب، لازم، ينبغي).','مثال: «لا يجب أن أخطئ أبدًا» أو «ينبغي أن يتصرف الجميع وفق ما أتوقع دائمًا».'],
+ ['الشخصنة واللوم','الشخصنة: لوم النفس على أمور خارج السيطرة. اللوم: إلقاء المسؤولية على الآخرين في أفعالك.','مثال: لوم النفس عند وقوع حادث لشخص دون ذنب منك، أو لوم غيرك على عصبيتك.']
+];
+var TH_ROOT=[
+ ['العجز','الاعتقاد بعدم القدرة على الإنجاز أو حماية النفس.'],
+ ['عدم استحقاق الحب','الشعور بوجود نقص جوهري يمنع الآخرين من حبنا.'],
+ ['انعدام القيمة','الشعور بأن الشخص سيئ في جوهره.']
+];
+var TH_WAYS=[
+ ['تحديد نوع التشوه','تدوين الأفكار السلبية وتسمية التشوه المعرفي بدقة؛ مما يسهل تفكيك المشكلة برؤية واقعية.','مثال: عندما تقول «أنا دائمًا أفشل»، تلاحظ فورًا أنك وقعت في «المبالغة في التعميم».'],
+ ['فحص الأدلة الواقعية','بدلًا من التسليم بصحة الفكرة السلبية تلقائيًا، ابحث عن الأدلة الموضوعية المؤيدة والمعارضة.','مثال: إذا شعرت أنك «لا تفعل شيئًا صحيحًا أبدًا»، دوّن قائمة بإنجازات نجحت فيها مؤخرًا.'],
+ ['طريقة المعيار المزدوج','التوقف عن جلد الذات، والتحدث مع النفس بنفس اللطف والتشجيع الذي تقدمه لصديق يمر بنفس الموقف.','مثال: اسأل نفسك: «لو جاءني صديقي المقرب وهو يمر بنفس المشكلة، هل كنت سأقول له أنت فاشل؟».'],
+ ['التقنية التجريبية','إجراء تجربة سلوكية أو عملية لاختبار صحة الفكرة السلبية على أرض الواقع بدلًا من الاستسلام لها.','مثال: إذا خشيت أثناء نوبة هلع من نوبة قلبية، قف واصعد الدرج؛ حركة جسمك تثبت قوة قلبك.'],
+ ['التفكير بدرجات الرمادي','تقييم التجارب على مقياس متدرج (٠ إلى ١٠٠) بدلًا من تطرف «الكل أو اللاشيء»، ورؤية النجاحات الجزئية.','مثال: إذا لم تسر الأمور كما خططت تمامًا، اعتبرها نجاحًا بنسبة ٦٠٪ أو ٧٠٪ وتعلّم من المتبقي.'],
+ ['طريقة الاستبيان','سؤال أشخاص تثق بهم لمعرفة ما إذا كانت أفكارك ومشاعرك ومخاوفك طبيعية ومشتركة وليست عيبًا فيك.','مثال: إذا شعرت بتوتر قبل التحدث أمام الجمهور، اسأل زملاءك وستكتشف أنهم يمرون بنفس الشعور.'],
+ ['تعريف المصطلحات','تفكيك الألقاب القاسية؛ عندما تصف نفسك بكلمة جارحة، ابحث عن تعريفها الموضوعي لتكتشف وهميتها.','مثال: عندما تنعت نفسك بـ«أحمق» أو «فاشل»، اسأل: «ما هو الفاشل أصلًا؟» ستدرك أنه مجرد ملصق.'],
+ ['الطريقة الدلالية (تلطيف اللغة)','استبدال الكلمات الصارمة المشحونة عاطفيًا بعبارات أكثر مرونة ولطفًا، خاصة فيما يخص «يجب ولا بد».','مثال: استبدل «لم يكن يجب عليّ ارتكاب هذا الخطأ» بـ«كان من الأفضل تفاديه، والخطأ فرصة للتعلم».'],
+ ['إعادة العزو وتوزيع الأسباب','التوقف عن لوم الذات المطلق، وتأمل جميع العوامل والظروف الأخرى التي ساهمت في حدوث المشكلة.','مثال: بدلًا من «المشروع تعطل بسببي وحدي»، وزّع المسؤولية وركّز طاقتك على خطوات الحل.'],
+ ['تحليل التكلفة والمنفعة','كتابة قائمة بمزايا وعيوب فكرة سلبية أو سلوك منهزم ذاتيًا؛ لتدرك بوضوح أن التمسك بها يضرك أكثر مما ينفعك.','مثال: قارن إيجابيات وسلبيات فكرة «يجب أن أكون مثاليًا طوال الوقت»، ستكتشف أن تكلفتها باهظة جدًا.']
+];
+var TH_COLS=[
+ ['date','التاريخ والوقت','اليوم والساعة'],
+ ['event','الحدث / الموقف','١. ما الذي حدث فعليًا؟ ٢. الأعراض الجسدية'],
+ ['auto','الأفكار التلقائية','١. ما الفكرة بذهنك؟ ٢. نسبة التصديق'],
+ ['arrow','السهم النازل','١. المعتقد العميق أو الجذر؟ ٢. لماذا يزعجني هذا حقًا؟'],
+ ['feel','المشاعر','١. نوع المشاعر ٢. شدتها'],
+ ['dist','التشوه المعرفي','نوع الخطأ الفكري'],
+ ['alt','الإجابة البديلة (العقلانية)','١. تفنيد الفكرة والبديل ٢. نسبة الاقتناع'],
+ ['res','النتيجة','١. تصديق الفكرة الآن؟ ٢. المشاعر الآن وشدتها؟ ٣. ماذا ستفعل؟']
+];
+ui.thDay=null;
+function thHas(r){ if(!r) return false; var ks=['event','auto','why','alt','nowFeel','act','eventInk','autoInk','whyInk','altInk','nowFeelInk','actInk']; for(var i=0;i<ks.length;i++){var v=r[ks[i]]; if(typeof v==='string'?v.trim():v) return true;}
+  return ['body','emo','dist','root','ways'].some(function(k){return (r[k]||[]).length}) || ['autoPct','emoPct','altPct','nowPct','nowFeelPct'].some(function(k){return r[k]!=null}); }
+function thFix(r){ if(r.feel&&!r.emo){r.emo=r.feel;} delete r.feel; if(r.res&&!r.act){r.act=r.res;} delete r.res; return r; }
+function chipPick(rec,key,opts,save,ph){
+  var box=h('div',{class:'cpick'}), sel=h('div',{class:'cpsel'}), panel=h('div',{class:'cpall',hidden:true});
+  var tog=h('button',{type:'button',class:'cpadd','aria-expanded':'false'},ic('plus'),h('span',{},ph));
+  function list(){return rec[key]||(rec[key]=[])}
+  function optBtn(o){
+    var lbl=o[0], tip=o[1]||'', ex=o[2]||'', on=list().indexOf(lbl)>=0;
+    return h('button',{type:'button',class:'cpopt','aria-pressed':on?'true':'false',onclick:function(){var L=list(), k=L.indexOf(lbl); if(k>=0) L.splice(k,1); else L.push(lbl); save(); paint();}},h('b',{},lbl),tip?h('small',{},tip):null,ex?h('small',{class:'cpex'},ex):null);
+  }
+  function paint(){
+    sel.replaceChildren();
+    list().forEach(function(v){
+      sel.append(h('button',{type:'button',class:'cpchip on',title:'إزالة','aria-label':'إزالة '+v,onclick:function(){rec[key]=list().filter(function(x){return x!==v}); save(); paint();}},h('span',{},v),ic('x')));
+    });
+    var st=panel.scrollTop; panel.replaceChildren();
+    opts.forEach(function(o){
+      if(o.g){panel.append(h('div',{class:'cpg'},o.g)); o.items.forEach(function(it){panel.append(optBtn(it))});}
+      else panel.append(optBtn(o));
+    });
+    var other=h('input',{class:'txt cpother',placeholder:'أخرى…','aria-label':'إضافة خيار آخر'});
+    other.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); var v=other.value.trim(); if(v&&list().indexOf(v)<0){list().push(v); save(); paint();}}});
+    panel.append(h('div',{class:'cpotherrow'},other,h('button',{type:'button',class:'cpdone',onclick:function(){panel.hidden=true; tog.setAttribute('aria-expanded','false');}},'تم')));
+    panel.scrollTop=st;
+  }
+  tog.addEventListener('click',function(){panel.hidden=!panel.hidden; tog.setAttribute('aria-expanded',panel.hidden?'false':'true');});
+  paint(); box.append(sel,tog,panel); return box;
+}
+function pctField(rec,key,label,save){
+  var out=h('b',{class:'pctv'},rec[key]==null?'—':n(rec[key])+'٪');
+  var r=h('input',{type:'range',min:0,max:100,step:5,value:rec[key]==null?50:rec[key],'aria-label':label,class:'pctr'+(rec[key]==null?' unset':'')});
+  r.addEventListener('input',function(){rec[key]=+r.value; out.textContent=n(rec[key])+'٪'; r.classList.remove('unset'); save();});
+  var clr=h('button',{type:'button',class:'pctclr','aria-label':'مسح '+label,title:'مسح',onclick:function(){delete rec[key]; out.textContent='—'; r.value=50; r.classList.add('unset'); save();}},ic('x'));
+  return h('div',{class:'pctf'},h('div',{class:'pcth'},h('span',{},label),out,clr),r);
+}
+VIEWS.thoughts=function(root,meta){
+  root.append(secHead(meta));
+  if(!S.thoughts||Array.isArray(S.thoughts)) S.thoughts={};
+  var tk=dkey(today()); if(!ui.thDay) ui.thDay=tk; var day=ui.thDay, dd=parseKey(day)||today();
+  var older=h('button',{type:'button',class:'mnav','aria-label':'اليوم السابق',onclick:function(){ui.thDay=dkey(addDays(dd,-1)); rerender();}},'›'),
+      newer=h('button',{type:'button',class:'mnav','aria-label':'اليوم التالي',onclick:function(){ui.thDay=dkey(addDays(dd,1)); rerender();}},'‹');
+  var rel=day===tk?'اليوم':(day===dkey(addDays(today(),-1))?'أمس':'');
+  root.append(h('div',{class:'mbar'},older,h('div',{class:'mtitle'},WDAYS[dd.getDay()]+' '+fmtDate(dd),h('small',{},rel||ny(dd.getFullYear()))),newer));
+  if(day!==tk) root.append(h('div',{class:'row'},btn('العودة إلى اليوم',{cls:'small',on:function(){ui.thDay=tk; rerender();}})));
+  var rec=thFix(S.thoughts[day]||{});
+  function save(){ if(thHas(rec)) S.thoughts[day]=rec; else delete S.thoughts[day]; touch('thoughts'); }
+  function tf(k,ph,label,rows){return noteField({obj:rec,key:k,inkKey:k+'Ink',sec:'thoughts',ph:ph,label:label,rows:rows||3,onChange:save});}
+  function sub(t){return h('span',{class:'thq'},t)}
+  var tIn=h('input',{class:'txt',type:'time',value:rec.tm||'','aria-label':'الساعة'}); tIn.addEventListener('change',function(){rec.tm=tIn.value; save();});
+  var cells={
+    date:h('div',{class:'thdate'},h('b',{},fmtDate(dd)),h('small',{},WDAYS[dd.getDay()]),sub('الساعة'),tIn),
+    event:[sub('١. ما الذي حدث فعليًا؟'),tf('event','تخيلي نفسك كاميرا تصور الواقع بحيادية: أين كنتِ؟ مع من؟','ما الذي حدث فعليًا؟'),sub('٢. الأعراض الجسدية'),chipPick(rec,'body',TH_BODY,save,'اختاري الأعراض')],
+    auto:[sub('١. ما الفكرة بذهنك؟'),tf('auto','الجملة الحرفية التي قالها عقلك في تلك اللحظة…','ما الفكرة بذهنك؟'),pctField(rec,'autoPct','٢. نسبة التصديق',save)],
+    arrow:[sub('١. المعتقد العميق أو الجذر؟'),chipPick(rec,'root',TH_ROOT,save,'اختاري الجذر'),sub('٢. لماذا يزعجني هذا حقًا؟'),tf('why','لو كانت هذه الفكرة صحيحة، فماذا يعني ذلك عن قيمتي أو قدرتي؟','لماذا يزعجني هذا حقًا؟')],
+    feel:[sub('١. نوع المشاعر'),chipPick(rec,'emo',TH_FEEL,save,'اختاري المشاعر'),pctField(rec,'emoPct','٢. شدتها',save)],
+    dist:[sub('نوع الخطأ الفكري'),chipPick(rec,'dist',TH_DIST,save,'اختاري التشوه')],
+    alt:[sub('طريقة التصحيح (اختياري)'),chipPick(rec,'ways',TH_WAYS,save,'اختاري الطريقة'),sub('١. تفنيد الفكرة والبديل'),tf('alt','واجهي الفكرة بالأدلة: ماذا لو حدث هذا مع صديق؟','تفنيد الفكرة والبديل',4),pctField(rec,'altPct','٢. نسبة الاقتناع',save)],
+    res:[pctField(rec,'nowPct','١. تصديق الفكرة القديمة الآن',save),sub('٢. المشاعر الآن'),tf('nowFeel','بماذا أشعر الآن؟','المشاعر الآن',2),pctField(rec,'nowFeelPct','شدتها الآن',save),sub('٣. ماذا ستفعل؟ (الخطوة الأهم)'),tf('act','سلوك أو فعل عملي واقعي أنفذه فورًا…','ماذا ستفعل؟',2)]
+  };
+  var table=h('div',{class:'thtable',role:'table','aria-label':'سجل الأفكار'});
+  table.append(h('div',{class:'throw thhead',role:'row'},TH_COLS.map(function(c){return h('div',{class:'thc thc-'+c[0],role:'columnheader'},h('b',{},c[1]),h('small',{},c[2]))})));
+  table.append(h('div',{class:'throw',role:'row'},TH_COLS.map(function(c){return h('div',{class:'thc thc-'+c[0],role:'cell'},cells[c[0]])})));
+  root.append(h('div',{class:'thwrap t-'+meta.hue},table,h('p',{class:'sub thnote'},'اسحبي الجدول يمينًا ويسارًا لرؤية كل الأعمدة.')));
+  var past=Object.keys(S.thoughts).filter(function(k){return k!==day&&thHas(S.thoughts[k])}).sort().reverse();
+  if(past.length){
+    var lst=h('div',{class:'thpast'});
+    past.forEach(function(k){
+      var r=thFix(S.thoughts[k]), d=parseKey(k);
+      var sn=((r.event||'').trim()||(r.auto||'').trim()||'—'); if(sn.length>70) sn=sn.slice(0,70)+'…';
+      lst.append(h('button',{type:'button',class:'thitem',onclick:function(){ui.thDay=k; rerender(); window.scrollTo(0,0);}},
+        h('span',{class:'thid'},h('b',{},d?fmtDate(d):k),h('small',{},d?WDAYS[d.getDay()]+' '+ny(d.getFullYear()):'')),
+        h('span',{class:'thsn'},sn),
+        (r.emo&&r.emo.length)?h('span',{class:'thtags'},r.emo.slice(0,3).join('، ')):null));
+    });
+    root.append(h('section',{class:'card thpastc'},h('h3',{class:'block-t'},'السجلات السابقة'),lst));
+  }
+};
 /* ---------- daily todo ---------- */
 var PERIODS=[['fajr','الفجر'],['dhuhr','الظهر'],['asr','العصر'],['maghrib','المغرب'],['isha','العشاء']];
 ui.todoDay=null; ui.todoDraft={}; ui.todoFocus=''; ui.todoAdd={};
@@ -1848,9 +2262,9 @@ VIEWS.todo=function(root,meta){
   root.append(h('div',{class:'mbar'},older,h('div',{class:'mtitle'},WDAYS[dd.getDay()]+' '+fmtDate(dd),h('small',{},rel||ny(dd.getFullYear()))),newer));
   var wrap=h('div',{class:'t-violet list todo'}); root.append(wrap);
   var bar=h('i',{style:'width:0'}), plab=h('span',{class:'sub'},'');
-  var topRow=h('div',{class:'row'});
+  var topRow=h('div',{class:'row tbtns'});
   if(day!==tk) topRow.append(btn('العودة إلى اليوم',{cls:'small',on:function(){ui.todoDay=tk; rerender();}}));
-  topRow.append(confirmBtn('نقل غير المنجز إلى اليوم التالي','تأكيد النقل','right',function(){
+  topRow.append(confirmBtn('نقل غير المنجز لليوم التالي','تأكيد النقل','right',function(){
     var nx=dkey(addDays(dd,1)), moved=0;
     PERIODS.forEach(function(p){
       var src=todoList(day,p[0]), keep=[], mv=[];
