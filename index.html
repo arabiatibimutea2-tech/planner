@@ -927,6 +927,20 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .thbar .thnote{margin:0; flex:1; text-align:start}
 .throw:not(.thhead) .thc{min-height:120px}
 .thc.edit textarea.txt{min-height:70px}
+
+/* v37 monthly thought view */
+.thseg{display:flex; gap:4px; background:var(--cell); border-radius:99px; padding:4px; margin:6px auto 4px; width:max-content}
+.thseg button{border:0; background:transparent; border-radius:99px; padding:6px 22px; font:inherit; font-weight:600; color:var(--muted); cursor:pointer}
+.thseg button[aria-selected="true"]{background:var(--c); color:var(--on)}
+.thsum{display:flex; flex-direction:column; gap:6px}
+.thstats{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:4px}
+.thstat{display:flex; flex-direction:column; align-items:center; background:var(--cs); border-radius:12px; padding:8px 4px; text-align:center}
+.thstat b{font-size:17px} .thstat small{font-size:11px; color:var(--muted)}
+.thmacts{flex-wrap:wrap; gap:6px; margin-top:8px}
+.thmask{text-decoration:none; background:#d97757!important; border-color:#d97757!important; color:#fff!important}
+.thc.ro{cursor:default}
+.thopen{display:inline-flex; align-items:center; gap:3px; border:1px solid var(--line); background:var(--surface); border-radius:99px; padding:3px 8px; font:inherit; font-size:11px; cursor:pointer; margin-top:auto; color:var(--ink)}
+.thopen .ic{width:12px; height:12px}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -2238,9 +2252,98 @@ function thPrompt(r,dd){
   'الإجابة البديلة: '+T('alt')+' (نسبة الاقتناع: '+P('altPct')+')\n'+
   'النتيجة — تصديق الفكرة الآن: '+P('nowPct')+' | المشاعر الآن: '+T('nowFeel')+' (الشدة: '+P('nowFeelPct')+') | ماذا سأفعل: '+T('act');
 }
+function thSub(t){return h('span',{class:'thq'},t)}
+function thShow(r,c){
+  function tags(a,cls){return (a&&a.length)?h('div',{class:'thtags2'},a.map(function(x){return h('span',{class:'ttag'+(cls?' '+cls:'')},x)})):null}
+  function txt(k){var v=((r[k]||'')+'').trim(); if(v) return h('p',{class:'thtxt'},v); if(r[k+'Ink']) return h('p',{class:'thtxt muted'},'✎ مكتوب بخط اليد'); return null}
+  function pct(lbl,v){return v==null?null:h('div',{class:'thpct'},h('span',{},lbl),h('b',{},n(v)+'٪'),h('i',{style:'--p:'+v+'%'}))}
+  switch(c){
+    case 'date': return [r.tm?h('div',{class:'thtime'},fmtTime(r.tm)):null];
+    case 'event': return [txt('event'),r.body&&r.body.length?thSub('الأعراض الجسدية'):null,tags(r.body,'soft')];
+    case 'auto': return [txt('auto'),pct('التصديق',r.autoPct)];
+    case 'arrow': return [tags(r.root),txt('why')];
+    case 'feel': return [tags(r.emo),pct('الشدة',r.emoPct)];
+    case 'dist': return [tags(r.dist)];
+    case 'alt': return [tags(r.ways,'soft'),txt('alt'),pct('الاقتناع',r.altPct)];
+    case 'res': return [pct('تصديق الفكرة الآن',r.nowPct),r.nowFeel||r.nowFeelInk?thSub('المشاعر الآن'):null,txt('nowFeel'),pct('شدتها الآن',r.nowFeelPct),r.act||r.actInk?thSub('ماذا سأفعل'):null,txt('act')];
+  }
+  return [];
+}
+function thMonthRows(y,m){
+  var out=[], pre=y+'-'+String(m+1).padStart(2,'0')+'-';
+  Object.keys(S.thoughts||{}).filter(function(k){return k.indexOf(pre)===0}).sort().forEach(function(k){
+    thDay(S.thoughts[k]).rows.filter(thHas).sort(function(a,b){return (a.tm||'').localeCompare(b.tm||'')}).forEach(function(r){out.push({day:k,r:r})});
+  });
+  return out;
+}
+function thStats(list){
+  function top(key){var c={}; list.forEach(function(it){(it.r[key]||[]).forEach(function(x){c[x]=(c[x]||0)+1})}); return Object.keys(c).sort(function(a,b){return c[b]-c[a]}).slice(0,5).map(function(k){return [k,c[k]]});}
+  function avgDrop(a,b){var s=0,k=0; list.forEach(function(it){var r=it.r; if(r[a]!=null&&r[b]!=null){s+=r[a]-r[b]; k++;}}); return k?Math.round(s/k):null;}
+  var days={}; list.forEach(function(it){days[it.day]=1});
+  return {n:list.length,days:Object.keys(days).length,emo:top('emo'),dist:top('dist'),root:top('root'),body:top('body'),ways:top('ways'),belief:avgDrop('autoPct','nowPct'),feel:avgDrop('emoPct','nowFeelPct')};
+}
+function thRowText(it,i){
+  var r=it.r, d=parseKey(it.day);
+  function L(k){return (r[k]&&r[k].length)?r[k].join('، '):'—'}
+  function T(k){var v=((r[k]||'')+'').trim(); return v||(r[k+'Ink']?'(مكتوب بخط اليد)':'—')}
+  function P(k){return r[k]==null?'—':r[k]+'%'}
+  return '— الفكرة '+(i+1)+' — '+(d?WDAYS[d.getDay()]+' '+fmtDate(d):it.day)+(r.tm?' الساعة '+r.tm:'')+'\n'+
+    'الحدث: '+T('event')+' | الأعراض الجسدية: '+L('body')+'\n'+
+    'الفكرة التلقائية: '+T('auto')+' (التصديق '+P('autoPct')+')\n'+
+    'الجذر: '+L('root')+' | لماذا يزعجني: '+T('why')+'\n'+
+    'المشاعر: '+L('emo')+' (الشدة '+P('emoPct')+')\n'+
+    'التشوه: '+L('dist')+' | طريقة التصحيح: '+L('ways')+'\n'+
+    'الإجابة البديلة: '+T('alt')+' (الاقتناع '+P('altPct')+')\n'+
+    'النتيجة: تصديق الفكرة الآن '+P('nowPct')+' | المشاعر الآن: '+T('nowFeel')+' ('+P('nowFeelPct')+') | ماذا سأفعل: '+T('act');
+}
+function thMonthText(y,m,list,st){
+  function J(a){return a.length?a.map(function(x){return x[0]+' ('+x[1]+')'}).join('، '):'—'}
+  return 'هذا «سجل الأفكار» (العلاج المعرفي السلوكي) لشهر '+MONTHS[m]+' '+y+'، فيه '+st.n+' فكرة في '+st.days+' يوم.\n'+
+    'أرجو أن تحلليه لي بلطف ووضوح:\n١) ما الأنماط المتكررة في المواقف والأفكار والمشاعر؟\n٢) ما أكثر التشوهات المعرفية عندي، ومع أي مواقف تظهر؟\n٣) ما المعتقدات العميقة التي يبدو أنها تقف خلفها؟\n٤) هل إجاباتي البديلة تتحسن مع الوقت؟ وكيف أقويها؟\n٥) ما الذي تحسّن هذا الشهر؟\n٦) اقترحي ٣ خطوات عملية للشهر القادم.\n\n'+
+    'ملخص سريع:\nأكثر المشاعر: '+J(st.emo)+'\nأكثر التشوهات: '+J(st.dist)+'\nالجذور: '+J(st.root)+'\nالأعراض الجسدية: '+J(st.body)+'\n'+
+    'متوسط انخفاض تصديق الفكرة بعد التصحيح: '+(st.belief==null?'—':st.belief+' نقطة')+'\nمتوسط انخفاض شدة المشاعر: '+(st.feel==null?'—':st.feel+' نقطة')+'\n\nالسجل كاملًا:\n'+
+    list.map(thRowText).join('\n\n');
+}
+function thMonthView(root,meta){
+  if(!ui.thMonth){var t=today(); ui.thMonth={y:t.getFullYear(),m:t.getMonth()};}
+  var y=ui.thMonth.y, m=ui.thMonth.m;
+  function shift(k){var d=new Date(y,m+k,1); ui.thMonth={y:d.getFullYear(),m:d.getMonth()}; rerender();}
+  root.append(h('div',{class:'mbar'},h('button',{type:'button',class:'mnav','aria-label':'الشهر السابق',onclick:function(){shift(-1)}},'›'),h('div',{class:'mtitle'},MONTHS[m]+' '+ny(y),h('small',{},'العرض الشهري')),h('button',{type:'button',class:'mnav','aria-label':'الشهر التالي',onclick:function(){shift(1)}},'‹')));
+  var list=thMonthRows(y,m);
+  if(!list.length){root.append(emptyMsg('لا توجد أفكار مسجّلة في هذا الشهر.')); return;}
+  var st=thStats(list);
+  function chips(a){return a.length?h('div',{class:'thtags2'},a.map(function(x){return h('span',{class:'ttag'},x[0]+' ('+n(x[1])+')')})):h('span',{class:'sub'},'—')}
+  function drop(lbl,v){return h('div',{class:'thstat'},h('b',{},v==null?'—':(v>0?'↓':(v<0?'↑':''))+n(Math.abs(v))+'٪'),h('small',{},lbl))}
+  var text=thMonthText(y,m,list,st);
+  var ask=h('a',{class:'btn primary thmask',href:'https://claude.ai/new',target:'_blank',rel:'noopener'},ic('star'),h('span',{},'تحليل الشهر مع Claude'));
+  ask.addEventListener('click',function(){
+    if(text.length<6000) ask.href='https://claude.ai/new?q='+encodeURIComponent(text); else ask.href='https://claude.ai/new';
+    try{navigator.clipboard.writeText(text).then(function(){toast(text.length<6000?'نُسخ السجل. إن لم يظهر في المحادثة، الصقيه.':'السجل طويل، نُسخ كاملًا. الصقيه في المحادثة.')},function(){})}catch(_){}
+  });
+  var dl=btn('تنزيل ملف الشهر',{icon:'download',on:function(){saveFile('سجل-الأفكار-'+MONTHS[m]+'-'+y+'.txt',new Blob(['﻿'+text],{type:'text/plain;charset=utf-8'})); toast('أُنزل الملف. أرفقيه في محادثة Claude.');}});
+  var cp=btn('نسخ',{icon:'list',on:function(){try{navigator.clipboard.writeText(text).then(function(){toast('نُسخ سجل الشهر')},function(){toast('تعذّر النسخ')})}catch(_){toast('تعذّر النسخ')}}});
+  root.append(h('section',{class:'card thsum t-'+meta.hue},
+    h('div',{class:'thstats'},h('div',{class:'thstat'},h('b',{},n(st.n)),h('small',{},'فكرة')),h('div',{class:'thstat'},h('b',{},n(st.days)),h('small',{},'يوم')),drop('انخفاض التصديق',st.belief),drop('انخفاض الشدة',st.feel)),
+    thSub('أكثر المشاعر'),chips(st.emo),thSub('أكثر التشوهات'),chips(st.dist),st.root.length?thSub('الجذور'):null,st.root.length?chips(st.root):null,
+    h('div',{class:'row thmacts'},ask,dl,cp)));
+  var table=h('div',{class:'thtable',role:'table','aria-label':'سجل أفكار الشهر'});
+  table.append(h('div',{class:'throw thhead',role:'row'},TH_COLS.map(function(c){return h('div',{class:'thc thc-'+c[0],role:'columnheader'},h('b',{},c[1]))})));
+  list.forEach(function(it){
+    var d=parseKey(it.day);
+    table.append(h('div',{class:'throw',role:'row'},TH_COLS.map(function(c){
+      if(c[0]==='date') return h('div',{class:'thc thc-date shown',role:'cell'},h('b',{class:'thdd'},d?fmtDate(d):it.day),h('small',{},d?WDAYS[d.getDay()]:''),thShow(it.r,'date'),
+        h('button',{type:'button',class:'thopen',onclick:function(){ui.thMode='day'; ui.thDay=it.day; rerender(); window.scrollTo(0,0);}},ic('pen'),h('span',{},'فتح اليوم')));
+      return h('div',{class:'thc thc-'+c[0]+' ro',role:'cell'},thShow(it.r,c[0]).filter(Boolean));
+    })));
+  });
+  root.append(h('div',{class:'thwrap t-'+meta.hue},table,h('p',{class:'sub thnote'},'اسحبي الجدول يمينًا ويسارًا. للتعديل اضغطي «فتح اليوم».')));
+}
 VIEWS.thoughts=function(root,meta){
   root.append(secHead(meta));
   if(!S.thoughts||Array.isArray(S.thoughts)) S.thoughts={};
+  var mode=ui.thMode||'day';
+  root.append(h('div',{class:'thseg t-'+meta.hue,role:'tablist'},[['day','اليوم'],['month','الشهر']].map(function(o){return h('button',{type:'button',role:'tab','aria-selected':mode===o[0]?'true':'false',onclick:function(){ui.thMode=o[0]; rerender();}},o[1])})));
+  if(mode==='month'){thMonthView(root,meta); return;}
   var tk=dkey(today()); if(!ui.thDay) ui.thDay=tk; var day=ui.thDay, dd=parseKey(day)||today();
   var older=h('button',{type:'button',class:'mnav','aria-label':'اليوم السابق',onclick:function(){ui.thDay=dkey(addDays(dd,-1)); rerender();}},'›'),
       newer=h('button',{type:'button',class:'mnav','aria-label':'اليوم التالي',onclick:function(){ui.thDay=dkey(addDays(dd,1)); rerender();}},'‹');
@@ -2254,18 +2357,7 @@ VIEWS.thoughts=function(root,meta){
   function tags(a,cls){return (a&&a.length)?h('div',{class:'thtags2'},a.map(function(x){return h('span',{class:'ttag'+(cls?' '+cls:'')},x)})):null}
   function txt(r,k){var v=((r[k]||'')+'').trim(); if(v) return h('p',{class:'thtxt'},v); if(r[k+'Ink']) return h('p',{class:'thtxt muted'},'✎ مكتوب بخط اليد'); return null}
   function pct(lbl,v){return v==null?null:h('div',{class:'thpct'},h('span',{},lbl),h('b',{},n(v)+'٪'),h('i',{style:'--p:'+v+'%'}))}
-  function display(r,c){
-    switch(c){
-      case 'date': return [r.tm?h('div',{class:'thtime'},fmtTime(r.tm)):null];
-      case 'event': return [txt(r,'event'),r.body&&r.body.length?sub('الأعراض الجسدية'):null,tags(r.body,'soft')];
-      case 'auto': return [txt(r,'auto'),pct('التصديق',r.autoPct)];
-      case 'arrow': return [tags(r.root),txt(r,'why')];
-      case 'feel': return [tags(r.emo),pct('الشدة',r.emoPct)];
-      case 'dist': return [tags(r.dist)];
-      case 'alt': return [tags(r.ways,'soft'),txt(r,'alt'),pct('الاقتناع',r.altPct)];
-      case 'res': return [pct('تصديق الفكرة الآن',r.nowPct),r.nowFeel||r.nowFeelInk?sub('المشاعر الآن'):null,txt(r,'nowFeel'),pct('شدتها الآن',r.nowFeelPct),r.act||r.actInk?sub('ماذا سأفعل'):null,txt(r,'act')];
-    }
-  }
+  function display(r,c){return thShow(r,c)}
   function editor(r,c){
     function tf(k,ph,label,rows){return noteField({obj:r,key:k,inkKey:k+'Ink',sec:'thoughts',ph:ph,label:label,rows:rows||3,onChange:save});}
     switch(c){
