@@ -893,6 +893,40 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .pctclr .ic{width:13px; height:13px}
 .pctr{width:100%; accent-color:var(--c)}
 .pctr.unset{opacity:.45}
+
+/* v36 thought record: display cells, rows, Claude */
+.throw+.throw:not(.thhead){border-top:2px solid var(--line)}
+.thc.shown{cursor:pointer; position:relative}
+.thc.shown:hover{background:var(--cs)}
+.thc .thedit{position:absolute; top:6px; inset-inline-start:6px; opacity:.35} .thc .thedit .ic{width:13px; height:13px}
+.thc.act:not(.thc-date){box-shadow:inset 0 0 0 2px var(--c)}
+.thtxt{margin:0; font-size:14px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere}
+.thtxt.muted{color:var(--muted)}
+.thtags2{display:flex; flex-wrap:wrap; gap:4px}
+.ttag{background:var(--c); color:var(--on); border-radius:99px; padding:1px 8px; font-size:12px}
+.ttag.soft{background:var(--cs); color:var(--ink)}
+.thpct{display:grid; grid-template-columns:1fr auto; gap:2px 6px; font-size:11.5px; color:var(--muted); align-items:center}
+.thpct b{color:var(--ink); font-size:13px}
+.thpct i{grid-column:1/-1; height:5px; border-radius:99px; background:linear-gradient(to left,var(--c) var(--p),var(--line) var(--p))}
+.thok{align-self:flex-end; display:inline-flex; align-items:center; gap:4px; border:0; background:var(--c); color:var(--on); border-radius:99px; padding:4px 12px; font:inherit; font-size:12.5px; cursor:pointer; margin-top:auto}
+.thok .ic{width:14px; height:14px}
+.thdd{font-size:15px}
+.thc-date{align-items:center; text-align:center}
+.thtime{font-size:13px; font-weight:600}
+.thacts{display:flex; flex-direction:column; gap:6px; align-items:center; margin-top:auto; width:100%}
+.thask{display:flex; flex-direction:column; align-items:center; gap:2px; text-decoration:none; background:#d97757; color:#fff; border-radius:10px; padding:6px 4px; font-size:11.5px; font-weight:600; width:100%; text-align:center; line-height:1.3}
+.thask .ic{width:16px; height:16px}
+.thask.off{opacity:.45}
+.thdel{border:0; background:transparent; color:var(--muted); width:30px; height:30px; display:grid; place-items:center; cursor:pointer}
+.thdel .ic{width:16px; height:16px}
+.thconf{display:flex; flex-direction:column; gap:4px; font-size:11.5px; align-items:center}
+.thconf[hidden]{display:none}
+.thconf button{border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:2px 10px; font:inherit; font-size:12px; cursor:pointer}
+.thconf .yes{background:#b3261e; color:#fff; border-color:#b3261e}
+.thbar{align-items:center; gap:8px; margin-top:8px; flex-wrap:wrap}
+.thbar .thnote{margin:0; flex:1; text-align:start}
+.throw:not(.thhead) .thc{min-height:120px}
+.thc.edit textarea.txt{min-height:70px}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -2166,6 +2200,44 @@ function pctField(rec,key,label,save){
   var clr=h('button',{type:'button',class:'pctclr','aria-label':'مسح '+label,title:'مسح',onclick:function(){delete rec[key]; out.textContent='—'; r.value=50; r.classList.add('unset'); save();}},ic('x'));
   return h('div',{class:'pctf'},h('div',{class:'pcth'},h('span',{},label),out,clr),r);
 }
+function thDay(v){ // normalize a day entry to {rows:[...]}
+  if(!v) return {rows:[]};
+  if(!v.rows){ var r=thFix(v); if(!r.id) r.id=uid(); return {rows:[r]}; }
+  v.rows.forEach(function(r){thFix(r); if(!r.id) r.id=uid();}); return v;
+}
+function thDayHas(v){return !!(v&&thDay(v).rows.some(thHas))}
+function thCellHas(r,c){
+  function t(k){return !!(((r[k]||'')+'').trim()||r[k+'Ink'])}
+  function l(k){return !!(r[k]&&r[k].length)}
+  switch(c){
+    case 'date': return !!r.tm;
+    case 'event': return t('event')||l('body');
+    case 'auto': return t('auto')||r.autoPct!=null;
+    case 'arrow': return l('root')||t('why');
+    case 'feel': return l('emo')||r.emoPct!=null;
+    case 'dist': return l('dist');
+    case 'alt': return l('ways')||t('alt')||r.altPct!=null;
+    case 'res': return r.nowPct!=null||t('nowFeel')||r.nowFeelPct!=null||t('act');
+  }
+  return false;
+}
+function thPrompt(r,dd){
+  function L(k){return (r[k]&&r[k].length)?r[k].join('، '):'—'}
+  function T(k){var v=((r[k]||'')+'').trim(); return v||(r[k+'Ink']?'(مكتوب بخط اليد)':'—')}
+  function P(k){return r[k]==null?'—':r[k]+'%'}
+  return 'أستخدم «سجل الأفكار» من العلاج المعرفي السلوكي، وهذا سجل فكرة واحدة عبّأته. أرجو أن تقيّميه لي بلطف ووضوح:\n'+
+  '١) هل وصفت الحدث بحياد ككاميرا؟\n٢) هل التشوهات المعرفية التي اخترتها صحيحة؟ وهل فاتني تشوه آخر؟\n٣) هل الإجابة البديلة متوازنة ومقنعة؟ اقترحي إجابة بديلة أقوى.\n٤) ما الذي يكشفه السهم النازل عن المعتقد العميق؟\n٥) اقترحي خطوة عملية واحدة صغيرة أبدأ بها.\n\n'+
+  'التاريخ والوقت: '+fmtDate(dd)+(r.tm?' — '+r.tm:'')+'\n'+
+  'الحدث / الموقف: '+T('event')+'\n'+
+  'الأعراض الجسدية: '+L('body')+'\n'+
+  'الأفكار التلقائية: '+T('auto')+' (نسبة التصديق: '+P('autoPct')+')\n'+
+  'السهم النازل — الجذر: '+L('root')+' | لماذا يزعجني حقًا: '+T('why')+'\n'+
+  'المشاعر: '+L('emo')+' (الشدة: '+P('emoPct')+')\n'+
+  'التشوه المعرفي: '+L('dist')+'\n'+
+  'طريقة التصحيح: '+L('ways')+'\n'+
+  'الإجابة البديلة: '+T('alt')+' (نسبة الاقتناع: '+P('altPct')+')\n'+
+  'النتيجة — تصديق الفكرة الآن: '+P('nowPct')+' | المشاعر الآن: '+T('nowFeel')+' (الشدة: '+P('nowFeelPct')+') | ماذا سأفعل: '+T('act');
+}
 VIEWS.thoughts=function(root,meta){
   root.append(secHead(meta));
   if(!S.thoughts||Array.isArray(S.thoughts)) S.thoughts={};
@@ -2175,34 +2247,104 @@ VIEWS.thoughts=function(root,meta){
   var rel=day===tk?'اليوم':(day===dkey(addDays(today(),-1))?'أمس':'');
   root.append(h('div',{class:'mbar'},older,h('div',{class:'mtitle'},WDAYS[dd.getDay()]+' '+fmtDate(dd),h('small',{},rel||ny(dd.getFullYear()))),newer));
   if(day!==tk) root.append(h('div',{class:'row'},btn('العودة إلى اليوم',{cls:'small',on:function(){ui.thDay=tk; rerender();}})));
-  var rec=thFix(S.thoughts[day]||{});
-  function save(){ if(thHas(rec)) S.thoughts[day]=rec; else delete S.thoughts[day]; touch('thoughts'); }
-  function tf(k,ph,label,rows){return noteField({obj:rec,key:k,inkKey:k+'Ink',sec:'thoughts',ph:ph,label:label,rows:rows||3,onChange:save});}
+  var D=thDay(S.thoughts[day]); if(!D.rows.length) D.rows.push({id:uid()});
+  function save(){ if(D.rows.some(thHas)) S.thoughts[day]={rows:D.rows.filter(thHas)}; else delete S.thoughts[day]; touch('thoughts'); }
+  var active=null, cells={}, table=h('div',{class:'thtable',role:'table','aria-label':'سجل الأفكار'});
   function sub(t){return h('span',{class:'thq'},t)}
-  var tIn=h('input',{class:'txt',type:'time',value:rec.tm||'','aria-label':'الساعة'}); tIn.addEventListener('change',function(){rec.tm=tIn.value; save();});
-  var cells={
-    date:h('div',{class:'thdate'},h('b',{},fmtDate(dd)),h('small',{},WDAYS[dd.getDay()]),sub('الساعة'),tIn),
-    event:[sub('١. ما الذي حدث فعليًا؟'),tf('event','تخيلي نفسك كاميرا تصور الواقع بحيادية: أين كنتِ؟ مع من؟','ما الذي حدث فعليًا؟'),sub('٢. الأعراض الجسدية'),chipPick(rec,'body',TH_BODY,save,'اختاري الأعراض')],
-    auto:[sub('١. ما الفكرة بذهنك؟'),tf('auto','الجملة الحرفية التي قالها عقلك في تلك اللحظة…','ما الفكرة بذهنك؟'),pctField(rec,'autoPct','٢. نسبة التصديق',save)],
-    arrow:[sub('١. المعتقد العميق أو الجذر؟'),chipPick(rec,'root',TH_ROOT,save,'اختاري الجذر'),sub('٢. لماذا يزعجني هذا حقًا؟'),tf('why','لو كانت هذه الفكرة صحيحة، فماذا يعني ذلك عن قيمتي أو قدرتي؟','لماذا يزعجني هذا حقًا؟')],
-    feel:[sub('١. نوع المشاعر'),chipPick(rec,'emo',TH_FEEL,save,'اختاري المشاعر'),pctField(rec,'emoPct','٢. شدتها',save)],
-    dist:[sub('نوع الخطأ الفكري'),chipPick(rec,'dist',TH_DIST,save,'اختاري التشوه')],
-    alt:[sub('طريقة التصحيح (اختياري)'),chipPick(rec,'ways',TH_WAYS,save,'اختاري الطريقة'),sub('١. تفنيد الفكرة والبديل'),tf('alt','واجهي الفكرة بالأدلة: ماذا لو حدث هذا مع صديق؟','تفنيد الفكرة والبديل',4),pctField(rec,'altPct','٢. نسبة الاقتناع',save)],
-    res:[pctField(rec,'nowPct','١. تصديق الفكرة القديمة الآن',save),sub('٢. المشاعر الآن'),tf('nowFeel','بماذا أشعر الآن؟','المشاعر الآن',2),pctField(rec,'nowFeelPct','شدتها الآن',save),sub('٣. ماذا ستفعل؟ (الخطوة الأهم)'),tf('act','سلوك أو فعل عملي واقعي أنفذه فورًا…','ماذا ستفعل؟',2)]
-  };
-  var table=h('div',{class:'thtable',role:'table','aria-label':'سجل الأفكار'});
-  table.append(h('div',{class:'throw thhead',role:'row'},TH_COLS.map(function(c){return h('div',{class:'thc thc-'+c[0],role:'columnheader'},h('b',{},c[1]),h('small',{},c[2]))})));
-  table.append(h('div',{class:'throw',role:'row'},TH_COLS.map(function(c){return h('div',{class:'thc thc-'+c[0],role:'cell'},cells[c[0]])})));
-  root.append(h('div',{class:'thwrap t-'+meta.hue},table,h('p',{class:'sub thnote'},'اسحبي الجدول يمينًا ويسارًا لرؤية كل الأعمدة.')));
-  var past=Object.keys(S.thoughts).filter(function(k){return k!==day&&thHas(S.thoughts[k])}).sort().reverse();
+  function tags(a,cls){return (a&&a.length)?h('div',{class:'thtags2'},a.map(function(x){return h('span',{class:'ttag'+(cls?' '+cls:'')},x)})):null}
+  function txt(r,k){var v=((r[k]||'')+'').trim(); if(v) return h('p',{class:'thtxt'},v); if(r[k+'Ink']) return h('p',{class:'thtxt muted'},'✎ مكتوب بخط اليد'); return null}
+  function pct(lbl,v){return v==null?null:h('div',{class:'thpct'},h('span',{},lbl),h('b',{},n(v)+'٪'),h('i',{style:'--p:'+v+'%'}))}
+  function display(r,c){
+    switch(c){
+      case 'date': return [r.tm?h('div',{class:'thtime'},fmtTime(r.tm)):null];
+      case 'event': return [txt(r,'event'),r.body&&r.body.length?sub('الأعراض الجسدية'):null,tags(r.body,'soft')];
+      case 'auto': return [txt(r,'auto'),pct('التصديق',r.autoPct)];
+      case 'arrow': return [tags(r.root),txt(r,'why')];
+      case 'feel': return [tags(r.emo),pct('الشدة',r.emoPct)];
+      case 'dist': return [tags(r.dist)];
+      case 'alt': return [tags(r.ways,'soft'),txt(r,'alt'),pct('الاقتناع',r.altPct)];
+      case 'res': return [pct('تصديق الفكرة الآن',r.nowPct),r.nowFeel||r.nowFeelInk?sub('المشاعر الآن'):null,txt(r,'nowFeel'),pct('شدتها الآن',r.nowFeelPct),r.act||r.actInk?sub('ماذا سأفعل'):null,txt(r,'act')];
+    }
+  }
+  function editor(r,c){
+    function tf(k,ph,label,rows){return noteField({obj:r,key:k,inkKey:k+'Ink',sec:'thoughts',ph:ph,label:label,rows:rows||3,onChange:save});}
+    switch(c){
+      case 'date': var tIn=h('input',{class:'txt',type:'time',value:r.tm||'','aria-label':'الساعة'}); tIn.addEventListener('change',function(){r.tm=tIn.value; save();}); return [sub('الساعة'),tIn];
+      case 'event': return [sub('١. ما الذي حدث فعليًا؟'),tf('event','تخيلي نفسك كاميرا تصور الواقع بحيادية: أين كنتِ؟ مع من؟','ما الذي حدث فعليًا؟'),sub('٢. الأعراض الجسدية'),chipPick(r,'body',TH_BODY,save,'اختاري الأعراض')];
+      case 'auto': return [sub('١. ما الفكرة بذهنك؟'),tf('auto','الجملة الحرفية التي قالها عقلك في تلك اللحظة…','ما الفكرة بذهنك؟'),pctField(r,'autoPct','٢. نسبة التصديق',save)];
+      case 'arrow': return [sub('١. المعتقد العميق أو الجذر؟'),chipPick(r,'root',TH_ROOT,save,'اختاري الجذر'),sub('٢. لماذا يزعجني هذا حقًا؟'),tf('why','لو كانت هذه الفكرة صحيحة، فماذا يعني ذلك عن قيمتي أو قدرتي؟','لماذا يزعجني هذا حقًا؟')];
+      case 'feel': return [sub('١. نوع المشاعر'),chipPick(r,'emo',TH_FEEL,save,'اختاري المشاعر'),pctField(r,'emoPct','٢. شدتها',save)];
+      case 'dist': return [sub('نوع الخطأ الفكري'),chipPick(r,'dist',TH_DIST,save,'اختاري التشوه')];
+      case 'alt': return [sub('طريقة التصحيح (اختياري)'),chipPick(r,'ways',TH_WAYS,save,'اختاري الطريقة'),sub('١. تفنيد الفكرة والبديل'),tf('alt','واجهي الفكرة بالأدلة: ماذا لو حدث هذا مع صديق؟','تفنيد الفكرة والبديل',4),pctField(r,'altPct','٢. نسبة الاقتناع',save)];
+      case 'res': return [pctField(r,'nowPct','١. تصديق الفكرة القديمة الآن',save),sub('٢. المشاعر الآن'),tf('nowFeel','بماذا أشعر الآن؟','المشاعر الآن',2),pctField(r,'nowFeelPct','شدتها الآن',save),sub('٣. ماذا ستفعل؟ (الخطوة الأهم)'),tf('act','سلوك أو فعل عملي واقعي أنفذه فورًا…','ماذا ستفعل؟',2)];
+    }
+  }
+  function isActive(r,c){return active&&active.r===r&&active.c===c}
+  function paint(r,c){
+    var el=cells[r.id+':'+c]; if(!el) return;
+    var ed=isActive(r,c)||!thCellHas(r,c);
+    el.classList.toggle('edit',ed); el.classList.toggle('shown',!ed); el.classList.toggle('act',!!isActive(r,c));
+    if(c==='date'){
+      el.replaceChildren.apply(el,[h('b',{class:'thdd'},fmtDate(dd)),h('small',{},WDAYS[dd.getDay()])].concat(ed?editor(r,c):display(r,c),[rowActs(r)]).filter(Boolean));
+    } else {
+      el.replaceChildren.apply(el,[].concat(ed?editor(r,c):display(r,c)).filter(Boolean));
+      if(isActive(r,c)) el.append(h('button',{type:'button',class:'thok',onclick:function(e){e.stopPropagation(); setActive(null);}},ic('check'),h('span',{},'تم')));
+      else if(!ed) el.append(h('span',{class:'thedit','aria-hidden':'true'},ic('pen')));
+    }
+  }
+  function setActive(a){
+    var prev=active; active=a;
+    if(prev&&!(a&&prev.r===a.r&&prev.c===a.c)) paint(prev.r,prev.c);
+    if(a&&!(prev&&prev.r===a.r&&prev.c===a.c)){
+      var el=cells[a.r.id+':'+a.c], wasShown=el&&el.classList.contains('shown'); if(el) el.classList.add('act');
+      if(el&&!wasShown&&a.c!=='date'&&!el.querySelector('.thok')) el.append(h('button',{type:'button',class:'thok',onclick:function(e){e.stopPropagation(); setActive(null);}},ic('check'),h('span',{},'تم')));
+      if(wasShown){paint(a.r,a.c); var f=el.querySelector('textarea,input'); if(f) setTimeout(function(){try{f.focus({preventScroll:true})}catch(e){}},0);}
+    }
+  }
+  function rowActs(r){
+    var full=TH_COLS.filter(function(c){return c[0]!=='date'&&thCellHas(r,c[0])}).length;
+    var ask=h('a',{class:'thask'+(full?'':' off'),href:'#',target:'_blank',rel:'noopener',title:'تقييم Claude لهذه الفكرة'},ic('star'),h('span',{},'تقييم Claude'));
+    ask.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!thHas(r)){e.preventDefault(); toast('عبّئي الصف أولًا'); return;}
+      var q=thPrompt(r,dd); ask.href='https://claude.ai/new?q='+encodeURIComponent(q);
+      try{navigator.clipboard.writeText(q).then(function(){toast('نُسخ السجل. إن لم يظهر في المحادثة، الصقيه.')},function(){})}catch(_){}
+    });
+    var del=h('button',{type:'button',class:'thdel','aria-label':'حذف الصف',title:'حذف الصف'},ic('trash'));
+    var conf=h('div',{class:'thconf',hidden:true},h('span',{},'حذف الصف؟'),h('button',{type:'button',class:'yes',onclick:function(e){e.stopPropagation(); dropBlobs(r); D.rows=D.rows.filter(function(x){return x!==r}); if(!D.rows.length) D.rows.push({id:uid()}); active=null; save(); drawRows();}},'نعم'),h('button',{type:'button',onclick:function(e){e.stopPropagation(); conf.hidden=true;}},'لا'));
+    del.addEventListener('click',function(e){e.stopPropagation(); conf.hidden=false;});
+    return h('div',{class:'thacts'},ask,del,conf);
+  }
+  function drawRows(){
+    var sl=table.scrollLeft; table.replaceChildren(); cells={};
+    table.append(h('div',{class:'throw thhead',role:'row'},TH_COLS.map(function(c){return h('div',{class:'thc thc-'+c[0],role:'columnheader'},h('b',{},c[1]),h('small',{},c[2]))})));
+    D.rows.forEach(function(r,ri){
+      var row=h('div',{class:'throw',role:'row'});
+      TH_COLS.forEach(function(c){
+        var el=h('div',{class:'thc thc-'+c[0],role:'cell','data-n':n(ri+1)});
+        cells[r.id+':'+c[0]]=el;
+        el.addEventListener('click',function(){ if(!isActive(r,c[0])) setActive({r:r,c:c[0]}); });
+        el.addEventListener('focusin',function(){ if(!isActive(r,c[0])) setActive({r:r,c:c[0]}); });
+        row.append(el);
+      });
+      table.append(row);
+      TH_COLS.forEach(function(c){paint(r,c[0])});
+    });
+    table.scrollLeft=sl;
+  }
+  drawRows();
+  document.addEventListener('pointerdown',function(e){ if(active&&table.isConnected&&!table.contains(e.target)&&!e.target.closest('.tpop')) setActive(null); });
+  var addRow=btn('صف جديد لفكرة أخرى',{icon:'plus',cls:'small',on:function(){var last=D.rows[D.rows.length-1]; if(last&&!thHas(last)){toast('عبّئي الصف الحالي أولًا'); return;} var r={id:uid()}; D.rows.push(r); active=null; drawRows(); setTimeout(function(){var el=cells[r.id+':event']; if(el) el.scrollIntoView({block:'nearest',inline:'nearest'});},30);}});
+  root.append(h('div',{class:'thwrap t-'+meta.hue},table,h('div',{class:'row thbar'},addRow,h('p',{class:'sub thnote'},'اسحبي الجدول يمينًا ويسارًا. اضغطي على أي خانة لتعديلها.'))));
+  var past=Object.keys(S.thoughts).filter(function(k){return k!==day&&thDayHas(S.thoughts[k])}).sort().reverse();
   if(past.length){
     var lst=h('div',{class:'thpast'});
     past.forEach(function(k){
-      var r=thFix(S.thoughts[k]), d=parseKey(k);
+      var rs=thDay(S.thoughts[k]).rows.filter(thHas), r=rs[0], d=parseKey(k);
       var sn=((r.event||'').trim()||(r.auto||'').trim()||'—'); if(sn.length>70) sn=sn.slice(0,70)+'…';
       lst.append(h('button',{type:'button',class:'thitem',onclick:function(){ui.thDay=k; rerender(); window.scrollTo(0,0);}},
         h('span',{class:'thid'},h('b',{},d?fmtDate(d):k),h('small',{},d?WDAYS[d.getDay()]+' '+ny(d.getFullYear()):'')),
-        h('span',{class:'thsn'},sn),
+        h('span',{class:'thsn'},sn+(rs.length>1?'  (+'+n(rs.length-1)+')':'')),
         (r.emo&&r.emo.length)?h('span',{class:'thtags'},r.emo.slice(0,3).join('، ')):null));
     });
     root.append(h('section',{class:'card thpastc'},h('h3',{class:'block-t'},'السجلات السابقة'),lst));
