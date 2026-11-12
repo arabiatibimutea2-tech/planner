@@ -1,4 +1,4 @@
-const CACHE = 'planner-v15', FONTS = 'planner-fonts';
+const CACHE = 'planner-v31', FONTS = 'planner-fonts';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-180.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
