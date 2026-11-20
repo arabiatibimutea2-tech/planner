@@ -1113,6 +1113,20 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 /* v52 */
 .bplus{grid-column:1/-1; display:flex; justify-content:center; margin:-2px 0 2px}
 .pinboard.wins{position:relative}
+.npic{display:block; width:100%; max-height:170px; object-fit:cover; border-radius:8px; margin:2px 0 4px; border:1.5px solid rgba(0,0,0,.12)}
+.gift .gbody .npic{max-height:150px}
+.pwhy{display:flex; flex-direction:column; gap:0; margin-top:2px; padding-top:4px; border-top:1.5px dashed rgba(0,0,0,.18)}
+.pwhy .wlbl{font-size:10.5px; font-weight:700; opacity:.75; padding:0 4px}
+.punish .snote .pwhy .txt{font-size:12.5px; min-height:28px}
+.glinks{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px}
+.glinks>span{font-size:12px; color:var(--muted); font-weight:700}
+.glinks .chip{cursor:pointer; border:0; font:inherit; font-size:12px; display:inline-flex; align-items:center; gap:4px}
+.glinks .chip .ic{width:13px; height:13px}
+.lpanel{display:flex; flex-direction:column; gap:8px}
+.lpanel .lopts{display:flex; flex-wrap:wrap; gap:6px}
+.lpanel .lopt{border:1.5px solid var(--line); background:var(--field); color:var(--ink); border-radius:999px; padding:5px 12px; font:inherit; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:5px}
+.lpanel .lopt[aria-pressed="true"]{background:var(--c); color:var(--on); border-color:var(--c)}
+.lpanel .lopt .ic{width:14px; height:14px}
 .vhfile{position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; pointer-events:none}
 .piclbl{position:relative; cursor:pointer}
 .btn.iconsave{width:40px; min-width:40px; padding:0; justify-content:center}
@@ -1806,13 +1820,36 @@ VIEWS.plan=function(root,meta){
   function dueTxt(){ var d=parseKey(g.due); if(!d||g.done){left.textContent=''; return;} var k=Math.round((d-new Date(today().getFullYear(),today().getMonth(),today().getDate()))/864e5); left.textContent=k>0?('متبقي '+n(k)+' يومًا'):(k===0?'الموعد اليوم':'انتهى الموعد منذ '+n(-k)+' يومًا');}
   due.addEventListener('input',function(){g.due=due.value; touch('goals'); dueTxt();}); dueTxt();
   var editing=ui.goalEdit===g.id, gcard=h('section',{class:'card ghead'+(editing?' editing':'')});
+  function linksOf(x){return (x.links||[]).filter(function(id){return S.goals.some(function(o){return o.id===id&&o!==x})})}
+  function setLink(a,b,on){
+    a.links=linksOf(a); b.links=linksOf(b);
+    if(on){ if(a.links.indexOf(b.id)<0) a.links.push(b.id); if(b.links.indexOf(a.id)<0) b.links.push(a.id); }
+    else { a.links=a.links.filter(function(i){return i!==b.id}); b.links=b.links.filter(function(i){return i!==a.id}); }
+    touch('goals');
+  }
+  var lpanel=null;
+  function openLinks(){
+    if(lpanel){lpanel.remove(); lpanel=null; return;}
+    var others=S.goals.filter(function(x){return x!==g});
+    var opts=h('div',{class:'lopts',role:'group','aria-label':'الأهداف المرتبطة'});
+    others.forEach(function(o){
+      var on=linksOf(g).indexOf(o.id)>=0;
+      var b=h('button',{type:'button',class:'lopt','aria-pressed':on?'true':'false',onclick:function(){var v=b.getAttribute('aria-pressed')!=='true'; setLink(g,o,v); b.setAttribute('aria-pressed',v?'true':'false');}},ic('link'),h('span',{},o.title||'هدف'));
+      opts.append(b);
+    });
+    lpanel=h('section',{class:'card lpanel'},h('h3',{class:'block-t'},'ربط «'+(g.title||'الهدف')+'» بأهداف أخرى'),
+      others.length?opts:h('p',{class:'sub'},'أضيفي هدفًا آخر أولًا لتربطيه بهذا الهدف.'),
+      h('div',{class:'row'},btn('تم',{icon:'check',cls:'primary small',on:function(){lpanel.remove(); lpanel=null; render();}})));
+    gcard.after(lpanel);
+  }
   var gfile=pickImage(function(src){ if(g.pic) delBlob(g.pic); g.pic='p'+uid(); putBlob(g.pic,{t:'pic',src:src}); touch('goals'); render(); toast('تغيّرت صورة الهدف'); });
   var gmenu=menuButton('خيارات الهدف',function(){return [
     {label:'تعديل الهدف',icon:'pen',on:function(){ui.goalEdit=g.id; render();}},
     {label:goalSrc(g)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){ui.goalEdit=g.id; render();}},
+    {label:'ربط بهدف آخر',icon:'link',on:openLinks},
     {label:g.done?'لم يتحقق بعد':'تحقق الهدف',icon:'flag',on:function(){g.done=!g.done; touch('goals'); render(); if(g.done) toast('ما شاء الله، تحقق الهدف');}},
     {label:'أضيفيه إلى الإنجازات',icon:'trophy',on:function(){S.wins.unshift({id:uid(),text:g.title,ink:'',at:dkey(today()),goal:g.id,pic:''}); touch('wins'); toast('أُضيف إلى الإنجازات');}},
-    {label:'حذف الهدف',icon:'trash',danger:true,on:function(){paperConfirm(gcard,'حذف الهدف وكل خطواته نهائيًا؟',function(){dropBlobs(g); g.steps.forEach(dropBlobs); S.goals=S.goals.filter(function(x){return x!==g}); touch('goals'); ui.goal=''; render(); toast('حُذف الهدف');})}}];});
+    {label:'حذف الهدف',icon:'trash',danger:true,on:function(){paperConfirm(gcard,'حذف الهدف وكل خطواته نهائيًا؟',function(){dropBlobs(g); g.steps.forEach(dropBlobs); S.goals=S.goals.filter(function(x){return x!==g}); S.goals.forEach(function(o){if(o.links) o.links=o.links.filter(function(i){return i!==g.id})}); touch('goals'); ui.goal=''; render(); toast('حُذف الهدف');})}}];});
   var info;
   if(editing){
     info=h('div',{class:'ginfo'},
@@ -1833,6 +1870,8 @@ VIEWS.plan=function(root,meta){
       whyT?h('div',{class:'gwhy'},h('span',{},'لماذا؟'),h('p',{},whyT)):(g.whyInk?h('div',{class:'gwhy'},h('span',{},'لماذا؟'),h('p',{},'✎ مكتوب بخط اليد')):null),
       (!g.freq&&!dd0&&!whyT)?h('p',{class:'sub'},'من النقاط الثلاث اختاري «تعديل الهدف» لإضافة التفاصيل.'):null);
   }
+  var lk=linksOf(g).map(function(id){return S.goals.filter(function(o){return o.id===id})[0]}).filter(Boolean);
+  if(lk.length) info.append(h('div',{class:'glinks'},h('span',{},'مرتبط بـ:'),lk.map(function(o){return h('button',{type:'button',class:'chip t-'+o.hue,title:'افتحي خطة «'+o.title+'»',onclick:function(){ui.goal=o.id; ui.goalEdit=''; render(); try{window.scrollTo(0,0)}catch(e){}}},ic('link'),o.title||'هدف')})));
   gcard.append(h('div',{class:'gmenu'},gmenu,gfile),h('div',{class:'gside'},goalArt(g,'gsart'),info),h('div',{class:'bar'},bar),plab);
   wrap.append(gcard);
   prog();
@@ -2232,10 +2271,12 @@ VIEWS.shop=function(root,meta){
 VIEWS.obstacles=function(root,meta){
   root.append(secHead(meta));
   var grid=h('div',{class:'sboard ideas punish'});
-  grid.append(boardPlus('عقاب جديد',function(){addEntry('obstacles',{id:uid(),text:'',ink:'',fix:'',fixInk:'',goal:'',solved:false,d:'',tm:''})}));
+  grid.append(boardPlus('عقاب جديد',function(){addEntry('obstacles',{id:uid(),text:'',ink:'',why:'',whyInk:'',pic:'',fix:'',fixInk:'',goal:'',solved:false,d:'',tm:''})}));
   if(!S.obstacles.length) grid.append(h('div',{class:'empty gempty'},'لا توجد عقابات بعد. اضغطي +'));
   S.obstacles.forEach(function(it,i){
     var nf=noteField({obj:it,key:'text',inkKey:'ink',sec:'obstacles',ph:'اكتبي العقاب…',label:'العقاب',rows:3});
+    var nfWhy=noteField({obj:it,key:'why',inkKey:'whyInk',sec:'obstacles',ph:'إذا فعلتُ…',label:'لماذا هذا العقاب؟',rows:2});
+    var pInp=picInput(function(src){setItemPic(it,'obstacles',src)});
     var paper, chips=h('div',{class:'chips'}), panel=h('div',{class:'reppanel',hidden:true}), stamp=h('span',{class:'stamp'},'تم تنفيذه');
     function paintChips(){
       chips.replaceChildren(); var di=dueInfo(it.d,it.tm,it.solved);
@@ -2256,12 +2297,13 @@ VIEWS.obstacles=function(root,meta){
     }
     var menu=menuButton('خيارات العقاب',function(){return [
       {label:'الكتابة بخط اليد',icon:'pen',on:penOf(nf)},
+      {label:'كتابة السبب بخط اليد',icon:'pen',on:penOf(nfWhy)}].concat(itemPic(it,'obstacles',pInp),[
       {label:(it.d||it.tm)?'تعديل موعد التنفيذ':'موعد التنفيذ',icon:'bell',on:openDue},
       {label:it.solved?'لم يُنفَّذ بعد':'تم تنفيذه',icon:'check',on:function(){it.solved=!it.solved; touch('obstacles'); paintChips();}},
-      {label:'حذف العقاب',icon:'trash',danger:true,on:function(){paperConfirm(paper,'حذف هذا العقاب نهائيًا؟',function(){delEntry('obstacles',it)})}}];});
+      {label:'حذف العقاب',icon:'trash',danger:true,on:function(){paperConfirm(paper,'حذف هذا العقاب نهائيًا؟',function(){delEntry('obstacles',it)})}}]);});
     paper=h('article',{class:'snote t-'+HUE_CYCLE[(i+3)%HUE_CYCLE.length],'data-id':it.id},
       h('div',{class:'nhead'},h('span',{class:'sico pstk','aria-hidden':'true'},h('img',{src:imgSrc('obstacles'),alt:''})),stamp,menu),
-      nf,chips,panel);
+      npic(it),nf,h('div',{class:'pwhy'},h('span',{class:'wlbl'},'لماذا؟ (إذا فعلتُ…)'),nfWhy),chips,panel,pInp);
     paintChips(); grid.append(paper);
   });
   root.append(grid);
@@ -2269,19 +2311,20 @@ VIEWS.obstacles=function(root,meta){
 VIEWS.rewards=function(root,meta){
   root.append(secHead(meta));
   var list=h('div',{class:'sboard gifts'});
-  list.append(boardPlus('مكافأة جديدة',function(){addEntry('rewards',{id:uid(),text:'',ink:'',when:'',got:false})}));
+  list.append(boardPlus('مكافأة جديدة',function(){addEntry('rewards',{id:uid(),text:'',ink:'',when:'',got:false,pic:''})}));
   if(!S.rewards.length) list.append(h('div',{class:'empty gempty'},'لا توجد مكافآت بعد. اضغطي +'));
   S.rewards.forEach(function(it,i){
     var card, nfT=noteField({obj:it,key:'text',inkKey:'ink',sec:'rewards',ph:'مكافأتي…',label:'المكافأة',rows:2}),
         nfW=noteField({obj:it,key:'when',inkKey:'whenInk',sec:'rewards',ph:'أستحقها عندما…',label:'متى أستحقها',single:true});
+    var rInp=picInput(function(src){setItemPic(it,'rewards',src)});
     var chk=h('button',{type:'button',class:'chk','aria-pressed':it.got?'true':'false','aria-label':'حصلت عليها',onclick:function(){it.got=!it.got; touch('rewards'); chk.setAttribute('aria-pressed',it.got?'true':'false'); card.classList.toggle('got',it.got);}},h('b',{},ic('check')));
     var menu=menuButton('خيارات المكافأة',function(){return [
-      {label:'الكتابة بخط اليد',icon:'pen',on:penOf(nfT)},
+      {label:'الكتابة بخط اليد',icon:'pen',on:penOf(nfT)}].concat(itemPic(it,'rewards',rInp),[
       {label:it.got?'لم أحصل عليها بعد':'حصلت عليها',icon:'check',on:function(){chk.click()}},
-      {label:'حذف المكافأة',icon:'trash',danger:true,on:function(){paperConfirm(card,'حذف هذه المكافأة نهائيًا؟',function(){delEntry('rewards',it)})}}];});
+      {label:'حذف المكافأة',icon:'trash',danger:true,on:function(){paperConfirm(card,'حذف هذه المكافأة نهائيًا؟',function(){delEntry('rewards',it)})}}]);});
     card=h('article',{class:'gift t-'+HUE_CYCLE[(i+2)%HUE_CYCLE.length]+(it.got?' got':''),'data-id':it.id},
       h('div',{class:'bow','aria-hidden':'true'},h('i',{})),
-      h('div',{class:'gbox'},h('div',{class:'glid nhead'},chk,h('span',{class:'gstamp'},'حصلت ✓'),menu),h('div',{class:'gbody'},nfT,nfW)));
+      h('div',{class:'gbox'},h('div',{class:'glid nhead'},chk,h('span',{class:'gstamp'},'حصلت ✓'),menu),h('div',{class:'gbody'},npic(it),nfT,nfW)),rInp);
     list.append(card);
   });
   root.append(list);
@@ -2758,12 +2801,20 @@ function capBeep(){
     }); }
   }catch(e){}
 }
-function capFinish(c,quiet){
+function capCheckTask(c){
+  var d=S.todo&&S.todo[c.day]; if(!d) return false; var hit=null;
+  PERIODS.forEach(function(p){(d[p[0]]||[]).forEach(function(t){if(t.id===c.tid) hit=t;})});
+  if(!hit||taskDone(hit,c.day)) return false;
+  if(hit.link&&hit.link.t==='habit'){var dq=parseKey(c.day); toggleHabit(hit.link.id,dq.getFullYear(),dq.getMonth(),dq.getDate());} else {hit.done=true; touch('todo');}
+  return true;
+}
+function capFinish(c,quiet,full){
   if(!S.caps||Array.isArray(S.caps)) S.caps={};
   (S.caps[c.day]||(S.caps[c.day]=[])).push({tid:c.tid,t:c.text,m:c.m,at:Date.now()});
   touch('caps'); capSet(null);
+  var ticked=full?capCheckTask(c):false;
   if(!quiet){
-    capBeep(); toast('انتهت الكبسولة. أحسنتِ!');
+    capBeep(); toast(ticked?'انتهت الكبسولة وشُطبت المهمة ✓':'انتهت الكبسولة. أحسنتِ!');
     if(notifState()==='granted'){var opts={body:c.text+' · '+n(c.m)+' دقيقة',tag:'capsule',lang:'ar',dir:'rtl',icon:'icon-192.png',vibrate:[200,80,200]};
       try{ if(navigator.serviceWorker&&navigator.serviceWorker.getRegistration) navigator.serviceWorker.getRegistration().then(function(r){if(r&&r.showNotification) r.showNotification('انتهت الكبسولة',opts); else new Notification('انتهت الكبسولة',opts);}).catch(function(){}); else new Notification('انتهت الكبسولة',opts);}catch(e){} }
   }
@@ -2775,7 +2826,7 @@ function capPaint(){
   if(!capBar){capBar=h('div',{class:'capbar',dir:'rtl',lang:'ar',role:'timer','aria-live':'off'}); document.body.append(capBar);}
   if(!c){capBar.hidden=true; clearInterval(capT); capT=null; return;}
   var left=capLeft(c);
-  if(!c.paused&&left<=0){capFinish(c); capBar.hidden=true; return;}
+  if(!c.paused&&left<=0){capFinish(c,false,true); capBar.hidden=true; return;}
   var s=Math.ceil(left/1000), mm=Math.floor(s/60), ss=s%60, frac=1-left/(c.m*60000);
   capBar.hidden=false;
   capBar.replaceChildren(
@@ -2794,7 +2845,7 @@ function capStop(){
     h('button',{type:'button',onclick:function(){capPaint();}},'متابعة'));
   clearInterval(capT); capT=null; capBar.replaceChildren(box);
 }
-function capInit(){ var c=capCur(); if(c&&!c.paused&&c.end<=Date.now()){capFinish(c,true); toast('اكتملت كبسولة «'+c.text+'» أثناء غيابك'); } capPaint(); document.addEventListener('visibilitychange',function(){if(!document.hidden) capPaint()}); }
+function capInit(){ var c=capCur(); if(c&&!c.paused&&c.end<=Date.now()){capFinish(c,true,true); toast('اكتملت كبسولة «'+c.text+'» أثناء غيابك وشُطبت المهمة'); } capPaint(); document.addEventListener('visibilitychange',function(){if(!document.hidden) capPaint()}); }
 function capPanel(day,t,onDone){
   var p=h('div',{class:'reppanel cappanel'}), sel=25, chips=h('div',{class:'capchips',role:'radiogroup','aria-label':'مدة الكبسولة'});
   CAP_MIN.forEach(function(m){var b=h('button',{type:'button',class:'capm','aria-pressed':m===sel?'true':'false',onclick:function(){sel=m; cust.value=''; [].forEach.call(chips.children,function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});}},n(m)); chips.append(b);});
@@ -3214,6 +3265,19 @@ function showCanvas(o){
 function showCard(w,extra){
   showCanvas({title:'صورة الإنجاز',ready:'هذه صورتك جاهزة.',file:'achievement-'+(w.at||dkey(today()))+'.png',make:function(){return makeWinCard(w)},extra:extra});
 }
+function picInput(onSrc){
+  var inp=h('input',{type:'file',accept:'image/*',class:'vhfile','aria-label':'اختيار صورة',tabindex:'-1'});
+  inp.addEventListener('change',function(){var f=inp.files&&inp.files[0]; if(!f) return; toast('جارٍ تجهيز الصورة…'); readPic(f,function(src){ inp.value=''; if(!src){toast('تعذّر استخدام هذه الصورة، جرّبي صورة أخرى'); return;} try{onSrc(src)}catch(e){toast('تعذّر حفظ الصورة')} });});
+  return inp;
+}
+function itemPic(it,sec,inp){
+  var b=it.pic&&BLOBS[it.pic];
+  return [
+    {label:(b&&b.src)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){try{inp.click()}catch(e){}}}
+  ].concat((b&&b.src)?[{label:'إزالة الصورة',icon:'x',on:function(){delBlob(it.pic); it.pic=''; touch(sec); rerender();}}]:[]);
+}
+function setItemPic(it,sec,src){ if(it.pic) delBlob(it.pic); it.pic='p'+uid(); putBlob(it.pic,{t:'pic',src:src}); touch(sec); rerender(); toast('أُضيفت الصورة'); }
+function npic(it){var b=it.pic&&BLOBS[it.pic]; return (b&&b.src)?h('img',{class:'npic',src:b.src,alt:''}):null}
 function boardPlus(label,on){return h('div',{class:'bplus'},h('button',{type:'button',class:'gplus','aria-label':label,title:label,onclick:on},ic('plus')))}
 function picLabel(text,onSrc){
   var inp=h('input',{type:'file',accept:'image/*',class:'vhfile','aria-label':text});
