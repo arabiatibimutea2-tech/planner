@@ -1127,6 +1127,83 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .lpanel .lopt{border:1.5px solid var(--line); background:var(--field); color:var(--ink); border-radius:999px; padding:5px 12px; font:inherit; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:5px}
 .lpanel .lopt[aria-pressed="true"]{background:var(--c); color:var(--on); border-color:var(--c)}
 .lpanel .lopt .ic{width:14px; height:14px}
+.rpbox{display:flex; flex-direction:column; gap:8px}
+.rpbox .rpg{display:flex; flex-direction:column; gap:5px}
+.rpbox .rpg>b{font-size:13px; color:var(--muted)}
+.rpbox .lopts{display:flex; flex-wrap:wrap; gap:6px}
+.rpbox .lopt{border:1.5px solid var(--line); background:var(--field); color:var(--ink); border-radius:999px; padding:4px 11px; font:inherit; font-size:13px; cursor:pointer}
+.rpbox .lopt[aria-pressed="true"]{background:var(--c); color:var(--on); border-color:var(--c)}
+.chip.rwd{background:#fbe9c4; color:#7a5210}
+.chip.pun{background:#f6dcd4; color:#9a3a22}
+.rpfrom{display:flex; flex-wrap:wrap; gap:4px; padding:0 2px}
+.rpfrom .chip{font-size:10px; min-height:18px; padding:0 6px; background:rgba(255,255,255,.6); color:var(--ink); font-weight:500}
+.hmenu{display:flex; gap:4px; align-items:center}
+.hedbtn{width:34px; height:34px; border-radius:10px; border:1.5px solid var(--c); background:var(--cs); color:var(--c)}
+.hedbtn .ic{width:17px; height:17px}
+.hedit{display:flex; flex-direction:column; gap:10px; padding-top:30px}
+.hcard.editing{grid-column:1/-1}
+.hedit{min-width:0}
+.hedtop{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+.hedtop .tile-sm{width:88px; height:88px}
+.hedpicb{display:flex; flex-direction:column; gap:6px; align-items:stretch; flex:1 1 140px; min-width:0}
+.hues{display:flex; flex-wrap:wrap; gap:8px}
+.hue{width:32px; height:32px; border-radius:50%; background:var(--c); border:3px solid var(--surface); box-shadow:0 0 0 1.5px var(--line); padding:0}
+.hue[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.lvision .note .txt{font-size:16px}
+.lifemap{position:relative; isolation:isolate; margin:4px 0 8px; overflow:hidden}
+.lifemap::before{content:""; position:absolute; inset:8px; z-index:-1; filter:url(#burnedge);
+ background:repeating-linear-gradient(0deg,rgba(120,80,20,.05) 0 2px,transparent 2px 4px),repeating-linear-gradient(90deg,rgba(120,80,20,.05) 0 2px,transparent 2px 4px),
+ radial-gradient(ellipse at 20% 30%,rgba(111,180,200,.45) 0,transparent 30%),radial-gradient(ellipse at 80% 70%,rgba(111,180,200,.4) 0,transparent 32%),
+ radial-gradient(ellipse at center,#f4d682 0,#ecc15e 58%,#c98a26 84%,#5a3510 100%)}
+.lifemap .lpath{position:absolute; inset:0; pointer-events:none}
+.lifemap .lpath svg{display:block}
+.ldeco{position:absolute; pointer-events:none; opacity:.85}
+.ldeco svg{display:block; width:100%; height:auto}
+.lcomp{top:18px; right:18px; width:54px}
+.lship{left:6%; width:52px}
+.lwave{width:56px}
+.lchest{position:absolute; top:22px; left:50%; transform:translateX(-50%); width:110px; border:0; background:transparent; padding:0; display:flex; flex-direction:column; align-items:center; gap:0; color:#3b2a10; font:inherit; cursor:pointer}
+.lchest .lchestart{width:64px}
+.lchest b{position:absolute; top:-6px; right:4px; color:#d2402c; font-size:22px; font-weight:900}
+.lchest span{font-family:var(--display); font-weight:800; font-size:15px; background:rgba(255,248,225,.85); border:1.5px dashed #8a6a3a; padding:0 10px; border-radius:99px}
+.isle{position:absolute; width:46%; height:150px; border:0; background:transparent; padding:0; font:inherit; color:#3b2a10; cursor:pointer; display:flex; flex-direction:column; align-items:center}
+.isle .isleart{width:100%; transition:transform .15s}
+.isle .isleart svg{display:block; width:100%; height:auto; filter:drop-shadow(0 3px 3px rgba(60,35,5,.3))}
+.isle .isleemo{position:absolute; top:22px; left:50%; transform:translateX(-50%); font-size:28px; line-height:1}
+.isle .islelbl{margin-top:-8px; display:flex; flex-direction:column; align-items:center; gap:2px; background:rgba(255,248,225,.92); border:1.5px solid #8a6a3a; border-radius:10px; padding:2px 10px 3px; max-width:100%}
+.isle .islelbl b{font-size:13px; line-height:1.3; text-align:center; overflow-wrap:anywhere}
+.islepct{font-style:normal; font-size:11px; font-weight:700; color:#2f6b4f}
+.islepct.neg{color:#8f5a1a}
+.isle.neglect .isleemo{filter:grayscale(1); opacity:.7}
+.isle.sel .isleart{transform:scale(1.07)}
+.isle.sel .islelbl{background:#3b2a10; color:#fff8e1; border-color:#3b2a10}
+.isle.sel .islepct{color:#f4d682}
+.isle:focus-visible{outline:3px solid #3b2a10; outline-offset:2px; border-radius:12px}
+.lrow2{justify-content:center}
+.lhint{text-align:center}
+.larea{display:flex; flex-direction:column; gap:12px}
+.lahead{position:relative; display:flex; align-items:center; gap:10px}
+.laemo{font-size:34px; line-height:1}
+.latxt{flex:1; min-width:0; display:flex; flex-direction:column}
+.latxt h3{font-family:var(--display); font-weight:800; font-size:21px; color:var(--c); line-height:1.25}
+.lahead .tpop{left:0; right:auto}
+.lsec{display:flex; flex-direction:column; gap:6px; border-top:1.5px dashed var(--line); padding-top:10px}
+.lsec h4{margin:0; font-size:15px}
+.lsech{display:flex; align-items:center; justify-content:space-between; gap:8px}
+.ldreams{display:flex; flex-direction:column}
+.ldream{display:flex; align-items:center; gap:4px; border-bottom:1px solid var(--rule)}
+.ldream .chk{width:34px; height:34px} .ldream .chk b{width:22px; height:22px; border-radius:7px; border-width:2px} .ldream .chk .ic{width:14px; height:14px}
+.ldream .txt{border:0; background:transparent; min-height:38px; padding:4px 6px}
+.ldream.done .txt{text-decoration:line-through; opacity:.6}
+.laddd{display:flex; gap:6px; align-items:center}
+.laddd .txt{min-height:40px}
+.lchips .chip{border:0; font:inherit; font-size:12px; min-height:26px; cursor:pointer}
+.larea .rpbox .lopt{font-size:13px}
+.lemos{display:flex; flex-wrap:wrap; gap:6px}
+.lemo{width:40px; height:40px; border-radius:12px; border:1.5px solid var(--line); background:var(--field); font-size:20px; padding:0}
+.lemo[aria-pressed="true"]{border-color:var(--c); box-shadow:0 0 0 2px var(--c)}
+.lneed .chips{margin:4px 0 6px}
+.lneed .chip{border:0; font:inherit; font-size:12px; cursor:pointer}
 .vhfile{position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; pointer-events:none}
 .piclbl{position:relative; cursor:pointer}
 .btn.iconsave{width:40px; min-width:40px; padding:0; justify-content:center}
@@ -1251,12 +1328,12 @@ var HABITS0=[
 ];
 var HABITS=[];
 function refreshHabits(){
-  var hb=S.habits||(S.habits={checks:{}}); if(!hb.checks) hb.checks={}; if(!hb.custom) hb.custom=[]; if(!hb.hidden) hb.hidden=[];
+  var hb=S.habits||(S.habits={checks:{}}); if(!hb.checks) hb.checks={}; if(!hb.custom) hb.custom=[]; if(!hb.hidden) hb.hidden=[]; if(!hb.edits) hb.edits={};
   HABITS.length=0;
-  HABITS0.forEach(function(x){ if(hb.hidden.indexOf(x.id)<0) HABITS.push(x); });
+  HABITS0.forEach(function(x){ if(hb.hidden.indexOf(x.id)<0) HABITS.push(Object.assign({},x,hb.edits[x.id]||{})); });
   hb.custom.forEach(function(x){ HABITS.push(x); });
 }
-function habitImg(hb){var b=hb.pic&&BLOBS[hb.pic]; return (b&&b.src)||(hb.custom?'':imgSrc(hb.id))}
+function habitImg(hb){var b=hb.pic&&BLOBS[hb.pic]; return (b&&b.src)||((hb.custom||hb.noimg)?'':imgSrc(hb.id))}
 function habitArt(hb){var src=habitImg(hb); return src?h('img',{src:src,alt:''}):h('span',{class:'hfb'},(hb.name||'?').charAt(0));}
 var GOAL_SEEDS=[
  ['kaaba','أزور بيت الله كل سنة','سنويًا','teal'],
@@ -1274,9 +1351,9 @@ function mkGoal(img,title,freq,hue){return {id:'g_'+(img||uid()),img:img||'',tit
 function defaults(){return {
   habits:{checks:{}},
   goals:GOAL_SEEDS.map(function(g){return mkGoal(g[0],g[1],g[2],g[3])}),
-  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}, caps:{}, monthly:{}
+  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}, caps:{}, monthly:{}, life:{}
 }}
-var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts','caps','monthly'];
+var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts','caps','monthly','life'];
 var S=defaults(), BLOBS={};
 function imgSrc(k){return IMG[k]||''}
 function goalSrc(g){var b=g.pic&&BLOBS[g.pic]; return (b&&b.src)||(g.img&&imgSrc(g.img))||''}
@@ -1534,6 +1611,7 @@ function noteField(o){
 /* ---------- sections ---------- */
 var SECS=[
  {id:'home',label:'الرئيسية',hue:'green',ic:'home',sub:''},
+ {id:'life',label:'خريطة الحياة',hue:'gold',ic:'plan',img:'lifeArt',sub:''},
  {id:'habits',label:'العادات',hue:'green',ic:'habits',img:'habitsArt',sub:'اضغطي على اليوم لتسجيل إنجازه. تُحسب السلسلة من الأيام المتتالية.'},
  {id:'todo',label:'المهام اليومية',hue:'violet',ic:'list',img:'todo',sub:'مهام يومك موزعة على الصلوات الخمس.'},
  {id:'board',label:'لوحة الأهداف',hue:'blue',ic:'board',img:'boardArt',sub:'أهدافي بالصور. اضغطي على هدف لترين خطته.'},
@@ -1550,6 +1628,7 @@ var SECS=[
  {id:'rewards',label:'مكافآتي',hue:'rose',ic:'gift',img:'rewards',sub:'ما أكافئ به نفسي عند الإنجاز.'}
 ];
 var SEC_BY={}; SECS.forEach(function(s){SEC_BY[s.id]=s});
+IMG.lifeArt='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160"><rect x="4" y="10" width="112" height="140" rx="10" fill="#f0cf78" stroke="#a8742c" stroke-width="3"/><path d="M14 40c18-8 30 10 50 2s34-6 46 4" stroke="#5f9fb0" stroke-width="3" fill="none"/><path d="M20 120c4-14 22-18 34-14 10-10 30-6 30 8 10 4 8 16-6 18-14 6-38 6-50 0-8 0-10-6-8-12z" fill="#7fbf6a" stroke="#2f6b4f" stroke-width="2"/><path d="M64 70c4-12 20-14 30-6 12 0 16 12 6 18-8 8-28 8-36-2-6-2-4-8 0-10z" fill="#f4b183" stroke="#a8472f" stroke-width="2"/><path d="M28 64c2-8 14-10 20-4 8 2 8 10 0 12-8 4-20 2-20-8z" fill="#b9a8e6" stroke="#6a4fa3" stroke-width="2"/><path d="M38 66C50 90 70 82 78 76M52 112C70 100 78 92 80 80" stroke="#7a4f1c" stroke-width="2.4" stroke-dasharray="5 5" fill="none"/><path d="M86 26l14 14M100 26L86 40" stroke="#d2402c" stroke-width="5" stroke-linecap="round"/></svg>');
 var ui={cur:'home',month:null,week:null,goal:''};
 (function(){var t=today(); ui.month={y:t.getFullYear(),m:t.getMonth()}; ui.week=weekStart(t);})();
 var VIEWS={};
@@ -1649,6 +1728,38 @@ function deleteHabit(hb){
   } else if(hh.hidden.indexOf(hb.id)<0) hh.hidden.push(hb.id);
   touch('habits'); refreshHabits(); rerender(); toast('حُذفت العادة');
 }
+function habitEditForm(hb){
+  var d={name:hb.name||'',goal:hb.goal||'',hue:hb.hue,src:habitImg(hb),mode:'keep'};
+  var inp=h('input',{class:'txt',value:d.name,placeholder:'اسم العادة…','aria-label':'اسم العادة'}), gi=h('input',{class:'txt',value:d.goal,placeholder:'هدفها مثل: كل يوم','aria-label':'هدف العادة'});
+  inp.addEventListener('input',function(){d.name=inp.value}); gi.addEventListener('input',function(){d.goal=gi.value});
+  var pv=h('div',{class:'tile-sm hedpic'}), clr;
+  var fin=h('input',{type:'file',accept:'image/*',class:'vhfile','aria-label':'صورة العادة'});
+  fin.addEventListener('change',function(){var f=fin.files&&fin.files[0]; if(!f) return; toast('جارٍ تجهيز الصورة…'); readIcon(f,function(src){fin.value=''; if(!src){toast('تعذّر استخدام هذه الصورة، جرّبي صورة أخرى'); return;} d.src=src; d.mode='new'; paint();});});
+  var plbl=h('label',{class:'btn small piclbl'},ic('image'),h('span',{},''),fin);
+  clr=btn('إزالة الصورة',{icon:'trash',cls:'small ghost',on:function(){d.src=''; d.mode='clear'; paint();}});
+  function paint(){pv.replaceChildren(d.src?h('img',{src:d.src,alt:'صورة العادة'}):h('span',{class:'hfb'},(d.name||'?').charAt(0))); plbl.querySelector('span:not(.ic)').textContent=d.src?'تغيير الصورة':'إضافة صورة'; clr.hidden=!d.src;}
+  var hues=h('div',{class:'hues',role:'radiogroup','aria-label':'لون العادة'});
+  HUE_CYCLE.forEach(function(c){var b=h('button',{type:'button',class:'hue t-'+c,'aria-label':'لون','aria-pressed':c===d.hue?'true':'false',onclick:function(){d.hue=c; [].forEach.call(hues.children,function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});}}); hues.append(b);});
+  function save(){
+    var nm=(d.name||'').trim(); if(!nm){toast('اكتبي اسم العادة'); return;}
+    var tg=hb.custom?S.habits.custom.filter(function(x){return x.id===hb.id})[0]:(S.habits.edits[hb.id]||(S.habits.edits[hb.id]={}));
+    if(!tg) return;
+    tg.name=nm; tg.short=nm.length>14?nm.slice(0,13)+'…':nm; tg.goal=(d.goal||'').trim()||'كل يوم'; tg.hue=d.hue;
+    if(d.mode==='new'){ if(tg.pic) delBlob(tg.pic); tg.pic='p'+uid(); putBlob(tg.pic,{t:'pic',src:d.src}); tg.noimg=false; }
+    else if(d.mode==='clear'){ if(tg.pic) delBlob(tg.pic); tg.pic=''; if(!hb.custom) tg.noimg=true; }
+    ui.habitEdit=''; touch('habits'); refreshHabits(); rerender(); toast('حُفظت التعديلات');
+  }
+  function reset(){var e=S.habits.edits[hb.id]; if(e&&e.pic) delBlob(e.pic); delete S.habits.edits[hb.id]; ui.habitEdit=''; touch('habits'); refreshHabits(); rerender(); toast('أُعيدت العادة كما كانت');}
+  var f=h('form',{class:'hedit',onsubmit:function(e){e.preventDefault(); save();}},
+    h('h3',{class:'block-t'},'تعديل العادة'),
+    h('div',{class:'hedtop'},pv,h('div',{class:'hedpicb'},plbl,clr)),
+    h('div',{class:'field'},h('label',{class:'lbl'},'اسم العادة'),inp),
+    h('div',{class:'field'},h('label',{class:'lbl'},'هدفها'),gi),
+    h('div',{class:'field'},h('label',{class:'lbl'},'اللون'),hues),
+    h('div',{class:'row'},btn('حفظ',{icon:'check',cls:'primary small',type:'submit'}),btn('إلغاء',{cls:'ghost small',on:function(){ui.habitEdit=''; rerender();}}),
+      (!hb.custom&&S.habits.edits[hb.id])?btn('استرجاع الأصل',{cls:'ghost small',on:reset}):null));
+  paint(); return f;
+}
 function habitForm(){
   var d=ui.habitNew;
   var inp=h('input',{class:'txt',placeholder:'اسم العادة…','aria-label':'اسم العادة'}), gi=h('input',{class:'txt',placeholder:'هدفها (اختياري) مثل: كل يوم','aria-label':'هدف العادة'}), pv=h('div',{class:'gnew-prev'});
@@ -1695,11 +1806,13 @@ VIEWS.habits=function(root,meta){
     })(d);}
     var todayBtn=isCur?h('button',{type:'button',class:'donebtn','aria-pressed':'false',onclick:function(){toggleHabit(hb.id,mn.y,mn.m,t.getDate()); upd();}}):null;
     var stCur=h('b',{},'٠'), stBest=h('b',{},'٠'), stRate=h('b',{},'٠٪');
-    var card=h('article',{class:'card hcard t-'+hb.hue},
-      h('div',{class:'top'},h('div',{class:'tile-sm'},habitArt(hb)),h('div',{class:'info'},h('h3',{},hb.name),h('p',{},hb.goal))),
+    var editing=ui.habitEdit===hb.id;
+    var card=h('article',{class:'card hcard t-'+hb.hue+(editing?' editing':'')},
+      editing?habitEditForm(hb):h('div',{class:'top'},h('div',{class:'tile-sm'},habitArt(hb)),h('div',{class:'info'},h('h3',{},hb.name),h('p',{},hb.goal))),
       h('div',{class:'stats'},h('div',{class:'stat'},stCur,h('span',{},'سلسلة الآن')),h('div',{class:'stat'},stBest,h('span',{},'أطول سلسلة')),h('div',{class:'stat'},stRate,h('span',{},'الالتزام'))),
       todayBtn,cal);
     var hm=h('div',{class:'hmenu'},menuButton('خيارات العادة',function(){return [
+      {label:'تعديل العادة',icon:'pen',on:function(){ui.habitEdit=hb.id; rerender(); setTimeout(function(){var c=$('.hcard.editing'); if(c) try{c.scrollIntoView({block:'start'})}catch(e){}},30);}},
       {label:'حذف العادة',icon:'trash',danger:true,on:function(){paperConfirm(card,hb.custom?'حذف هذه العادة وسجلّها نهائيًا؟':'حذف هذه العادة من القائمة؟ (يمكنك استرجاعها)',function(){deleteHabit(hb)})}}];}));
     card.append(hm);
     cards.push({hb:hb,dayB:dayB,todayBtn:todayBtn,stCur:stCur,stBest:stBest,stRate:stRate}); grid.append(card);
@@ -1714,6 +1827,141 @@ VIEWS.habits=function(root,meta){
   }
   upd();
 };
+
+/* ---------- life map (treasure islands) ---------- */
+var LIFE_SEED=[['🕌','الدين','green',['quran']],['💪','الصحة','teal',['sport','wake','food']],['📚','العلم','blue',['learn']],['👨‍👩‍👧','الأسرة والعلاقات','rose',[]],['💰','المال','gold',[]],['🌟','العمل والأثر','orange',[]],['🌿','النفس والراحة','violet',[]]];
+var LIFE_EMO=['🕌','📿','💪','🏃‍♀️','🍎','📚','🧠','👨‍👩‍👧','❤️','🤝','💰','🌟','💼','🌿','🌙','🏡','✈️','🎨','✍️','🏝️'];
+function lifeData(){
+  if(!S.life||typeof S.life!=='object'||Array.isArray(S.life)) S.life={};
+  var L=S.life;
+  if(!Array.isArray(L.areas)){ L.areas=LIFE_SEED.map(function(a){return {id:'a'+uid(),emo:a[0],name:a[1],hue:a[2],dreams:[],goals:[],habits:a[3].slice()}}); if(L.vision==null) L.vision=''; touch('life'); }
+  return L;
+}
+function areaGoals(a){return (a.goals||[]).map(function(id){return S.goals.filter(function(g){return g.id===id})[0]}).filter(Boolean)}
+function areaHabits(a){return (a.habits||[]).map(function(id){return HABITS.filter(function(x){return x.id===id})[0]}).filter(Boolean)}
+function goalPct(g){return g.done?100:goalProg(g).pct}
+function areaProg(a){
+  var t=today(), v=[];
+  areaGoals(a).forEach(function(g){v.push(goalPct(g))});
+  areaHabits(a).forEach(function(hb){v.push(monthRate(hb.id,t.getFullYear(),t.getMonth()))});
+  return v.length?Math.round(v.reduce(function(x,y){return x+y},0)/v.length):null;
+}
+function lifeAreasOfGoal(gid){var L=S.life; return (L&&Array.isArray(L.areas))?L.areas.filter(function(a){return (a.goals||[]).indexOf(gid)>=0}):[]}
+var ISLE_SHAPES=[
+ 'M14 52c-4-14 10-26 26-28 10-12 30-14 42-4 16-2 30 8 28 22 8 10 0 24-16 26-10 10-34 12-46 4-18 4-36-6-34-20z',
+ 'M10 48c0-16 18-24 32-22 8-12 34-14 44-2 18 0 28 14 22 26 4 12-12 20-26 18-12 8-36 8-46-2-16 0-28-8-26-18z',
+ 'M16 46c-2-12 12-22 24-20 12-14 40-12 48 0 14 2 22 14 18 24 2 14-16 22-30 18-14 8-38 6-44-4-14-2-20-10-16-18z'];
+function isleSvg(hue,i,neglect){
+  var land=neglect?'#c9c2a8':HUE_BG[hue]||'#dcebe2', edge=neglect?'#8f8a76':HUE_FG[hue]||'#2f6b4f', sh=ISLE_SHAPES[i%3];
+  return '<svg viewBox="0 0 124 84" aria-hidden="true"><path d="'+sh+'" fill="#9fd0dc" opacity=".55" transform="translate(-4 -2) scale(1.06)"/>'+
+   '<path d="'+sh+'" fill="#efd79a" stroke="#c9a45a" stroke-width="1.5"/>'+
+   '<path d="'+sh+'" fill="'+land+'" stroke="'+edge+'" stroke-width="2" transform="translate(12 8) scale(.8)"/>'+
+   (neglect?'':'<g transform="translate('+(i%2?92:22)+' 18)"><path d="M6 30c0-10 1-18 4-24" stroke="#8a5a2b" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 6c-6-4-12-3-15 1 5-1 10 0 15-1zM10 6c1-6 7-9 12-7-5 2-9 4-12 7zM10 6c6-2 11 0 13 4-5-3-9-3-13-4z" fill="#3f9a4a"/></g>')+
+   '</svg>';
+}
+var LIFE_COMPASS='<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="none" stroke="#7a5a3a" stroke-width="2" stroke-dasharray="3 4"/><path d="M32 6l5 22-5 4-5-4z" fill="#a8472f"/><path d="M32 58l-5-22 5-4 5 4z" fill="#3b2a10"/><path d="M6 32l22-5 4 5-4 5zM58 32l-22 5-4-5 4-5z" fill="#3b2a10"/><text x="32" y="5" font-size="8" text-anchor="middle" fill="#3b2a10">N</text></svg>';
+var LIFE_WAVE='<svg viewBox="0 0 60 16" aria-hidden="true"><path d="M2 10c6-6 10-6 14 0s10 6 14 0 10-6 14 0 10 6 14 0" stroke="#5f9fb0" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
+var LIFE_SHIP='<svg viewBox="0 0 60 50" aria-hidden="true"><path d="M8 34h44l-8 12H16z" fill="#8a5a2b"/><path d="M30 4v30" stroke="#5a3510" stroke-width="2.5"/><path d="M31 6l18 22H31z" fill="#fff8e6" stroke="#b9a574"/><path d="M29 10L14 28h15z" fill="#f4ead6" stroke="#b9a574"/><path d="M30 4l10 3-10 3z" fill="#a8472f"/></svg>';
+function lifeChest(){return '<svg viewBox="0 0 70 56" aria-hidden="true"><path d="M12 22h46v26H12z" fill="#9a6a3c" stroke="#5a3510" stroke-width="2"/><path d="M10 22c0-12 10-16 25-16s25 4 25 16z" fill="#b07a45" stroke="#5a3510" stroke-width="2"/><path d="M12 30h46" stroke="#e3b95a" stroke-width="3"/><rect x="31" y="26" width="8" height="10" rx="2" fill="#e3b95a" stroke="#5a3510"/><circle cx="20" cy="12" r="2" fill="#f4d682"/><circle cx="52" cy="10" r="1.6" fill="#f4d682"/><path d="M8 52l54-1" stroke="#a8472f" stroke-width="0"/></svg>'}
+function svgBox(markup,cls,style){var d=document.createElement('div'); d.className=cls; if(style) d.setAttribute('style',style); d.innerHTML=markup; return d;}
+
+VIEWS.life=function(root,meta){
+  root.append(secHead(meta));
+  var L=lifeData(), A=L.areas;
+  if(ui.lifeArea&&!A.some(function(a){return a.id===ui.lifeArea})) ui.lifeArea='';
+  var vcard=h('section',{class:'card lvision'},h('h3',{class:'block-t'},'🧭 رؤيتي'),h('p',{class:'sub'},'من أريد أن أكون؟ هذا هو الكنز الذي تقود إليه كل الجزر.'),
+    noteField({obj:L,key:'vision',inkKey:'visionInk',sec:'life',ph:'مثل: امرأة قريبة من الله، صحية، تتعلم باستمرار، ولها أثر…',label:'رؤيتي',rows:2}));
+  root.append(vcard);
+
+  var TOP=150, STEP=96, IH=150, H=TOP+Math.max(0,A.length-1)*STEP+IH+40;
+  var map=h('div',{class:'lifemap',style:'height:'+H+'px'});
+  var pts=[[50,92]];
+  A.forEach(function(a,i){pts.push([i%2?73:27, TOP+i*STEP+52]);});
+  var d='M'+pts[0][0]+' '+pts[0][1];
+  for(var i=1;i<pts.length;i++){var p0=pts[i-1], p1=pts[i], my=(p0[1]+p1[1])/2; d+=' C'+p0[0]+' '+my+' '+p1[0]+' '+my+' '+p1[0]+' '+p1[1];}
+  map.append(svgBox('<svg viewBox="0 0 100 '+H+'" preserveAspectRatio="none" width="100%" height="'+H+'"><path d="'+d+'" fill="none" stroke="#7a4f1c" stroke-width="2.4" stroke-dasharray="7 7" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>','lpath'));
+  map.append(svgBox(LIFE_COMPASS,'ldeco lcomp'),svgBox(LIFE_SHIP,'ldeco lship','top:'+(TOP+STEP*1.4)+'px'),svgBox(LIFE_WAVE,'ldeco lwave','top:'+(TOP+STEP*0.5)+'px; left:44%'),svgBox(LIFE_WAVE,'ldeco lwave','top:'+(H-70)+'px; left:8%'));
+  map.append(h('button',{type:'button',class:'lchest','aria-label':'رؤيتي',onclick:function(){try{vcard.scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}}},svgBox(lifeChest(),'lchestart'),h('b',{},'X'),h('span',{},'رؤيتي')));
+  A.forEach(function(a,i){
+    var pr=areaProg(a), neg=pr===null, sel=ui.lifeArea===a.id;
+    var b=h('button',{type:'button',class:'isle'+(neg?' neglect':'')+(sel?' sel':''),style:'top:'+(TOP+i*STEP)+'px; '+(i%2?'left:50%':'left:4%'),'aria-pressed':sel?'true':'false','aria-label':a.name,onclick:function(){ui.lifeArea=sel?'':a.id; ui.lifeEdit=''; ui.lifePick=''; render(); if(!sel) setTimeout(function(){var c=$('.larea'); if(c) try{c.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}},40);}},
+      svgBox(isleSvg(a.hue,i,neg),'isleart'),h('span',{class:'isleemo','aria-hidden':'true'},a.emo||'🏝️'),
+      h('span',{class:'islelbl'},h('b',{},a.name),h('i',{class:'islepct'+(neg?' neg':'')},neg?'مهملة':n(pr)+'٪')));
+    map.append(b);
+  });
+  root.append(map);
+  root.append(h('div',{class:'row lrow2'},btn('جزيرة جديدة',{icon:'plus',cls:'small',on:function(){
+    var a={id:'a'+uid(),emo:'🏝️',name:'مجال جديد',hue:HUE_CYCLE[A.length%HUE_CYCLE.length],dreams:[],goals:[],habits:[]}; A.push(a); touch('life'); ui.lifeArea=a.id; ui.lifeEdit=a.id; render();
+    setTimeout(function(){var c=$('.larea'); if(c) try{c.scrollIntoView({block:'start'})}catch(e){}},40);
+  }})));
+  var cur=A.filter(function(a){return a.id===ui.lifeArea})[0];
+  if(cur) root.append(areaPanel(cur,L));
+  else root.append(h('p',{class:'sub lhint'},'اضغطي على أي جزيرة لترين طموحاتها وأهدافها وعاداتها.'));
+  var negA=A.filter(function(a){return areaProg(a)===null}), lowA=A.filter(function(a){var p=areaProg(a); return p!==null&&p<30});
+  if(negA.length||lowA.length){
+    var box=h('section',{class:'card lneed'},h('h3',{class:'block-t'},'جزر تحتاج اهتمامك'));
+    if(negA.length) box.append(h('p',{class:'sub'},'لا يوجد فيها هدف أو عادة بعد:'),h('div',{class:'chips'},negA.map(function(a){return h('button',{type:'button',class:'chip',onclick:function(){ui.lifeArea=a.id; render();}},a.emo+' '+a.name)})));
+    if(lowA.length) box.append(h('p',{class:'sub'},'تقدمها أقل من ٣٠٪ هذا الشهر:'),h('div',{class:'chips'},lowA.map(function(a){return h('button',{type:'button',class:'chip warn',onclick:function(){ui.lifeArea=a.id; render();}},a.emo+' '+a.name+' · '+n(areaProg(a))+'٪')})));
+    root.append(box);
+  }
+};
+function areaPanel(a,L){
+  var p=h('section',{class:'card larea t-'+a.hue});
+  if(ui.lifeEdit===a.id){
+    var d={name:a.name,emo:a.emo,hue:a.hue};
+    var nm=h('input',{class:'txt',value:d.name,'aria-label':'اسم المجال'}); nm.addEventListener('input',function(){d.name=nm.value});
+    var emos=h('div',{class:'lemos',role:'radiogroup','aria-label':'رمز الجزيرة'});
+    LIFE_EMO.forEach(function(e){var b=h('button',{type:'button',class:'lemo','aria-pressed':e===d.emo?'true':'false',onclick:function(){d.emo=e; [].forEach.call(emos.children,function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});}},e); emos.append(b);});
+    var hues=h('div',{class:'hues',role:'radiogroup','aria-label':'لون الجزيرة'});
+    HUE_CYCLE.forEach(function(c){var b=h('button',{type:'button',class:'hue t-'+c,'aria-label':'لون','aria-pressed':c===d.hue?'true':'false',onclick:function(){d.hue=c; [].forEach.call(hues.children,function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});}}); hues.append(b);});
+    p.append(h('h3',{class:'block-t'},'تعديل الجزيرة'),h('div',{class:'field'},h('label',{class:'lbl'},'اسم المجال'),nm),h('div',{class:'field'},h('label',{class:'lbl'},'الرمز'),emos),h('div',{class:'field'},h('label',{class:'lbl'},'اللون'),hues),
+      h('div',{class:'row'},btn('حفظ',{icon:'check',cls:'primary small',on:function(){var v=(d.name||'').trim(); if(!v){toast('اكتبي اسم المجال'); return;} a.name=v; a.emo=d.emo; a.hue=d.hue; ui.lifeEdit=''; touch('life'); render();}}),btn('إلغاء',{cls:'ghost small',on:function(){ui.lifeEdit=''; render();}})));
+    return p;
+  }
+  var pr=areaProg(a);
+  var menu=menuButton('خيارات الجزيرة',function(){return [
+    {label:'تعديل الاسم والرمز واللون',icon:'pen',on:function(){ui.lifeEdit=a.id; render();}},
+    {label:'حذف الجزيرة',icon:'trash',danger:true,on:function(){paperConfirm(p,'حذف جزيرة «'+a.name+'»؟ أهدافك وعاداتك لن تُحذف.',function(){L.areas=L.areas.filter(function(x){return x!==a}); ui.lifeArea=''; touch('life'); render(); toast('حُذفت الجزيرة');})}}];});
+  p.append(h('div',{class:'lahead'},h('span',{class:'laemo','aria-hidden':'true'},a.emo),h('div',{class:'latxt'},h('h3',{},a.name),h('span',{class:'sub'},pr===null?'لم تربطي بها هدفًا أو عادة بعد':'تقدمها هذا الشهر '+n(pr)+'٪')),menu),
+    h('div',{class:'bar'},h('i',{style:'width:'+(pr||0)+'%'})));
+  /* dreams */
+  var dl=h('div',{class:'ldreams'});
+  (a.dreams||(a.dreams=[])).forEach(function(dr){
+    var row=h('div',{class:'ldream'+(dr.done?' done':'')});
+    var chk=h('button',{type:'button',class:'chk','aria-pressed':dr.done?'true':'false','aria-label':'تحقق الطموح',onclick:function(){dr.done=!dr.done; touch('life'); chk.setAttribute('aria-pressed',dr.done?'true':'false'); row.classList.toggle('done',dr.done); if(dr.done) toast('ما شاء الله! تحقق طموح 🏆');}},h('b',{},ic('check')));
+    var inp=h('input',{class:'txt',value:dr.text||'','aria-label':'الطموح'}); inp.addEventListener('input',function(){dr.text=inp.value; touch('life')});
+    var del=h('button',{type:'button',class:'mini','aria-label':'حذف الطموح',onclick:function(){a.dreams=a.dreams.filter(function(x){return x!==dr}); touch('life'); render();}},ic('x'));
+    row.append(chk,inp,del); dl.append(row);
+  });
+  var add=h('input',{class:'txt',placeholder:'طموح جديد… مثل: أحفظ القرآن','aria-label':'طموح جديد'});
+  function addDream(){var v=add.value.trim(); if(!v) return; a.dreams.push({id:uid(),text:v,done:false}); touch('life'); render(); setTimeout(function(){var f=$('.larea .laddd input'); if(f) try{f.focus({preventScroll:true})}catch(e){}},30);}
+  add.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); addDream();}});
+  p.append(h('div',{class:'lsec'},h('h4',{},'⭐ طموحاتي'),dl.children.length?dl:h('p',{class:'sub'},'الأحلام الكبيرة في هذا المجال، بدون تاريخ.'),h('div',{class:'laddd'},add,h('button',{type:'button',class:'tplus','aria-label':'إضافة طموح',onclick:addDream},ic('plus')))));
+  /* goals + habits */
+  function linkSec(kind){
+    var isG=kind==='g', items=isG?areaGoals(a):areaHabits(a), t=today();
+    var chips=h('div',{class:'chips lchips'});
+    items.forEach(function(x){
+      if(isG) chips.append(h('button',{type:'button',class:'chip t-'+x.hue,onclick:function(){ui.goal=x.id; go('plan');}},'🎯 '+x.title+' · '+n(goalPct(x))+'٪'));
+      else chips.append(h('button',{type:'button',class:'chip t-'+x.hue,onclick:function(){go('habits')}},'🔁 '+x.short+' · '+n(monthRate(x.id,t.getFullYear(),t.getMonth()))+'٪'));
+    });
+    var open=ui.lifePick===kind;
+    var tog=btn(open?'تم':(isG?'ربط أهداف':'ربط عادات'),{icon:open?'check':'link',cls:'small'+(open?' primary':' ghost'),on:function(){ui.lifePick=open?'':kind; render();}});
+    var sec=h('div',{class:'lsec'},h('div',{class:'lsech'},h('h4',{},isG?'🎯 أهدافي':'🔁 عاداتي'),tog),items.length?chips:h('p',{class:'sub'},isG?'لا توجد أهداف مربوطة بهذه الجزيرة.':'لا توجد عادات مربوطة بهذه الجزيرة.'));
+    if(open){
+      var list=isG?S.goals:HABITS, key=isG?'goals':'habits', box=h('div',{class:'lopts'});
+      list.forEach(function(x){
+        var on=(a[key]||[]).indexOf(x.id)>=0;
+        var b=h('button',{type:'button',class:'lopt','aria-pressed':on?'true':'false',onclick:function(){var arr=a[key]||(a[key]=[]), k=arr.indexOf(x.id); if(k>=0) arr.splice(k,1); else arr.push(x.id); touch('life'); b.setAttribute('aria-pressed',k>=0?'false':'true');}},isG?x.title:x.name);
+        box.append(b);
+      });
+      sec.append(h('div',{class:'rpbox'},list.length?box:h('p',{class:'sub'},isG?'أضيفي أهدافًا من لوحة الأهداف أولًا.':'أضيفي عادات من قسم العادات أولًا.')));
+    }
+    return sec;
+  }
+  p.append(linkSec('g'),linkSec('h'));
+  return p;
+}
 
 /* ---------- home ---------- */
 VIEWS.home=function(root,meta){
@@ -1847,7 +2095,8 @@ VIEWS.plan=function(root,meta){
     {label:'تعديل الهدف',icon:'pen',on:function(){ui.goalEdit=g.id; render();}},
     {label:goalSrc(g)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){ui.goalEdit=g.id; render();}},
     {label:'ربط بهدف آخر',icon:'link',on:openLinks},
-    {label:g.done?'لم يتحقق بعد':'تحقق الهدف',icon:'flag',on:function(){g.done=!g.done; touch('goals'); render(); if(g.done) toast('ما شاء الله، تحقق الهدف');}},
+    {label:'ربط بمكافأة أو عقاب',icon:'link',on:function(){ if(lpanel){lpanel.remove(); lpanel=null;} lpanel=h('section',{class:'card lpanel'},h('h3',{class:'block-t'},'مكافأة وعقاب «'+(g.title||'الهدف')+'»'),rpPicker(g,'goals',null,function(){lpanel.remove(); lpanel=null; render();})); gcard.after(lpanel); }},
+    {label:g.done?'لم يتحقق بعد':'تحقق الهدف',icon:'flag',on:function(){g.done=!g.done; touch('goals'); render(); if(g.done){toast('ما شاء الله، تحقق الهدف'); rpEarned(g);}}},
     {label:'أضيفيه إلى الإنجازات',icon:'trophy',on:function(){S.wins.unshift({id:uid(),text:g.title,ink:'',at:dkey(today()),goal:g.id,pic:''}); touch('wins'); toast('أُضيف إلى الإنجازات');}},
     {label:'حذف الهدف',icon:'trash',danger:true,on:function(){paperConfirm(gcard,'حذف الهدف وكل خطواته نهائيًا؟',function(){dropBlobs(g); g.steps.forEach(dropBlobs); S.goals=S.goals.filter(function(x){return x!==g}); S.goals.forEach(function(o){if(o.links) o.links=o.links.filter(function(i){return i!==g.id})}); touch('goals'); ui.goal=''; render(); toast('حُذف الهدف');})}}];});
   var info;
@@ -1872,6 +2121,10 @@ VIEWS.plan=function(root,meta){
   }
   var lk=linksOf(g).map(function(id){return S.goals.filter(function(o){return o.id===id})[0]}).filter(Boolean);
   if(lk.length) info.append(h('div',{class:'glinks'},h('span',{},'مرتبط بـ:'),lk.map(function(o){return h('button',{type:'button',class:'chip t-'+o.hue,title:'افتحي خطة «'+o.title+'»',onclick:function(){ui.goal=o.id; ui.goalEdit=''; render(); try{window.scrollTo(0,0)}catch(e){}}},ic('link'),o.title||'هدف')})));
+  var gAreas=lifeAreasOfGoal(g.id);
+  if(gAreas.length) info.append(h('div',{class:'glinks'},h('span',{},'الجزيرة:'),gAreas.map(function(a){return h('button',{type:'button',class:'chip t-'+a.hue,onclick:function(){ui.lifeArea=a.id; go('life');}},a.emo+' '+a.name)})));
+  var rpc=rpChips(g,true);
+  if(rpc.length) info.append(h('div',{class:'glinks'},h('span',{},'مكافأة وعقاب:'),rpc));
   gcard.append(h('div',{class:'gmenu'},gmenu,gfile),h('div',{class:'gside'},goalArt(g,'gsart'),info),h('div',{class:'bar'},bar),plab);
   wrap.append(gcard);
   prog();
@@ -2303,7 +2556,7 @@ VIEWS.obstacles=function(root,meta){
       {label:'حذف العقاب',icon:'trash',danger:true,on:function(){paperConfirm(paper,'حذف هذا العقاب نهائيًا؟',function(){delEntry('obstacles',it)})}}]);});
     paper=h('article',{class:'snote t-'+HUE_CYCLE[(i+3)%HUE_CYCLE.length],'data-id':it.id},
       h('div',{class:'nhead'},h('span',{class:'sico pstk','aria-hidden':'true'},h('img',{src:imgSrc('obstacles'),alt:''})),stamp,menu),
-      npic(it),nf,h('div',{class:'pwhy'},h('span',{class:'wlbl'},'لماذا؟ (إذا فعلتُ…)'),nfWhy),chips,panel,pInp);
+      npic(it),nf,h('div',{class:'pwhy'},h('span',{class:'wlbl'},'لماذا؟ (إذا فعلتُ…)'),nfWhy),rpFrom(it.id,'pun'),chips,panel,pInp);
     paintChips(); grid.append(paper);
   });
   root.append(grid);
@@ -2324,7 +2577,7 @@ VIEWS.rewards=function(root,meta){
       {label:'حذف المكافأة',icon:'trash',danger:true,on:function(){paperConfirm(card,'حذف هذه المكافأة نهائيًا؟',function(){delEntry('rewards',it)})}}]);});
     card=h('article',{class:'gift t-'+HUE_CYCLE[(i+2)%HUE_CYCLE.length]+(it.got?' got':''),'data-id':it.id},
       h('div',{class:'bow','aria-hidden':'true'},h('i',{})),
-      h('div',{class:'gbox'},h('div',{class:'glid nhead'},chk,h('span',{class:'gstamp'},'حصلت ✓'),menu),h('div',{class:'gbody'},npic(it),nfT,nfW)),rInp);
+      h('div',{class:'gbox'},h('div',{class:'glid nhead'},chk,h('span',{class:'gstamp'},'حصلت ✓'),menu),h('div',{class:'gbody'},npic(it),nfT,nfW,rpFrom(it.id,'rew'))),rInp);
     list.append(card);
   });
   root.append(list);
@@ -2806,7 +3059,7 @@ function capCheckTask(c){
   PERIODS.forEach(function(p){(d[p[0]]||[]).forEach(function(t){if(t.id===c.tid) hit=t;})});
   if(!hit||taskDone(hit,c.day)) return false;
   if(hit.link&&hit.link.t==='habit'){var dq=parseKey(c.day); toggleHabit(hit.link.id,dq.getFullYear(),dq.getMonth(),dq.getDate());} else {hit.done=true; touch('todo');}
-  return true;
+  rpEarned(hit); return true;
 }
 function capFinish(c,quiet,full){
   if(!S.caps||Array.isArray(S.caps)) S.caps={};
@@ -2993,7 +3246,10 @@ VIEWS.todo=function(root,meta){
       todoList(day,pk).forEach(function(t){
         var row, chk=h('button',{type:'button',class:'chk','aria-pressed':taskDone(t,day)?'true':'false','aria-label':'تمت المهمة',onclick:function(){
           if(t.link&&t.link.t==='habit'){var dq=parseKey(day); toggleHabit(t.link.id,dq.getFullYear(),dq.getMonth(),dq.getDate());} else {t.done=!t.done; touch('todo');}
-          var dn=taskDone(t,day); chk.setAttribute('aria-pressed',dn?'true':'false'); row.classList.toggle('done',dn); upC(); prog();}},h('b',{},ic('check')));
+          var dn=taskDone(t,day); chk.setAttribute('aria-pressed',dn?'true':'false'); row.classList.toggle('done',dn); upC(); prog(); if(dn) rpEarned(t);}},h('b',{},ic('check')));
+        var rpWrap=h('div',{class:'reppanel',hidden:true}), rpC=h('span',{class:'chips',style:'display:contents'});
+        function paintRp(){rpC.replaceChildren.apply(rpC,rpChips(t));}
+        function openRp(){rpWrap.replaceChildren(h('label',{class:'lbl'},'ربط المهمة بمكافأة أو عقاب'),rpPicker(t,'todo',paintRp,function(){rpWrap.hidden=true})); rpWrap.hidden=false;}
         var repChip=h('span',{class:'chip'},''), panel=h('div',{class:'reppanel',hidden:true});
         function paintChip(){repChip.textContent=repText(t.rep); repChip.hidden=!t.rep;}
         function openPanel(){
@@ -3069,6 +3325,7 @@ VIEWS.todo=function(root,meta){
             {label:'الكتابة بخط اليد',icon:'pen',on:function(){var pb=nfield.querySelector('.penbtn'); if(pb) pb.click();}},
             {label:'تكرار المهمة',icon:'repeat',on:function(){lpanel.hidden=true; openPanel();}},
             {label:'ربط بهدف أو عادة',icon:'link',on:function(){panel.hidden=true; openLink();}},
+            {label:'ربط بمكافأة أو عقاب',icon:'link',on:function(){panel.hidden=true; lpanel.hidden=true; openRp();}},
             {label:t.rm?'تعديل التذكير':'تذكير بإشعار',icon:'bell',on:function(){panel.hidden=true; lpanel.hidden=true; openRem();}},
             {head:'نقل إلى فترة'}];
           PERIODS.forEach(function(q){ if(q[0]!==pk) its.push({label:q[1],icon:'right',on:function(){
@@ -3077,9 +3334,9 @@ VIEWS.todo=function(root,meta){
           its.push({label:'حذف المهمة',icon:'trash',danger:true,on:function(){dropBlobs(t); S.todo[day][pk]=todoList(day,pk,true).filter(function(x){return x!==t}); touch('todo'); draw(); upC(); prog();}});
           return its;
         });
-        row=h('div',{class:'stepr mrow'+(taskDone(t,day)?' done':'')},chk,h('div',{class:'stbody'},nfield,h('div',{class:'chips'},capChip,repChip,linkChip,remChip)),menuB);
-        paintChip(); paintLink(); paintRem();
-        box.append(row,cpwrap,lpanel,panel,rpanel);
+        row=h('div',{class:'stepr mrow'+(taskDone(t,day)?' done':'')},chk,h('div',{class:'stbody'},nfield,h('div',{class:'chips'},capChip,repChip,linkChip,remChip,rpC)),menuB);
+        paintChip(); paintLink(); paintRem(); paintRp();
+        box.append(row,cpwrap,lpanel,rpWrap,panel,rpanel);
       });
       daySteps(day,pk).forEach(function(it){stepRow(it)});
     }
@@ -3278,6 +3535,42 @@ function itemPic(it,sec,inp){
 }
 function setItemPic(it,sec,src){ if(it.pic) delBlob(it.pic); it.pic='p'+uid(); putBlob(it.pic,{t:'pic',src:src}); touch(sec); rerender(); toast('أُضيفت الصورة'); }
 function npic(it){var b=it.pic&&BLOBS[it.pic]; return (b&&b.src)?h('img',{class:'npic',src:b.src,alt:''}):null}
+function rpLabel(x){var t=((x&&x.text)||'').trim(); return t||'✎ بخط اليد'}
+function rpOf(ids,list){return (ids||[]).map(function(id){return list.filter(function(x){return x.id===id})[0]}).filter(Boolean)}
+function rpChips(o,onTap){
+  var out=[];
+  rpOf(o.rew,S.rewards).forEach(function(r){out.push(h('span',{class:'chip rwd',role:onTap?'button':null,onclick:onTap?function(){go('rewards')}:null},'🎁 '+rpLabel(r)))});
+  rpOf(o.pun,S.obstacles).forEach(function(r){out.push(h('span',{class:'chip pun',role:onTap?'button':null,onclick:onTap?function(){go('obstacles')}:null},'⚠ '+rpLabel(r)))});
+  return out;
+}
+function rpPicker(o,sec,onChange,onClose){
+  function group(title,key,list,empty){
+    var box=h('div',{class:'lopts'});
+    list.forEach(function(it){
+      var on=(o[key]||[]).indexOf(it.id)>=0;
+      var b=h('button',{type:'button',class:'lopt','aria-pressed':on?'true':'false',onclick:function(){
+        var a=(o[key]||[]).filter(function(id){return list.some(function(x){return x.id===id})}), k=a.indexOf(it.id);
+        if(k>=0) a.splice(k,1); else a.push(it.id); o[key]=a; touch(sec);
+        b.setAttribute('aria-pressed',k>=0?'false':'true'); if(onChange) onChange();
+      }},rpLabel(it));
+      box.append(b);
+    });
+    return h('div',{class:'rpg'},h('b',{},title),list.length?box:h('p',{class:'sub'},empty));
+  }
+  return h('div',{class:'rpbox'},
+    group('🎁 المكافأة إذا أنجزته','rew',S.rewards.filter(function(x){return (x.text||'').trim()||x.ink}),'لا توجد مكافآت بعد. أضيفيها من قسم المكافآت.'),
+    group('⚠ العقاب إذا لم أنجزه','pun',S.obstacles.filter(function(x){return (x.text||'').trim()||x.ink}),'لا توجد عقابات بعد. أضيفيها من قسم العقاب.'),
+    h('div',{class:'row'},btn('تم',{icon:'check',cls:'primary small',on:onClose})));
+}
+function rpFrom(id,key){
+  var out=[], seen={};
+  S.goals.forEach(function(g){ if((g[key]||[]).indexOf(id)>=0) out.push('هدف: '+(g.title||'هدف')); });
+  Object.keys(S.todo||{}).sort().forEach(function(k){ PERIODS.forEach(function(p){ ((S.todo[k]||{})[p[0]]||[]).forEach(function(t){
+    if((t[key]||[]).indexOf(id)>=0){var l='مهمة: '+(((t.text||'').trim())||'بخط اليد'); if(!seen[l]){seen[l]=1; out.push(l);}}
+  }); }); });
+  return out.length?h('div',{class:'rpfrom'},out.slice(0,4).map(function(l){return h('span',{class:'chip'},l)}),out.length>4?h('span',{class:'chip'},'+'+n(out.length-4)):null):null;
+}
+function rpEarned(o){var r=rpOf(o.rew,S.rewards); if(r.length) setTimeout(function(){toast('🎁 استحققتِ مكافأتك: '+rpLabel(r[0]))},900);}
 function boardPlus(label,on){return h('div',{class:'bplus'},h('button',{type:'button',class:'gplus','aria-label':label,title:label,onclick:on},ic('plus')))}
 function picLabel(text,onSrc){
   var inp=h('input',{type:'file',accept:'image/*',class:'vhfile','aria-label':text});
