@@ -11,7 +11,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
 /* Layout: right-hand sidebar of section buttons on tablets, scrolling chip bar on phones; one section view at a time; sticker art heads every section. RTL. */
 :root{
@@ -1204,6 +1204,47 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .lemo[aria-pressed="true"]{border-color:var(--c); box-shadow:0 0 0 2px var(--c)}
 .lneed .chips{margin:4px 0 6px}
 .lneed .chip{border:0; font:inherit; font-size:12px; cursor:pointer}
+.rushd{display:flex; align-items:center; justify-content:center; gap:10px; margin:0 0 4px; padding:12px 14px; border-radius:16px; background:var(--cs); border:1px solid color-mix(in srgb, var(--c) 30%, transparent); color:var(--c); text-align:center}
+.rushd p{margin:0; font-family:"Amiri Quran","Amiri",var(--body); font-size:clamp(17px,4.6vw,22px); line-height:2; color:var(--ink)}
+.rushd-o{flex:none; font-size:18px; opacity:.7}
+.stcard .ehead .btn{flex:none}
+.stedit{display:flex; flex-direction:column; gap:10px; padding:12px; border:1.5px dashed var(--line); border-radius:16px; background:var(--paper); color:#1d2822}
+.stchips{display:flex; flex-wrap:wrap; gap:6px}
+.stc{border:1.5px solid var(--line); background:var(--field); color:var(--ink); border-radius:999px; padding:4px 12px; font:inherit; font-size:13px; min-height:34px; cursor:pointer}
+.stc[aria-checked="true"]{background:var(--c); color:var(--on); border-color:var(--c)}
+.stwrap{overflow-x:auto; margin:0 -4px; padding:0 4px}
+.sttable{width:100%; table-layout:fixed; border-collapse:separate; border-spacing:0; font-size:12.5px}
+.sttable th{font-size:12px; padding:8px 5px!important}
+.sttable td{padding:8px 5px!important; overflow-wrap:anywhere}
+.sttable th:first-child,.sttable td:first-child{width:62px}
+.sttable th{position:sticky; top:0; background:var(--cs); color:var(--c); font-weight:700; text-align:right; padding:8px; border-bottom:2px solid var(--c)}
+.sttable th:first-child{border-radius:0 10px 0 0} .sttable th:last-child{border-radius:10px 0 0 0}
+.sttable td{vertical-align:top; padding:8px; border-bottom:1px solid var(--line); line-height:1.6}
+.sttable tr{cursor:pointer}
+.sttable tbody tr:hover td,.sttable tbody tr:focus-visible td{background:var(--cs)}
+.sttable .stdate{color:var(--muted); font-size:11.5px}
+.sttable .stgrace{color:var(--h-olive)}
+.sttx{display:block}
+.sttx.muted{color:var(--muted)}
+.stt{display:inline-block; font-size:11px; font-weight:700; border-radius:99px; padding:0 8px; margin-bottom:3px; background:var(--cs); color:var(--c)}
+.stt.dark{background:var(--hs-violet); color:var(--h-violet)} .stt.build{background:var(--hs-green); color:var(--h-green)}
+.sthint{font-size:12px; text-align:center}
+.ltgrid{display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--surface)}
+.lth{padding:10px; font-weight:700; font-size:13px}
+.lth.lie,.ltc.lie{background:var(--hs-terracotta); color:var(--h-terracotta)}
+.lth.truth,.ltc.truth{background:var(--hs-green); color:var(--h-green)}
+.ltrow{display:contents; cursor:pointer}
+.ltc{padding:10px; font-size:14px; line-height:1.7; border-top:1px solid var(--line); color:var(--ink)}
+.ltc.lie .sttx:not(.muted){text-decoration:line-through; text-decoration-color:rgba(168,71,47,.45)}
+.ltc.lie{background:color-mix(in srgb, var(--hs-terracotta) 55%, var(--surface))} .ltc.truth{background:color-mix(in srgb, var(--hs-green) 55%, var(--surface)); font-weight:600}
+.ltc.truth .sttx{color:var(--ink)} .ltc.lie .sttx{color:var(--ink)}
+.ltrow:hover .ltc,.ltrow:focus-visible .ltc{filter:brightness(.97)}
+.ltgoal{grid-column:1/-1; padding:4px 10px 8px; background:var(--surface)}
+.ltgoal .chip{font-size:11px; min-height:22px}
+.ltedit{grid-column:1/-1; display:flex; flex-direction:column; gap:10px; padding:12px; border-top:1px solid var(--line); background:var(--paper); color:#1d2822}
+.wfilter,.wkseg{margin:0 auto 4px}
+.gracetag{font-size:11px; font-weight:700; color:var(--h-rose)}
+.gthanks{font-size:11.5px; font-style:italic; color:var(--h-olive); line-height:1.4}
 .vhfile{position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; pointer-events:none}
 .piclbl{position:relative; cursor:pointer}
 .btn.iconsave{width:40px; min-width:40px; padding:0; justify-content:center}
@@ -1351,9 +1392,9 @@ function mkGoal(img,title,freq,hue){return {id:'g_'+(img||uid()),img:img||'',tit
 function defaults(){return {
   habits:{checks:{}},
   goals:GOAL_SEEDS.map(function(g){return mkGoal(g[0],g[1],g[2],g[3])}),
-  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}, caps:{}, monthly:{}, life:{}
+  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}, caps:{}, monthly:{}, life:{}, liesTruths:[]
 }}
-var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts','caps','monthly','life'];
+var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts','caps','monthly','life','liesTruths'];
 var S=defaults(), BLOBS={};
 function imgSrc(k){return IMG[k]||''}
 function goalSrc(g){var b=g.pic&&BLOBS[g.pic]; return (b&&b.src)||(g.img&&imgSrc(g.img))||''}
@@ -1828,6 +1869,95 @@ VIEWS.habits=function(root,meta){
   upd();
 };
 
+/* ---------- تهيئة وتنعم: دفتر المرحلتين ---------- */
+var ST_WHAT=['عائق','رفض','فرصة','تعلّم','مساعدة'], ST_HOW=['ظلمة تنكشف','حقيقة تُبنى'];
+function pickOne(obj,key,opts,sec,label){
+  var box=h('div',{class:'stchips',role:'radiogroup','aria-label':label});
+  opts.forEach(function(o){
+    var b=h('button',{type:'button',class:'stc',role:'radio','aria-checked':obj[key]===o?'true':'false',onclick:function(){obj[key]=obj[key]===o?'':o; touch(sec); [].forEach.call(box.children,function(x){x.setAttribute('aria-checked',(x===b&&obj[key]===o)?'true':'false')});}},o);
+    box.append(b);
+  });
+  return box;
+}
+function cellTxt(o,k){var v=((o[k]||'')+'').trim(); if(v) return h('span',{class:'sttx'},v); if(o[k+'Ink']) return h('span',{class:'sttx muted'},'✎ بخط اليد'); return h('span',{class:'sttx muted'},'—');}
+function stHas(e){return !!(((e.what||'')+(e.how||'')+(e.grace||'')).trim()||e.whatInk||e.howInk||e.graceInk||e.wt||e.hk)}
+function stagesCard(g){
+  if(!Array.isArray(g.stagesLog)) g.stagesLog=[];
+  var card=h('section',{class:'card field stcard t-'+g.hue});
+  var ed=(ui.stEdit&&ui.stEdit.g===g.id)?g.stagesLog.filter(function(e){return e.id===ui.stEdit.id})[0]:null;
+  function redraw(){card.replaceWith(stagesCard(g));}
+  function close(){ if(ed&&!stHas(ed)){g.stagesLog=g.stagesLog.filter(function(x){return x!==ed}); dropBlobs(ed);} ui.stEdit=null; touch('goals'); redraw(); }
+  var addB=btn('إضافة حدث جديد',{icon:'plus',cls:'small primary',on:function(){
+    if(ed) close();
+    var e={id:uid(),at:dkey(today()),wt:'',what:'',whatInk:'',hk:'',how:'',howInk:'',grace:'',graceInk:''};
+    g.stagesLog.unshift(e); ui.stEdit={g:g.id,id:e.id}; touch('goals'); redraw();
+    setTimeout(function(){var f=$('.stedit textarea.txt'); if(f) try{f.focus()}catch(x){}},40);
+  }});
+  card.append(h('div',{class:'ehead'},h('h3',{class:'block-t'},'دفتر المرحلتين: التهيئة والتنعم'),addB),
+    h('p',{class:'sub'},'كل ما يحدث في طريق هدفك له معنى: سجّلي الحدث، وكيف يهيّئك، وما النعمة التي ظهرت منه.'));
+  if(ed){
+    var date=h('input',{class:'txt',type:'date',value:ed.at||'','aria-label':'تاريخ الحدث'}); date.addEventListener('change',function(){ed.at=date.value||dkey(today()); touch('goals');});
+    card.append(h('div',{class:'stedit'},
+      h('div',{class:'field'},h('label',{class:'lbl'},'١. التاريخ'),date),
+      h('div',{class:'field'},h('label',{class:'lbl'},'٢. ماذا حدث؟'),pickOne(ed,'wt',ST_WHAT,'goals','نوع الحدث'),noteField({obj:ed,key:'what',inkKey:'whatInk',sec:'goals',ph:'صفي ما حدث باختصار…',label:'ماذا حدث',rows:2})),
+      h('div',{class:'field'},h('label',{class:'lbl'},'٣. كيف يهيئني؟'),pickOne(ed,'hk',ST_HOW,'goals','كيف يهيئني'),noteField({obj:ed,key:'how',inkKey:'howInk',sec:'goals',ph:'ما الذي انكشف لي، أو ما الحقيقة التي تُبنى فيّ؟',label:'كيف يهيئني',rows:2})),
+      h('div',{class:'field'},h('label',{class:'lbl'},'٤. نعمة أو حصاد ظهر'),noteField({obj:ed,key:'grace',inkKey:'graceInk',sec:'goals',ph:'ما النعمة التي رأيتها منه؟ (يمكن إضافتها لاحقًا)',label:'نعمة أو حصاد',rows:2})),
+      h('div',{class:'row'},btn('تم',{icon:'check',cls:'primary small',on:close}),
+        btn('حذف الحدث',{icon:'trash',cls:'ghost small',on:function(b){paperConfirm(card,'حذف هذا الحدث من الدفتر؟',function(){g.stagesLog=g.stagesLog.filter(function(x){return x!==ed}); dropBlobs(ed); ui.stEdit=null; touch('goals'); redraw();})}}))));
+  }
+  var rows=g.stagesLog.filter(function(e){return e!==ed&&stHas(e)}).sort(function(a,b){return (b.at||'').localeCompare(a.at||'')});
+  if(!rows.length){ if(!ed) card.append(h('div',{class:'empty stempty'},'لا توجد أحداث بعد. اضغطي «إضافة حدث جديد».')); return card; }
+  var tb=h('tbody',{});
+  rows.forEach(function(e){
+    var dd=parseKey(e.at);
+    tb.append(h('tr',{tabindex:'0',role:'button','aria-label':'تعديل الحدث',onclick:function(){ if(ed) close(); ui.stEdit={g:g.id,id:e.id}; redraw(); },onkeydown:function(k){if(k.key==='Enter'){ui.stEdit={g:g.id,id:e.id}; redraw();}}},
+      h('td',{class:'stdate'},dd?fmtDate(dd):'—'),
+      h('td',{},e.wt?h('span',{class:'stt'},e.wt):null,cellTxt(e,'what')),
+      h('td',{},e.hk?h('span',{class:'stt '+(e.hk===ST_HOW[0]?'dark':'build')},e.hk):null,cellTxt(e,'how')),
+      h('td',{class:'stgrace'},cellTxt(e,'grace'))));
+  });
+  card.append(h('div',{class:'stwrap'},h('table',{class:'sttable'},
+    h('thead',{},h('tr',{},h('th',{},'التاريخ'),h('th',{},'ماذا حدث؟'),h('th',{},'كيف يهيئني؟'),h('th',{},'نعمة أو حصاد ظهر'))),tb)),
+    h('p',{class:'sub sthint'},'اضغطي على أي صف لتعديله.'));
+  return card;
+}
+/* ---------- سجل الأكاذيب والحقائق ---------- */
+function ltHas(e){return !!(((e.lie||'')+(e.truth||'')).trim()||e.lieInk||e.truthInk)}
+function liesView(root,meta){
+  if(!Array.isArray(S.liesTruths)) S.liesTruths=[];
+  var A=S.liesTruths, ed=A.filter(function(e){return e.id===ui.ltEdit})[0]||null;
+  function close(){ if(ed&&!ltHas(ed)){S.liesTruths=S.liesTruths.filter(function(x){return x!==ed}); dropBlobs(ed);} ui.ltEdit=''; touch('liesTruths'); rerender(); }
+  root.append(h('section',{class:'card field ltintro'},
+    h('div',{class:'ehead'},h('h3',{class:'block-t'},'سجلّ الأكاذيب والحقائق'),btn('فكرة جديدة',{icon:'plus',cls:'small primary',on:function(){
+      if(ed&&!ltHas(ed)) S.liesTruths=S.liesTruths.filter(function(x){return x!==ed});
+      var e={id:uid(),at:dkey(today()),lie:'',lieInk:'',truth:'',truthInk:'',goal:''}; S.liesTruths.unshift(e); ui.ltEdit=e.id; touch('liesTruths'); rerender();
+      setTimeout(function(){var f=$('.ltedit textarea.txt'); if(f) try{f.focus()}catch(x){}},40);
+    }})),
+    h('p',{class:'sub'},'لثبات النعمة: اكتبي الفكرة الكاذبة التي تتكرر، وأمامها الحقيقة التي تثبتين عليها.')));
+  var grid=h('div',{class:'ltgrid',role:'table','aria-label':'سجل الأكاذيب والحقائق'},
+    h('div',{class:'lth lie',role:'columnheader'},'✗ الفكرة الكاذبة التي تتكرر'),h('div',{class:'lth truth',role:'columnheader'},'✓ الحقيقة التي أثبت عليها'));
+  var shown=A.filter(function(e){return e===ed||ltHas(e)});
+  if(!shown.length){ root.append(grid,h('div',{class:'empty'},'لا توجد أفكار بعد. اضغطي «فكرة جديدة».')); return; }
+  shown.forEach(function(e){
+    var gl=e.goal&&S.goals.filter(function(x){return x.id===e.goal})[0];
+    if(e===ed){
+      grid.append(h('div',{class:'ltedit',role:'row'},
+        h('div',{class:'field'},h('label',{class:'lbl'},'الفكرة الكاذبة التي تتكرر'),noteField({obj:e,key:'lie',inkKey:'lieInk',sec:'liesTruths',ph:'مثل: «تأخرت النعمة، لن تتحقق»',label:'الفكرة الكاذبة',rows:2})),
+        h('div',{class:'field'},h('label',{class:'lbl'},'الحقيقة التي أثبت عليها'),noteField({obj:e,key:'truth',inkKey:'truthInk',sec:'liesTruths',ph:'مثل: «ما يحدث الآن تهيئة، وليس تأخيرًا»',label:'الحقيقة',rows:2})),
+        h('div',{class:'field'},h('label',{class:'lbl'},'الهدف المرتبط (اختياري)'),goalSelect(e,'goal','liesTruths')),
+        h('div',{class:'row'},btn('تم',{icon:'check',cls:'primary small',on:close}),
+          btn('حذف',{icon:'trash',cls:'ghost small',on:function(){paperConfirm($('.ltedit'),'حذف هذه الفكرة؟',function(){S.liesTruths=S.liesTruths.filter(function(x){return x!==e}); dropBlobs(e); ui.ltEdit=''; touch('liesTruths'); rerender();})}}))));
+      return;
+    }
+    function open(){ if(ed&&!ltHas(ed)) S.liesTruths=S.liesTruths.filter(function(x){return x!==ed}); ui.ltEdit=e.id; rerender(); }
+    var row=h('div',{class:'ltrow',role:'row',tabindex:'0','aria-label':'تعديل',onclick:open,onkeydown:function(k){if(k.key==='Enter') open();}},
+      h('div',{class:'ltc lie',role:'cell'},cellTxt(e,'lie')),h('div',{class:'ltc truth',role:'cell'},cellTxt(e,'truth')),
+      gl?h('div',{class:'ltgoal'},h('span',{class:'chip t-'+gl.hue},'🎯 '+gl.title)):null);
+    grid.append(row);
+  });
+  root.append(grid);
+}
+
 /* ---------- life map (treasure islands) ---------- */
 var LIFE_SEED=[['🕌','الدين','green',['quran']],['💪','الصحة','teal',['sport','wake','food']],['📚','العلم','blue',['learn']],['👨‍👩‍👧','الأسرة والعلاقات','rose',[]],['💰','المال','gold',[]],['🌟','العمل والأثر','orange',[]],['🌿','النفس والراحة','violet',[]]];
 var LIFE_EMO=['🕌','📿','💪','🏃‍♀️','🍎','📚','🧠','👨‍👩‍👧','❤️','🤝','💰','🌟','💼','🌿','🌙','🏡','✈️','🎨','✍️','🏝️'];
@@ -2006,6 +2136,7 @@ function goalArt(g,cls){
 }
 VIEWS.board=function(root,meta){
   root.append(secHead(meta));
+  root.append(h('aside',{class:'rushd','aria-label':'دعاء'},h('span',{class:'rushd-o','aria-hidden':'true'},'۞'),h('p',{lang:'ar'},'رَبَّنَا آتِنَا مِنْ لَدُنْكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا'),h('span',{class:'rushd-o','aria-hidden':'true'},'۞')));
   var open=!!ui.goalAdd, nd=ui.newGoal||(ui.newGoal={title:'',freq:'',due:'',why:''});
   var addB=h('button',{type:'button',class:'gplus','aria-label':open?'إغلاق':'هدف جديد',title:open?'إغلاق':'هدف جديد','aria-expanded':open?'true':'false',onclick:function(){ui.goalAdd=!ui.goalAdd; rerender();}},ic(open?'x':'plus'));
   var form=null;
@@ -2298,6 +2429,7 @@ VIEWS.plan=function(root,meta){
     h('div',{class:'addrow'},subIn,btn('إضافة',{icon:'plus',type:'submit'})),h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),subD));
   wrap.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'خريطة الخطوات'),steps,
     h('form',{class:'addrow',onsubmit:function(e){e.preventDefault(); var v=sin.value.trim(); if(!v) return; var ns={id:uid(),t:v,done:false,ink:'',d:'',tm:'',sub:ssel.hidden?'':ssel.value}; g.steps.push(ns); sin.value=''; touch('goals'); drawSteps(); prog(); sin.focus();}},ssel,sin,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'})),subForm));
+  wrap.append(stagesCard(g));
   wrap.append(h('section',{class:'card field'},h('label',{class:'lbl'},'ملاحظات'),noteField({obj:g,key:'note',inkKey:'noteInk',sec:'goals',ph:'ملاحظات الخطة…',label:'ملاحظات الخطة',rows:4})));
 };
 
@@ -2349,10 +2481,17 @@ VIEWS.review=function(root,meta){
   })(s);}
   function sy(){sb.forEach(function(b,i){b.classList.toggle('on',i<R.rating); b.setAttribute('aria-checked',i+1===R.rating?'true':'false')})} sy();
   root.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'كيف كان أسبوعي؟'),stars));
+  function q(lbl,key,ph,cls){return h('section',{class:'card field'+(cls?' '+cls:'')},h('label',{class:'lbl'},lbl),noteField({obj:R,key:key,inkKey:key+'Ink',sec:'review',ph:ph,label:lbl,rows:3}))}
   root.append(h('div',{class:'two'},
-    h('section',{class:'card field'},h('label',{class:'lbl'},'ما الذي سار جيدًا؟'),noteField({obj:R,key:'well',inkKey:'wellInk',sec:'review',ph:'ما أنجزته وأفرحني…',label:'ما الذي سار جيدًا',rows:3})),
-    h('section',{class:'card field'},h('label',{class:'lbl'},'ما الذي أحسّنه؟'),noteField({obj:R,key:'better',inkKey:'betterInk',sec:'review',ph:'ما أريد تحسينه…',label:'ما الذي أحسنه',rows:3}))));
-  root.append(h('section',{class:'card field'},h('label',{class:'lbl'},'تركيزي للأسبوع القادم'),noteField({obj:R,key:'next',inkKey:'nextInk',sec:'review',ph:'أركّز الأسبوع القادم على…',label:'تركيز الأسبوع القادم',rows:2})));
+    q('ماذا تحقق (تنعّم)؟','well','النعم والإنجازات التي رأيتها هذا الأسبوع…'),
+    q('ماذا يحدث الآن (تهيئة)؟','now','ما الذي يُهيّئني الآن، وما الذي ينكشف لي…')));
+  root.append(h('div',{class:'two'},
+    q('ما الذي سأشاركه، وبأي نية؟ (رفع يقين أم إغاظة؟)','share','ما سأشاركه، ونيتي فيه…'),
+    q('ما القرار الذي يحتاج عقلًا منطقيًا (عمل، مال) لا مشاعر؟','decide','القرار، ومعطياته بهدوء…')));
+  var oldB=((R.better||'').trim()||R.betterInk), oldN=((R.next||'').trim()||R.nextInk);
+  if(oldB||oldN) root.append(h('section',{class:'card field rvold'},h('h3',{class:'block-t'},'من أسئلة المراجعة السابقة'),
+    oldB?h('div',{class:'field'},h('label',{class:'lbl'},'ما الذي أحسّنه؟'),noteField({obj:R,key:'better',inkKey:'betterInk',sec:'review',ph:'',label:'ما الذي أحسنه',rows:2})):null,
+    oldN?h('div',{class:'field'},h('label',{class:'lbl'},'تركيزي للأسبوع القادم'),noteField({obj:R,key:'next',inkKey:'nextInk',sec:'review',ph:'',label:'تركيز الأسبوع القادم',rows:2})):null));
 };
 
 
@@ -2939,8 +3078,9 @@ VIEWS.thoughts=function(root,meta){
   var shd=secHead(meta); shd.classList.add('sec-sm'); root.append(shd);
   if(!S.thoughts||Array.isArray(S.thoughts)) S.thoughts={};
   var mode=ui.thMode||'day';
-  root.append(h('div',{class:'thseg t-'+meta.hue,role:'tablist'},[['day','اليوم'],['month','الشهر']].map(function(o){return h('button',{type:'button',role:'tab','aria-selected':mode===o[0]?'true':'false',onclick:function(){ui.thMode=o[0]; rerender();}},o[1])})));
+  root.append(h('div',{class:'thseg t-'+meta.hue,role:'tablist'},[['day','اليوم'],['month','الشهر'],['lies','الأكاذيب والحقائق']].map(function(o){return h('button',{type:'button',role:'tab','aria-selected':mode===o[0]?'true':'false',onclick:function(){ui.thMode=o[0]; rerender();}},o[1])})));
   if(mode==='month'){thMonthView(root,meta); return;}
+  if(mode==='lies'){liesView(root,meta); return;}
   var tk=dkey(today()); if(!ui.thDay) ui.thDay=tk; var day=ui.thDay, dd=parseKey(day)||today();
   var older=h('button',{type:'button',class:'mnav','aria-label':'اليوم السابق',onclick:function(){ui.thDay=dkey(addDays(dd,-1)); rerender();}},'›'),
       newer=h('button',{type:'button',class:'mnav','aria-label':'اليوم التالي',onclick:function(){ui.thDay=dkey(addDays(dd,1)); rerender();}},'‹');
@@ -3584,16 +3724,21 @@ function picField(it,sec){
   var rmPic=confirmBtn('إزالة الصورة','تأكيد','trash',function(){delBlob(it.pic); it.pic=''; touch(sec); paintPic(); rmPic.hidden=true;},'small ghost'); rmPic.hidden=!it.pic; paintPic();
   return h('div',{},pv,h('p',{class:'sub',style:'margin:2px 0 6px'},'يمكنك رفع صورة عمودية أو أفقية.'),h('div',{class:'row'},btn(it.pic?'تغيير الصورة':'أضيفي صورتك',{icon:'image',cls:'small',on:function(){file.click()}}),rmPic,file));
 }
-function newWinDraft(){return {id:uid(),text:'',ink:'',at:dkey(today()),goal:'',pic:''}}
+function newWinDraft(kind){return {id:uid(),text:'',ink:'',at:dkey(today()),goal:'',pic:'',kind:kind==='grace'?'grace':'goal',thanks:'',thanksInk:''}}
+function isGrace(w){return w.kind==='grace'}
+function winKindSeg(o,sec){return h('div',{class:'thseg wkseg',role:'tablist'},[['goal','إنجاز'],['grace','نِعمة غير مكتوبة']].map(function(k){return h('button',{type:'button',role:'tab','aria-selected':((o.kind==='grace')===(k[0]==='grace'))?'true':'false',onclick:function(){o.kind=k[0]; if(sec) touch(sec); rerender();}},k[1])}))}
+function thanksField(o,sec){return isGrace(o)?h('div',{class:'field'},h('label',{class:'lbl'},'عبارة الشكر والامتنان'),noteField({obj:o,key:'thanks',inkKey:'thanksInk',sec:sec,ph:'الحمد لله الذي…',label:'عبارة الشكر والامتنان',rows:2})):null}
 function winComposer(){
   var d=ui.winDraft;
   var date=h('input',{class:'txt',type:'date',value:d.at,'aria-label':'تاريخ الإنجاز'}); date.addEventListener('change',function(){d.at=date.value||dkey(today());});
   function cancel(){dropBlobs(d); ui.winDraft=null; rerender();}
+  var gr=isGrace(d);
   return h('article',{class:'card entry t-olive composer','data-id':d.id},
-    h('h3',{class:'block-t'},'إنجاز جديد'),
-    noteField({obj:d,key:'text',inkKey:'ink',sec:'wins',ph:'عنوان الإنجاز: ما الذي أنجزته؟',label:'عنوان الإنجاز',rows:2}),
+    h('h3',{class:'block-t'},gr?'نِعمة غير مكتوبة':'إنجاز جديد'),winKindSeg(d),
+    noteField({obj:d,key:'text',inkKey:'ink',sec:'wins',ph:gr?'ما النعمة أو الفرصة التي جاءت دون تخطيط؟':'عنوان الإنجاز: ما الذي أنجزته؟',label:gr?'النعمة':'عنوان الإنجاز',rows:2}),
+    thanksField(d,'wins'),
     h('div',{class:'field'},h('label',{class:'lbl'},'التاريخ'),date),
-    h('div',{class:'field'},h('label',{class:'lbl'},'الهدف المرتبط (اختياري)'),goalSelect(d,'goal','wins')),
+    gr?null:h('div',{class:'field'},h('label',{class:'lbl'},'الهدف المرتبط (اختياري)'),goalSelect(d,'goal','wins')),
     picField(d,'wins'),
     h('div',{class:'row'},
       btn('حفظ في اللوحة',{icon:'plus',cls:'primary',on:function(){
@@ -3604,11 +3749,13 @@ function winComposer(){
 }
 function winEditor(it){
   var date=h('input',{class:'txt',type:'date',value:it.at,'aria-label':'تاريخ الإنجاز'}); date.addEventListener('change',function(){it.at=date.value||dkey(today()); touch('wins');});
+  var gr=isGrace(it);
   return h('article',{class:'card entry t-olive','data-id':it.id},
-    h('h3',{class:'block-t'},'تعديل الإنجاز'),
-    noteField({obj:it,key:'text',inkKey:'ink',sec:'wins',ph:'ما الذي أنجزته؟',label:'الإنجاز',rows:2}),
+    h('h3',{class:'block-t'},gr?'تعديل النعمة':'تعديل الإنجاز'),winKindSeg(it,'wins'),
+    noteField({obj:it,key:'text',inkKey:'ink',sec:'wins',ph:gr?'ما النعمة التي جاءت؟':'ما الذي أنجزته؟',label:gr?'النعمة':'الإنجاز',rows:2}),
+    thanksField(it,'wins'),
     h('div',{class:'field'},h('label',{class:'lbl'},'التاريخ'),date),
-    h('div',{class:'field'},h('label',{class:'lbl'},'الهدف المرتبط'),goalSelect(it,'goal','wins')),
+    gr?null:h('div',{class:'field'},h('label',{class:'lbl'},'الهدف المرتبط'),goalSelect(it,'goal','wins')),
     picField(it,'wins'),
     h('div',{class:'row'},
       btn('تم',{icon:'check',cls:'primary',on:function(){ui.winEdit=null; if(!winHasContent(it)){dropBlobs(it); S.wins=S.wins.filter(function(x){return x!==it}); touch('wins');} rerender();}}),
@@ -3619,7 +3766,8 @@ VIEWS.wins=function(root,meta){
   root.append(secHead(meta));
   var tab='board';
   var bar=h('div',{class:'row'});
-  function newWin(){ui.winDraft=newWinDraft(); rerender(); setTimeout(function(){var f=$('.composer textarea.txt, .composer input.txt:not([type="date"])'); if(f) f.focus();},30);}
+  var wf=ui.winsFilter||'all';
+  function newWin(){ui.winDraft=newWinDraft(wf==='grace'?'grace':'goal'); rerender(); setTimeout(function(){var f=$('.composer textarea.txt, .composer input.txt:not([type="date"])'); if(f) f.focus();},30);}
   var months=winMonths(); if(months.indexOf(ui.winsMonth)<0) ui.winsMonth=months[0];
   var mk=ui.winsMonth, mi=months.indexOf(mk), inMonth=S.wins.filter(function(w){return winHasContent(w)&&monthOf(w)===mk});
   if(tab==='board'){
@@ -3637,12 +3785,15 @@ VIEWS.wins=function(root,meta){
     var older=h('button',{type:'button',class:'mnav','aria-label':'الشهر الأقدم',onclick:function(){ui.winsMonth=months[mi+1]; rerender();}},'›'),
         newer=h('button',{type:'button',class:'mnav','aria-label':'الشهر الأحدث',onclick:function(){ui.winsMonth=months[mi-1]; rerender();}},'‹');
     older.disabled=mi>=months.length-1; newer.disabled=mi<=0;
-    root.append(h('div',{class:'mbar'},older,h('div',{class:'mtitle'},monthLabel(mk),h('small',{},n(inMonth.length)+(inMonth.length===1?' إنجاز':' إنجازات'))),newer));
+    var nG=inMonth.filter(isGrace).length;
+    root.append(h('div',{class:'mbar'},older,h('div',{class:'mtitle'},monthLabel(mk),h('small',{},n(inMonth.length-nG)+' إنجاز · '+n(nG)+' نِعمة')),newer));
+    root.append(h('div',{class:'thseg wfilter',role:'tablist','aria-label':'تصفية'},[['all','الكل'],['goal','إنجازات الأهداف'],['grace','نِعم غير مكتوبة']].map(function(o){return h('button',{type:'button',role:'tab','aria-selected':wf===o[0]?'true':'false',onclick:function(){ui.winsFilter=o[0]; rerender();}},o[1])})));
+    if(wf!=='all'){ var all=inMonth.length; inMonth=inMonth.filter(function(w){return wf==='grace'?isGrace(w):!isGrace(w)}); }
   }
   if(tab==='board'){
     var items=inMonth.slice().sort(byDateDesc), grid=h('div',{class:'pinboard wins'});
     var bp=ui.winDraft?h('div',{class:'bplus'}):boardPlus('إنجاز جديد',newWin); if(saveB) bp.append(saveB); if(bp.children.length) grid.append(bp);
-    if(!inMonth.length){grid.append(h('div',{class:'empty gempty'},S.wins.length?'لا توجد إنجازات في '+monthLabel(mk)+' بعد.':'لوحتك فارغة. اضغطي + لتضيفي أول إنجاز.')); root.append(grid); return;}
+    if(!inMonth.length){grid.append(h('div',{class:'empty gempty'},wf==='grace'?'لا توجد نِعم غير مكتوبة في '+monthLabel(mk)+' بعد. اضغطي + لتسجّلي نعمة.':(S.wins.length?'لا توجد إنجازات في '+monthLabel(mk)+' بعد.':'لوحتك فارغة. اضغطي + لتضيفي أول إنجاز.'))); root.append(grid); return;}
     items.forEach(function(w,i){
       var gl=S.goals.filter(function(x){return x.id===w.goal})[0], hue=(gl&&gl.hue)||HUE_CYCLE[i%HUE_CYCLE.length],
           photo=BLOBS[w.pic]&&BLOBS[w.pic].src, gsrc=gl?goalSrc(gl):'', tx=(w.text||'').trim(), art;
@@ -3654,8 +3805,9 @@ VIEWS.wins=function(root,meta){
         if(st&&st.length){var bx=inkBox(st), k=Math.min(150/bx.w,110/bx.h,1.2); cv.width=Math.ceil(bx.w*k)+4; cv.height=Math.ceil(bx.h*k)+4; drawStrokes(cv.getContext('2d'),st,bx.x-2/k,bx.y-2/k,k,LIGHT_PEN);}
         art=h('span',{class:'stktxt'},cv);
       }
-      var cap=h('span',{class:'stkcap'},(photo||gsrc)&&tx?h('b',{},tx.length>60?tx.slice(0,58)+'…':tx):null,h('span',{class:'stkmeta'},fmtFull(parseKey(w.at)||today())));
-      grid.append(h('button',{type:'button',class:'stk t-'+hue+(i%2?' alt':(i%3===2?' alt2':'')),'aria-label':'إنجاز: '+(tx.slice(0,60)||'بدون عنوان')+'، '+fmtFull(parseKey(w.at)||today())+'. فتح',
+      var thx=isGrace(w)?((w.thanks||'').trim()||(w.thanksInk?'✎ بخط اليد':'')):'';
+      var cap=h('span',{class:'stkcap'},isGrace(w)?h('span',{class:'gracetag'},'🌸 نِعمة غير مكتوبة'):null,(photo||gsrc)&&tx?h('b',{},tx.length>60?tx.slice(0,58)+'…':tx):null,thx?h('span',{class:'gthanks'},'«'+(thx.length>60?thx.slice(0,58)+'…':thx)+'»'):null,h('span',{class:'stkmeta'},fmtFull(parseKey(w.at)||today())));
+      grid.append(h('button',{type:'button',class:'stk t-'+(isGrace(w)&&!gl?'rose':hue)+(i%2?' alt':(i%3===2?' alt2':'')),'aria-label':'إنجاز: '+(tx.slice(0,60)||'بدون عنوان')+'، '+fmtFull(parseKey(w.at)||today())+'. فتح',
         onclick:function(){showCard(w,{label:'تعديل',on:function(){ui.winEdit=w.id; rerender(); window.scrollTo(0,0);}})}},art,cap));
     });
     root.append(grid);
