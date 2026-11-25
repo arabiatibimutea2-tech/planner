@@ -1160,6 +1160,37 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .capb.fl{font-size:17px} .capb.fl.on{background:#f08a74}
 .capflpref{display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer}
 .capflpref input{width:18px; height:18px; accent-color:var(--c); flex:none}
+.evseg{margin:2px auto 10px}
+.evsub{margin:-2px auto 10px}
+.evnote{text-align:center; margin:0 0 6px}
+.hlinks{display:flex; flex-wrap:wrap; gap:4px; margin:6px 0 2px}
+.hlinks .chip{font-size:11px; min-height:24px; border:0; cursor:pointer}
+.chip.soft{background:var(--cell); color:var(--muted)}
+.hlinkp{display:flex; flex-direction:column; gap:8px; margin-top:14px; scroll-margin-top:12px}
+.hlinkp .ehead{display:flex; align-items:center; justify-content:space-between; gap:8px}
+.acard .agrp{margin-top:10px; padding:10px; border-radius:14px; background:var(--surface); border:1.5px solid var(--line)}
+.acard .agrp.ok{border-color:#7fbf95} .acard .agrp.bad{border-color:#e59a86}
+.acard .agrp h4{margin:0 0 6px; font-size:14px}
+.arow{display:flex; flex-direction:column; gap:4px; padding:6px 0; border-top:1px dashed var(--line)}
+.arow:first-of-type{border-top:0}
+.aname{display:flex; flex-direction:column; align-items:flex-start; border:0; background:none; padding:0; font:inherit; color:var(--ink); cursor:pointer; text-align:right}
+.aname small{color:var(--muted); font-size:12px}
+.achips{display:flex; flex-wrap:wrap; gap:4px}
+.achips .chip{font-size:11.5px; min-height:24px; border:0; cursor:pointer}
+.chip.okd{text-decoration:line-through; opacity:.6}
+.ychart .capcol span{font-size:9px}
+.yhwrap{overflow-x:auto; margin-top:8px}
+.yhgrid{display:grid; grid-template-columns:58px repeat(12,minmax(0,1fr)); gap:2px; font-size:10.5px}
+.yhm{text-align:center; color:var(--muted)}
+.yhn{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600}
+.yhc{display:grid; place-items:center; height:24px; border-radius:5px; overflow:hidden; background:color-mix(in srgb, var(--c) calc(var(--p,0) * 1%), var(--cell)); color:var(--ink); font-size:10px}
+.yhc.na{background:transparent; border:1px dashed var(--line)}
+.ymr{display:grid; grid-template-columns:repeat(6,1fr); gap:4px; margin-top:6px}
+.ymrc{display:flex; flex-direction:column; align-items:center; gap:2px; padding:4px; border:1.5px solid var(--line); border-radius:10px; background:var(--surface); font:inherit; color:var(--ink); cursor:pointer}
+.ymrc small{font-size:10.5px; color:var(--muted)} .ymrc b{font-size:12px; color:#c8901a}
+.yarea{display:flex; flex-direction:column; gap:6px; margin-top:6px}
+.yarow{display:grid; grid-template-columns:1fr auto 84px; align-items:center; gap:8px}
+.yarow .txt{min-height:34px}
 /* v52 */
 .bplus{grid-column:1/-1; display:flex; justify-content:center; margin:-2px 0 2px}
 .pinboard.wins{position:relative}
@@ -1479,9 +1510,9 @@ function mkGoal(img,title,freq,hue){return {id:'g_'+(img||uid()),img:img||'',tit
 function defaults(){return {
   habits:{checks:{}},
   goals:GOAL_SEEDS.map(function(g){return mkGoal(g[0],g[1],g[2],g[3])}),
-  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}, caps:{}, monthly:{}, life:{}, liesTruths:[], stages:{id:'_free',stagesLog:[]}
+  promise:{}, review:{}, ideas:[], shop:[], obstacles:[], wins:[], rewards:[], imgs:{}, todo:{}, learn:[], thoughts:{}, caps:{}, monthly:{}, life:{}, liesTruths:[], stages:{id:'_free',stagesLog:[]}, yearly:{}
 }}
-var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts','caps','monthly','life','liesTruths','stages'];
+var SEC_KEYS=['habits','goals','promise','review','ideas','shop','obstacles','wins','rewards','imgs','todo','learn','thoughts','caps','monthly','life','liesTruths','stages','yearly'];
 var S=defaults(), BLOBS={};
 function imgSrc(k){return IMG[k]||''}
 function goalSrc(g){var b=g.pic&&BLOBS[g.pic]; return (b&&b.src)||(g.img&&imgSrc(g.img))||''}
@@ -1739,14 +1770,12 @@ function noteField(o){
 /* ---------- sections ---------- */
 var SECS=[
  {id:'home',label:'الرئيسية',hue:'green',ic:'home',sub:''},
- {id:'life',label:'عجلة الحياة',hue:'gold',ic:'plan',img:'lifeArt',sub:''},
  {id:'habits',label:'العادات',hue:'green',ic:'habits',img:'habitsArt',sub:'اضغطي على اليوم لتسجيل إنجازه. تُحسب السلسلة من الأيام المتتالية.'},
  {id:'todo',label:'المهام اليومية',hue:'violet',ic:'list',img:'todo',sub:'مهام يومك موزعة على الصلوات الخمس.'},
  {id:'board',label:'لوحة الأهداف',hue:'blue',ic:'board',img:'boardArt',sub:'أهدافي بالصور. اضغطي على هدف لترين خطته.'},
  {id:'plan',label:'خطة الهدف',hue:'teal',ic:'plan',img:'plan',sub:'قسّمي الهدف إلى خطوات صغيرة وتابعي تقدمك.'},
  {id:'promise',label:'وعد الأسبوع',hue:'violet',ic:'heart',img:'promise',sub:'وعد واحد واضح لهذا الأسبوع.'},
- {id:'monthly',label:'التقييم الشهري',hue:'teal',ic:'star',img:'monthly',sub:''},
- {id:'review',label:'تقييم الأسبوع',hue:'magenta',ic:'star',img:'review',sub:'راجعي أسبوعك بهدوء قبل أن يبدأ التالي.'},
+ {id:'eval',label:'التقييم',hue:'teal',ic:'star',img:'monthly',sub:''},
  {id:'ideas',label:'كتابة الأفكار',hue:'gold',ic:'bulb',img:'idea',sub:'اكتبي الفكرة أو ارسميها قبل أن تضيع.'},
  {id:'thoughts',label:'سجل الأفكار',hue:'blue',ic:'pen',img:'thoughts',sub:''},
  {id:'learn',label:'أشياء أريد أن أتعلمها',hue:'teal',ic:'book',img:'learnArt',sub:'قائمة ما أريد تعلّمه. شطّبيه عند الإنجاز وحدّدي له وقتًا.'},
@@ -1756,6 +1785,10 @@ var SECS=[
  {id:'rewards',label:'مكافآتي',hue:'rose',ic:'gift',img:'rewards',sub:'ما أكافئ به نفسي عند الإنجاز.'}
 ];
 var SEC_BY={}; SECS.forEach(function(s){SEC_BY[s.id]=s});
+/* old addresses of the three evaluation pages now open a tab of «التقييم» */
+var EV_ALIAS={review:'w',monthly:'m',life:'life',yearly:'y'};
+var EVMETA={w:{id:'review',label:'تقييم الأسبوع',hue:'magenta',ic:'star',embed:true},m:{id:'monthly',label:'التقييم الشهري',hue:'teal',ic:'star',embed:true},life:{id:'life',label:'عجلة الحياة',hue:'gold',ic:'plan',embed:true}};
+function evSet(t){ if(t==='life'){ui.evTab='m'; ui.mSub='life';} else {ui.evTab=t; if(t==='m') ui.mSub='sum';} }
 IMG.lifeArt='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160"><g transform="translate(60 80)"><circle r="54" fill="#f4ecd8" stroke="#b9a574" stroke-width="2"/><path d="M0 0L0-50A50 50 0 0 1 43-25Z" fill="#2f6b4f"/><path d="M0 0L43-25A50 50 0 0 1 43 25Z" fill="#1b6f7a" opacity=".85" transform="scale(.75)"/><path d="M0 0L43 25A50 50 0 0 1 0 50Z" fill="#2f5fa3" transform="scale(.9)"/><path d="M0 0L0 50A50 50 0 0 1-43 25Z" fill="#a8426c" transform="scale(.55)"/><path d="M0 0L-43 25A50 50 0 0 1-43-25Z" fill="#8a6212" transform="scale(.7)"/><path d="M0 0L-43-25A50 50 0 0 1 0-50Z" fill="#6a4fa3" transform="scale(.85)"/><circle r="16" fill="#fff" stroke="#b9a574" stroke-width="2"/><circle r="5" fill="#d2402c"/></g></svg>');
 var ui={cur:'home',month:null,week:null,goal:''};
 (function(){var t=today(); ui.month={y:t.getFullYear(),m:t.getMonth()}; ui.week=weekStart(t);})();
@@ -1768,7 +1801,7 @@ function art(meta){
   else box.append(h('span',{class:'art-ic'},ic(meta.ic)));
   return box;
 }
-function secHead(meta){return h('header',{class:'sec-head noart'},h('div',{class:'sec-txt'},h('h2',{},meta.label)))}
+function secHead(meta){if(meta.embed) return document.createDocumentFragment(); return h('header',{class:'sec-head noart'},h('div',{class:'sec-txt'},h('h2',{},meta.label)))}
 
 /* ---------- navigation ---------- */
 function buildNav(){
@@ -1809,8 +1842,9 @@ function prune(sec){
   S[sec].forEach(function(i){ if(f(i)){dropBlobs(i); drop=true;} else keep.push(i); });
   if(drop){S[sec]=keep; touch(sec);}
 }
-function routeId(){var id=(location.hash||'').replace('#',''); return SEC_BY[id]?id:'home'}
+function routeId(){var id=(location.hash||'').replace('#',''); if(EV_ALIAS[id]){evSet(EV_ALIAS[id]); return 'eval';} return SEC_BY[id]?id:'home'}
 function go(id){
+  if(EV_ALIAS[id]){evSet(EV_ALIAS[id]); id='eval';}
   if(!SEC_BY[id]) id='home';
   if(id!==ui.cur){prune(ui.cur); ui.cur=id;}
   try{ if(location.hash.slice(1)!==id) location.hash=id; }catch(e){}
@@ -1949,14 +1983,16 @@ VIEWS.habits=function(root,meta){
     }
     var stCur=h('b',{},'٠'), stBest=h('b',{},'٠'), stRate=h('b',{},'٠٪');
     var editing=ui.habitEdit===hb.id;
+    var hLinks=habitLinkChips(hb);
     var tdbBtn=hasTdb(hb)?h('button',{type:'button',class:'tdbbtn','aria-expanded':ui.tdbOpen===hb.id?'true':'false',onclick:function(){ui.tdbOpen=ui.tdbOpen===hb.id?'':hb.id; ui.tdbEdit=''; rerender(); if(ui.tdbOpen) setTimeout(function(){var c=$('#tdb-'+hb.id); if(c) try{c.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}},40);}},
       h('span',{class:'tdbi','aria-hidden':'true'},'📖'),h('span',{class:'tdbt2'},h('b',{},'جدول التدبر'),h('small',{},tdbNextTxt(hb)))):null;
     var card=h('article',{class:'card hcard t-'+hb.hue+(editing?' editing':'')},
-      editing?habitEditForm(hb):h('div',{class:'top'},h('div',{class:'tile-sm'},habitArt(hb)),h('div',{class:'info'},h('h3',{},hb.name),h('p',{},hb.goal),endChip)),endPanel,
+      editing?habitEditForm(hb):h('div',{class:'top'},h('div',{class:'tile-sm'},habitArt(hb)),h('div',{class:'info'},h('h3',{},hb.name),h('p',{},hb.goal),endChip)),hLinks,endPanel,
       h('div',{class:'stats'},h('div',{class:'stat'},stCur,h('span',{},'سلسلة الآن')),h('div',{class:'stat'},stBest,h('span',{},'أطول سلسلة')),h('div',{class:'stat'},stRate,h('span',{},'الالتزام'))),
       todayBtn,tdbBtn,cal);
     var hm=h('div',{class:'hmenu'},menuButton('خيارات العادة',function(){return [
       {label:hb.end?'تعديل تاريخ الانتهاء':'تحديد تاريخ الانتهاء',icon:'bell',on:openEnd},
+      {label:'ربط بهدف ومكافأة وعقاب',icon:'link',on:function(){ui.habLink=hb.id; rerender(); setTimeout(function(){var c=$('.hlinkp'); if(c) try{c.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}},40);}},
       {label:hasTdb(hb)?'إخفاء جدول التدبر':'إضافة جدول تدبر القرآن',icon:'book',on:function(){var tg=habitTarget(hb); if(!tg) return; tg.tdb=!hasTdb(hb); ui.tdbOpen=tg.tdb?hb.id:''; touch('habits'); refreshHabits(); rerender(); toast(tg.tdb?'أُضيف جدول التدبر لهذه العادة':'أُخفي الجدول (بياناته محفوظة)');}},
       {label:'تعديل العادة',icon:'pen',on:function(){ui.habitEdit=hb.id; rerender(); setTimeout(function(){var c=$('.hcard.editing'); if(c) try{c.scrollIntoView({block:'start'})}catch(e){}},30);}},
       {label:'حذف العادة',icon:'trash',danger:true,on:function(){paperConfirm(card,hb.custom?'حذف هذه العادة وسجلّها نهائيًا؟':'حذف هذه العادة من القائمة؟ (يمكنك استرجاعها)',function(){deleteHabit(hb)})}}];}));
@@ -1964,6 +2000,8 @@ VIEWS.habits=function(root,meta){
     cards.push({hb:hb,dayB:dayB,todayBtn:todayBtn,stCur:stCur,stBest:stBest,stRate:stRate}); grid.append(card);
   });
   root.append(grid);
+  var lkH=ui.habLink&&HABITS.filter(function(x){return x.id===ui.habLink})[0];
+  if(lkH){var lp=habitLinkPanel(lkH); if(lp) root.append(lp);}
   var tdbH=ui.tdbOpen&&HABITS.filter(function(x){return x.id===ui.tdbOpen&&hasTdb(x)})[0];
   if(tdbH) root.append(tdbCard(tdbH));
   function upd(){
@@ -2494,6 +2532,95 @@ function goalLearnCard(g){
   card.append(h('div',{class:'row'},btn('فتح قائمة التعلّم',{icon:'book',cls:'ghost small',on:function(){ui.learnGoal=g.id; go('learn')}})));
   return card;
 }
+
+/* ---------- links: habit <-> goals, life areas, rewards, punishments ---------- */
+function habitGoals(hb){return (hb.goals||[]).map(goalById).filter(Boolean)}
+function habitAreas(hb){var L=S.life; return (L&&Array.isArray(L.areas))?L.areas.filter(function(a){return (a.habits||[]).indexOf(hb.id)>=0}):[]}
+function habitLinkChips(hb){
+  var out=[];
+  habitGoals(hb).forEach(function(g){out.push(h('button',{type:'button',class:'chip t-'+g.hue,onclick:function(){ui.goal=g.id; go('plan')}},'🎯 '+g.title))});
+  habitAreas(hb).forEach(function(a){out.push(h('button',{type:'button',class:'chip t-'+a.hue,onclick:function(){ui.lifeArea=a.id; go('life')}},a.emo+' '+a.name))});
+  var rp=rpChips(hb,true);
+  if(rp.length) out.push(h('span',{class:'chip soft'},'عند التزام '+n(hb.rpPct||80)+'٪'),rp);
+  return out.length?h('div',{class:'hlinks'},out):null;
+}
+function habitLinkPanel(hb){
+  var tg=habitTarget(hb); if(!tg) return null;
+  function done(){ui.habLink=''; refreshHabits(); rerender();}
+  var gbox=h('div',{class:'lopts'});
+  S.goals.forEach(function(g){var on=(tg.goals||[]).indexOf(g.id)>=0;
+    var b=h('button',{type:'button',class:'lopt','aria-pressed':on?'true':'false',onclick:function(){var a=(tg.goals||[]).filter(function(id){return goalById(id)}), k=a.indexOf(g.id); if(k>=0) a.splice(k,1); else a.push(g.id); tg.goals=a; touch('habits'); b.setAttribute('aria-pressed',k>=0?'false':'true');}},'🎯 '+g.title);
+    gbox.append(b);});
+  var pct=h('select',{class:'txt','aria-label':'نسبة الالتزام المطلوبة'}); [50,60,70,80,90,100].forEach(function(v){pct.append(h('option',{value:v},n(v)+'٪'))}); pct.value=String(tg.rpPct||hb.rpPct||80);
+  pct.addEventListener('change',function(){tg.rpPct=+pct.value; touch('habits');});
+  return h('section',{class:'card field hlinkp t-'+(hb.hue||'green')},
+    h('div',{class:'ehead'},h('h3',{class:'block-t'},'🔗 ربط عادة «'+hb.name+'»'),h('button',{type:'button',class:'iconbtn','aria-label':'إغلاق',onclick:done},ic('x'))),
+    h('h4',{class:'lbl'},'هذه العادة تخدم أي هدف؟'),S.goals.length?gbox:h('p',{class:'sub'},'لا توجد أهداف بعد.'),
+    h('div',{class:'field'},h('label',{class:'lbl'},'أستحق المكافأة عندما يصل التزامي في الأسبوع أو الشهر إلى'),pct),
+    rpPicker(tg,'habits',function(){},done));
+}
+function goalHabitsCard(g){
+  var card=h('section',{class:'card field glearn t-'+g.hue}), t=today();
+  function redraw(){refreshHabits(); card.replaceWith(goalHabitsCard(g));}
+  var mine=HABITS.filter(function(hb){return (hb.goals||[]).indexOf(g.id)>=0});
+  card.append(h('div',{class:'ehead'},h('h3',{class:'block-t'},'🔁 عادات تخدم هذا الهدف'),btn(ui.ghPick===g.id?'تم':'ربط عادات',{icon:ui.ghPick===g.id?'check':'link',cls:'small'+(ui.ghPick===g.id?' primary':' ghost'),on:function(){ui.ghPick=ui.ghPick===g.id?'':g.id; redraw();}})),
+    h('p',{class:'sub'},'العادة اليومية هي الطريق للهدف. التزامك فيها يظهر هنا وفي التقييم.'));
+  if(mine.length){
+    var ul=h('div',{class:'mhab'});
+    mine.forEach(function(hb){var r=monthRate(hb.id,t.getFullYear(),t.getMonth()), s=streaks(hb.id);
+      ul.append(h('div',{class:'mhrow t-'+hb.hue},h('span',{class:'mhn'},hb.short||hb.name),h('div',{class:'bar'},h('i',{style:'width:'+r+'%'})),h('b',{},n(r)+'٪'),s.cur?h('small',{class:'sub'},'🔥 '+n(s.cur)):null));});
+    card.append(ul);
+  } else card.append(h('p',{class:'sub muted'},'لا توجد عادات مربوطة بهذا الهدف.'));
+  if(ui.ghPick===g.id){
+    var box=h('div',{class:'lopts'});
+    HABITS.forEach(function(hb){var on=(hb.goals||[]).indexOf(g.id)>=0;
+      box.append(h('button',{type:'button',class:'lopt','aria-pressed':on?'true':'false',onclick:function(){var tg=habitTarget(hb); if(!tg) return; var a=(tg.goals||[]).filter(function(id){return goalById(id)}), k=a.indexOf(g.id); if(k>=0) a.splice(k,1); else a.push(g.id); tg.goals=a; touch('habits'); redraw();}},'🔁 '+hb.name));});
+    card.append(h('div',{class:'rpbox'},HABITS.length?box:h('p',{class:'sub'},'أضيفي عادات من قسم العادات أولًا.')));
+  }
+  return card;
+}
+/* ---------- المحاسبة: which rewards were earned and which punishments are due in a period ---------- */
+function rpAudit(from,to){
+  var t=today(), tmid=new Date(t.getFullYear(),t.getMonth(),t.getDate()), end=to<tmid?to:tmid, over=to<tmid, out=[], past=0, d;
+  for(d=new Date(from); d<=end; d=addDays(d,1)) past++;
+  function has(o){return (o.rew&&o.rew.length)||(o.pun&&o.pun.length)}
+  HABITS.forEach(function(hb){
+    if(!has(hb)||!past) return;
+    var c=0; for(d=new Date(from); d<=end; d=addDays(d,1)) if(isDone(hb.id,d.getFullYear(),d.getMonth(),d.getDate())) c++;
+    var pct=Math.round(c/past*100), tgt=hb.rpPct||80;
+    out.push({o:hb,name:'🔁 '+hb.name,detail:'التزام '+n(pct)+'٪ والمطلوب '+n(tgt)+'٪',st:pct>=tgt?(over?'rew':'run'):(over?'pun':'run'),sec:'habits'});
+  });
+  var fk=dkey(from), tk=dkey(to), nowk=dkey(tmid);
+  S.goals.forEach(function(g){
+    if(!has(g)) return;
+    if(g.done){ if(g.doneAt&&g.doneAt>=fk&&g.doneAt<=tk) out.push({o:g,name:'🎯 '+g.title,detail:'تحقق الهدف',st:'rew',sec:'plan',goal:g.id}); return; }
+    if(g.due&&g.due>=fk&&g.due<=tk) out.push({o:g,name:'🎯 '+g.title,detail:g.due<nowk?'فات موعده ولم يتحقق':'موعده '+fmtDate(parseKey(g.due)),st:g.due<nowk?'pun':'run',sec:'plan',goal:g.id});
+  });
+  Object.keys(S.todo||{}).forEach(function(k){
+    if(k<fk||k>tk) return;
+    PERIODS.forEach(function(p){ ((S.todo[k]||{})[p[0]]||[]).forEach(function(tk2){
+      if(!has(tk2)) return; var dn=taskDone(tk2,k);
+      out.push({o:tk2,name:'✅ '+(((tk2.text||'').trim())||'مهمة بخط اليد'),detail:fmtDate(parseKey(k)),st:dn?'rew':(k<nowk?'pun':'run'),sec:'todo'});
+    }); });
+  });
+  return out;
+}
+function accountCard(from,to,label){
+  var A=rpAudit(from,to), card=h('section',{class:'card field acard'});
+  card.append(h('div',{class:'ehead'},h('h3',{class:'block-t'},'⚖️ المحاسبة: مكافآت وعقابات'),h('span',{class:'chip'},label)));
+  if(!A.length){card.append(h('p',{class:'sub'},'لا توجد عادات أو أهداف أو مهام مربوطة بمكافأة أو عقاب في هذه الفترة. اربطيها من قائمة العادة («ربط بهدف ومكافأة وعقاب») أو الهدف أو المهمة.')); return card;}
+  function chipsOf(o,key){ var list=key==='rew'?S.rewards:S.obstacles; return rpOf(o[key],list).map(function(r){var ok=key==='rew'?r.got:r.solved;
+    return h('button',{type:'button',class:'chip '+(key==='rew'?'rwd':'pun')+(ok?' okd':''),title:ok?'تمّ':'',onclick:function(){go(key==='rew'?'rewards':'obstacles')}},(key==='rew'?'🎁 ':'⚠ ')+rpLabel(r)+(ok?' ✓':''));}); }
+  function grp(st,title,key,cls){
+    var L=A.filter(function(x){return x.st===st}); if(!L.length) return;
+    var box=h('div',{class:'agrp '+cls},h('h4',{},title+' ('+n(L.length)+')'));
+    L.forEach(function(x){var ch=key?chipsOf(x.o,key):[].concat(chipsOf(x.o,'rew'),chipsOf(x.o,'pun'));
+      box.append(h('div',{class:'arow'},h('button',{type:'button',class:'aname',onclick:function(){ if(x.goal) ui.goal=x.goal; go(x.sec);}},h('b',{},x.name),h('small',{},x.detail)),ch.length?h('div',{class:'achips'},ch):null));});
+    card.append(box);
+  }
+  grp('rew','🎁 استحققتِ مكافأتك','rew','ok'); grp('pun','⚠ عليكِ تنفيذ العقاب','pun','bad'); grp('run','⏳ ما زال جاريًا','', 'run');
+  return card;
+}
 function goalSelect(obj,key,sec){
   var s=h('select',{class:'txt','aria-label':'الهدف المرتبط'},h('option',{value:''},'بدون ربط بهدف'),S.goals.map(function(g){return h('option',{value:g.id},g.title)}));
   s.value=obj[key]||''; s.addEventListener('change',function(){obj[key]=s.value; touch(sec)}); return s;
@@ -2552,7 +2679,7 @@ VIEWS.plan=function(root,meta){
     g.picOrig?[{label:'استرجاع الصورة الأصلية',icon:'repeat',on:goalBgUndo}]:[],[
     {label:'ربط بهدف آخر',icon:'link',on:openLinks},
     {label:'ربط بمكافأة أو عقاب',icon:'link',on:function(){ if(lpanel){lpanel.remove(); lpanel=null;} lpanel=h('section',{class:'card lpanel'},h('h3',{class:'block-t'},'مكافأة وعقاب «'+(g.title||'الهدف')+'»'),rpPicker(g,'goals',null,function(){lpanel.remove(); lpanel=null; render();})); gcard.after(lpanel); }},
-    {label:g.done?'لم يتحقق بعد':'تحقق الهدف',icon:'flag',on:function(){g.done=!g.done; touch('goals'); render(); if(g.done){toast('ما شاء الله، تحقق الهدف'); rpEarned(g);}}},
+    {label:g.done?'لم يتحقق بعد':'تحقق الهدف',icon:'flag',on:function(){g.done=!g.done; g.doneAt=g.done?dkey(today()):''; touch('goals'); render(); if(g.done){toast('ما شاء الله، تحقق الهدف'); rpEarned(g);}}},
     {label:'أضيفيه إلى الإنجازات',icon:'trophy',on:function(){S.wins.unshift({id:uid(),text:g.title,ink:'',at:dkey(today()),goal:g.id,pic:''}); touch('wins'); toast('أُضيف إلى الإنجازات');}},
     {label:'حذف الهدف',icon:'trash',danger:true,on:function(){paperConfirm(gcard,'حذف الهدف وكل خطواته نهائيًا؟',function(){dropBlobs(g); g.steps.forEach(dropBlobs); S.goals=S.goals.filter(function(x){return x!==g}); S.goals.forEach(function(o){if(o.links) o.links=o.links.filter(function(i){return i!==g.id})}); touch('goals'); ui.goal=''; render(); toast('حُذف الهدف');})}}]);});
   var info;
@@ -2754,6 +2881,7 @@ VIEWS.plan=function(root,meta){
     h('div',{class:'addrow'},subIn,btn('إضافة',{icon:'plus',type:'submit'})),h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),subD));
   wrap.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'خريطة الخطوات'),steps,
     h('form',{class:'addrow',onsubmit:function(e){e.preventDefault(); var v=sin.value.trim(); if(!v) return; var ns={id:uid(),t:v,done:false,ink:'',d:'',tm:'',sub:ssel.hidden?'':ssel.value}; g.steps.push(ns); sin.value=''; touch('goals'); drawSteps(); prog(); sin.focus();}},ssel,sin,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'})),subForm));
+  wrap.append(goalHabitsCard(g));
   wrap.append(goalLearnCard(g));
   wrap.append(stagesCard(g));
   wrap.append(h('section',{class:'card field'},h('label',{class:'lbl'},'ملاحظات'),noteField({obj:g,key:'note',inkKey:'noteInk',sec:'goals',ph:'ملاحظات الخطة…',label:'ملاحظات الخطة',rows:4})));
@@ -2916,6 +3044,106 @@ VIEWS.monthly=function(root,meta){
   ask.addEventListener('click',function(){var tx=fullText(); ask.href='https://claude.ai/new'+(tx.length<6000?'?q='+encodeURIComponent(tx):''); try{navigator.clipboard.writeText(tx).then(function(){toast('نُسخ التقييم. إن لم يظهر في المحادثة، الصقيه.')},function(){})}catch(_){} });
   root.append(h('div',{class:'row',style:'justify-content:center;margin:6px 0 18px'},ask));
 };
+
+
+/* ---------- التقييم: أسبوعي / شهري (+ عجلة الحياة) / سنوي ---------- */
+VIEWS.eval=function(root,meta){
+  root.append(secHead(meta));
+  var tab=ui.evTab||'w';
+  root.append(h('div',{class:'thseg evseg t-'+meta.hue,role:'tablist','aria-label':'نوع التقييم'},[['w','الأسبوعي'],['m','الشهري'],['y','السنوي']].map(function(o){return h('button',{type:'button',role:'tab','aria-selected':tab===o[0]?'true':'false',onclick:function(){evSet(o[0]); render(); window.scrollTo(0,0);}},o[1])})));
+  if(tab==='w'){
+    VIEWS.review(root,EVMETA.w);
+    root.append(accountCard(ui.week,addDays(ui.week,6),'هذا الأسبوع'));
+  } else if(tab==='m'){
+    var sub=ui.mSub||'sum';
+    root.append(h('div',{class:'thseg evsub',role:'tablist','aria-label':'الشهر'},[['sum','ملخص الشهر'],['life','🧭 عجلة الحياة']].map(function(o){return h('button',{type:'button',role:'tab','aria-selected':sub===o[0]?'true':'false',onclick:function(){ui.mSub=o[0]; render();}},o[1])})));
+    if(sub==='life'){ root.append(h('p',{class:'sub evnote'},'عجلة الحياة تقيس تقدّمك هذا الشهر في كل مجال من أهدافه وعاداته المربوطة به.')); VIEWS.life(root,EVMETA.life); }
+    else {
+      VIEWS.monthly(root,EVMETA.m);
+      var mr=ui.mrev, ask=root.querySelector('.thmask'); var ac=accountCard(new Date(mr.y,mr.m,1),new Date(mr.y,mr.m+1,0),MONTHS[mr.m]);
+      if(ask&&ask.parentNode) root.insertBefore(ac,ask.parentNode); else root.append(ac);
+    }
+  } else yearView(root,meta);
+};
+function yearView(root,meta){
+  if(!S.yearly||typeof S.yearly!=='object'||Array.isArray(S.yearly)) S.yearly={};
+  if(!ui.yrev) ui.yrev=today().getFullYear();
+  var y=ui.yrev, t=today(), tmid=new Date(t.getFullYear(),t.getMonth(),t.getDate()), report=[];
+  root.append(h('div',{class:'mbar'},h('button',{type:'button',class:'mnav','aria-label':'السنة السابقة',onclick:function(){ui.yrev=y-1; rerender();}},'›'),h('div',{class:'mtitle'},ny(y),h('small',{},'التقييم السنوي')),h('button',{type:'button',class:'mnav','aria-label':'السنة التالية',onclick:function(){ui.yrev=y+1; rerender();}},'‹')));
+  function st(v,l){return h('div',{class:'thstat'},h('b',{},v),h('small',{},l))}
+  function card(title,chip){var c=h('section',{class:'card field mcard'}); c.append(h('div',{class:'ehead'},h('h3',{class:'block-t'},title),chip?h('span',{class:'chip'},chip):null)); return c;}
+  /* habits: commitment per month */
+  var monthsPast=[]; for(var m=0;m<12;m++) if(maxDay(y,m)) monthsPast.push(m);
+  var hDone=0, hPoss=0;
+  HABITS.forEach(function(hb){monthsPast.forEach(function(m){var md=maxDay(y,m), c=S.habits.checks[mkey(y,m)], a=(c&&c[hb.id])||[]; a.forEach(function(d){if(d<=md) hDone++}); hPoss+=md;});});
+  var hPct=hPoss?Math.round(hDone/hPoss*100):0;
+  var hc=card('العادات خلال السنة',monthsPast.length?n(hPct)+'٪ التزام':null);
+  if(!monthsPast.length) hc.append(h('p',{class:'sub'},'هذه السنة لم تبدأ بعد.'));
+  else {
+    var chart=h('div',{class:'capchart ychart',role:'img','aria-label':'نسبة الالتزام بالعادات في كل شهر'});
+    for(var m2=0;m2<12;m2++){var p=0; if(maxDay(y,m2)&&HABITS.length){p=Math.round(HABITS.reduce(function(a,hb){return a+monthRate(hb.id,y,m2)},0)/HABITS.length);} chart.append(h('div',{class:'capcol',title:MONTHS[m2]+': '+n(p)+'٪'},h('i',{style:'height:'+p+'%'}),h('span',{},MONTHS[m2].slice(0,3))));}
+    hc.append(chart);
+    var grid=h('div',{class:'yhgrid'});
+    grid.append(h('span',{})); for(var mh=0;mh<12;mh++) grid.append(h('span',{class:'yhm'},n(mh+1)));
+    HABITS.forEach(function(hb){grid.append(h('span',{class:'yhn'},hb.short||hb.name));
+      for(var m3=0;m3<12;m3++){var md=maxDay(y,m3), r=md?monthRate(hb.id,y,m3):null; grid.append(h('span',{class:'yhc t-'+hb.hue+(r==null?' na':''),style:r==null?'':'--p:'+r,title:MONTHS[m3]+(r==null?'':': '+n(r)+'٪')},r==null?'':n(r)));}});
+    hc.append(h('div',{class:'yhwrap'},grid));
+    report.push('العادات: التزام سنوي '+hPct+'%. '+HABITS.map(function(hb){var s=0,k=0; monthsPast.forEach(function(m){s+=monthRate(hb.id,y,m); k++;}); return (hb.short||hb.name)+' '+Math.round(s/Math.max(1,k))+'%'}).join('، '));
+  }
+  root.append(hc);
+  /* the year in numbers */
+  var tT=0,tD=0,cN=0,cM=0,thN=0,ws=0,wsum=0,wn=0,pk=0,pn=0,mR=[];
+  Object.keys(S.todo||{}).forEach(function(k){ if(k.indexOf(y+'-')===0){var q=todoCount(k); tT+=q.t; tD+=q.d;} });
+  Object.keys(S.caps||{}).forEach(function(k){ if(k.indexOf(y+'-')===0){var L=S.caps[k]||[]; cN+=L.length; cM+=L.reduce(function(a,x){return a+(x.m||0)},0);} });
+  Object.keys(S.thoughts||{}).forEach(function(k){ if(k.indexOf(y+'-')===0) thN+=((S.thoughts[k]&&S.thoughts[k].rows)||[]).length; });
+  Object.keys(S.review||{}).forEach(function(k){ if(k.indexOf(y+'-')===0&&S.review[k].rating){wsum+=S.review[k].rating; wn++;} });
+  Object.keys(S.promise||{}).forEach(function(k){ if(k.indexOf(y+'-')===0){var p=S.promise[k]; if(p.text||p.ink){pn++; if(p.kept==='yes') pk++;}} });
+  for(var m4=0;m4<12;m4++){var R4=S.monthly&&S.monthly[y+'-'+String(m4+1).padStart(2,'0')]; mR.push(R4&&R4.rating||0);}
+  var wins=(S.wins||[]).filter(function(w){return (w.at||'').indexOf(y+'-')===0});
+  var nc=card('السنة بالأرقام');
+  nc.append(h('div',{class:'thstats'},st(n(tD)+'/'+n(tT),'مهام منجزة'),st(n(cN),'كبسولة'),st(cN?capMinTxt(cM):'—','وقت التركيز'),st(n(wins.length),'إنجاز'),st(n(pk)+'/'+n(pn),'وعود وفيت بها'),st(wn?n(Math.round(wsum/wn*10)/10):'—','متوسط تقييم الأسبوع'),st(n(thN),'فكرة في السجل')));
+  if(mR.some(Boolean)){ var mrow=h('div',{class:'ymr'}); mR.forEach(function(r,i){mrow.append(h('button',{type:'button',class:'ymrc',title:'فتح تقييم '+MONTHS[i],onclick:function(){ui.mrev={y:y,m:i}; evSet('m'); render(); window.scrollTo(0,0);}},h('small',{},MONTHS[i].slice(0,3)),h('b',{},r?'★'+n(r):'—')))}); nc.append(h('span',{class:'thq'},'تقييمي لكل شهر'),mrow); }
+  root.append(nc);
+  report.push('المهام: '+tD+' من '+tT+'. الكبسولات: '+cN+' ('+cM+' دقيقة). الإنجازات: '+wins.length+'. الوعود: وفيت '+pk+' من '+pn+'. متوسط تقييم الأسابيع: '+(wn?Math.round(wsum/wn*10)/10:'—')+'. تقييم الشهور: '+mR.map(function(r,i){return MONTHS[i]+' '+(r||'—')}).join('، '));
+  /* goals */
+  var gDone=S.goals.filter(function(g){return g.done&&(!g.doneAt||g.doneAt.indexOf(y+'-')===0)}), gDue=S.goals.filter(function(g){return !g.done&&g.due&&g.due.indexOf(y+'-')===0});
+  var gc=card('الأهداف',n(gDone.length)+' تحقق');
+  if(gDone.length) gc.append(h('div',{class:'thtags2'},gDone.map(function(g){return h('span',{class:'ttag'},'✓ '+g.title)})));
+  S.goals.filter(function(g){return !g.done}).forEach(function(g){var p=goalProg(g); gc.append(h('div',{class:'mhrow t-'+g.hue},h('span',{class:'mhn'},g.title),h('div',{class:'bar'},h('i',{style:'width:'+p.pct+'%'})),h('b',{},n(p.pct)+'٪')));});
+  if(gDue.length) gc.append(h('p',{class:'sub'},'موعدها هذه السنة ولم تتحقق بعد: '+gDue.map(function(g){return g.title}).join('، ')));
+  root.append(gc);
+  report.push('الأهداف المحققة: '+(gDone.map(function(g){return g.title}).join('، ')||'لا يوجد')+'. الباقية: '+S.goals.filter(function(g){return !g.done}).map(function(g){return g.title+' '+goalProg(g).pct+'%'}).join('، '));
+  if(wins.length){ var oc=card('إنجازات السنة',n(wins.length)), gal=h('div',{class:'mwins'});
+    wins.forEach(function(w){var gl=goalById(w.goal), photo=BLOBS[w.pic]&&BLOBS[w.pic].src, src=photo||(gl?goalSrc(gl):''), d=parseKey(w.at);
+      gal.append(h('figure',{class:'mwin'},src?h('img',{src:src,alt:(w.text||'إنجاز')}):h('div',{class:'mwtxt'},(w.text||'إنجاز')),h('figcaption',{},h('b',{},(w.text||'').trim()||'إنجاز'),d?h('small',{},fmtDate(d)):null)));});
+    oc.append(gal); root.append(oc); }
+  /* life wheel: satisfaction per area */
+  var Y=S.yearly[y]||(S.yearly[y]={rating:0,areas:{}}); if(!Y.areas) Y.areas={};
+  var prevY=S.yearly[y-1]&&S.yearly[y-1].areas||{};
+  var A=lifeData().areas, lc=card('🧭 عجلة حياتي هذه السنة'), lg=h('div',{class:'yarea'});
+  lc.append(h('p',{class:'sub'},'كم أنا راضية عن كل مجال من ١ إلى ١٠؟'+(Object.keys(prevY).length?' الرقم الصغير هو تقييم السنة الماضية.':'')));
+  A.forEach(function(a){
+    var sel=h('select',{class:'txt','aria-label':'رضاي عن '+a.name},h('option',{value:''},'—')); for(var v=1;v<=10;v++) sel.append(h('option',{value:v},n(v)));
+    sel.value=Y.areas[a.id]?String(Y.areas[a.id]):''; sel.addEventListener('change',function(){if(sel.value) Y.areas[a.id]=+sel.value; else delete Y.areas[a.id]; touch('yearly');});
+    lg.append(h('div',{class:'yarow t-'+a.hue},h('span',{},a.emo+' '+a.name),prevY[a.id]?h('small',{class:'sub'},n(prevY[a.id])):h('small',{}),sel));
+  });
+  lc.append(lg); root.append(lc);
+  /* accounting */
+  root.append(accountCard(new Date(y,0,1),new Date(y,11,31),ny(y)));
+  /* reflection */
+  var stars=h('div',{class:'stars',role:'radiogroup','aria-label':'تقييم السنة'}), sb=[];
+  for(var s5=1;s5<=5;s5++){(function(s5){var b=h('button',{type:'button',class:'star',role:'radio','aria-checked':'false','aria-label':n(s5)+' من ٥',onclick:function(){Y.rating=Y.rating===s5?0:s5; touch('yearly'); sy();}}); b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+ICONS.star+'</svg>'; sb.push(b); stars.append(b);})(s5);}
+  function sy(){sb.forEach(function(b,i){b.classList.toggle('on',i<Y.rating); b.setAttribute('aria-checked',i+1===Y.rating?'true':'false')})} sy();
+  root.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'كيف كانت سنتي؟'),stars));
+  var QS=[['best','أجمل ما تحقق لي هذه السنة (تنعّم)','النعم والإنجازات التي أشكر الله عليها…'],['lesson','أكبر درس تعلمته، وكيف هيّأني','ما الذي انكشف لي، وما الحقيقة التي بُنيت فيّ…'],['leave','ما الذي أتركه خلفي؟','عادة، فكرة، أو علاقة لا أحملها معي…'],['next','أهم ثلاثة أهداف للسنة القادمة','١. …  ٢. …  ٣. …'],['word','كلمة سنتي القادمة','كلمة واحدة تلخّص نيتي…']];
+  var two=h('div',{class:'two'});
+  QS.forEach(function(q){two.append(h('section',{class:'card field'},h('label',{class:'lbl'},q[1]),noteField({obj:Y,key:q[0],inkKey:q[0]+'Ink',sec:'yearly',ph:q[2],label:q[1],rows:q[0]==='word'?1:3})));});
+  root.append(two);
+  function fullText(){return 'هذا تقييمي السنوي لسنة '+y+' من تطبيق مخططي. حلليه لي بلطف ووضوح: ما الذي نجح، أين التراجع، الأنماط بين العادات والأهداف، واقترحي ٣ أولويات للسنة القادمة.\n\n'+report.join('\n')+'\nرضاي عن المجالات: '+A.map(function(a){return a.name+' '+(Y.areas[a.id]||'—')}).join('، ')+'\nتقييمي للسنة: '+(Y.rating||'—')+' من 5.\n'+QS.map(function(q){return q[1]+': '+((Y[q[0]]||'').trim()||'—')}).join('\n');}
+  var ask=h('a',{class:'btn primary thmask',href:'https://claude.ai/new',target:'_blank',rel:'noopener'},ic('star'),h('span',{},'تحليل السنة مع Claude'));
+  ask.addEventListener('click',function(){var tx=fullText(); ask.href='https://claude.ai/new'+(tx.length<6000?'?q='+encodeURIComponent(tx):''); try{navigator.clipboard.writeText(tx).then(function(){toast('نُسخ التقييم. إن لم يظهر في المحادثة الصقيه هناك')}).catch(function(){})}catch(e){}});
+  root.append(h('div',{class:'row',style:'justify-content:center;margin:6px 0 18px'},ask));
+}
 
 /* ---------- list sections ---------- */
 function addEntry(sec,obj,list){S[sec].unshift(obj); touch(sec); rerender(); setTimeout(function(){var f=$('[data-id="'+obj.id+'"] textarea.txt, [data-id="'+obj.id+'"] input.txt:not([type="date"])'); if(f) f.focus();},30)}
@@ -4217,6 +4445,7 @@ function rpPicker(o,sec,onChange,onClose){
 function rpFrom(id,key){
   var out=[], seen={};
   S.goals.forEach(function(g){ if((g[key]||[]).indexOf(id)>=0) out.push('هدف: '+(g.title||'هدف')); });
+  HABITS.forEach(function(hb){ if((hb[key]||[]).indexOf(id)>=0) out.push('عادة: '+(hb.short||hb.name)); });
   Object.keys(S.todo||{}).sort().forEach(function(k){ PERIODS.forEach(function(p){ ((S.todo[k]||{})[p[0]]||[]).forEach(function(t){
     if((t[key]||[]).indexOf(id)>=0){var l='مهمة: '+(((t.text||'').trim())||'بخط اليد'); if(!seen[l]){seen[l]=1; out.push(l);}}
   }); }); });
