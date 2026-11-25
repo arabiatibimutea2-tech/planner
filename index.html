@@ -1499,6 +1499,20 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .tmap .popts{display:grid; grid-template-columns:1fr 1fr; gap:8px}
 .tmap .popt{display:flex; align-items:center; gap:8px; padding:10px; border:1.5px solid var(--line); border-radius:12px; background:var(--sheet); color:var(--ink); font:inherit; font-size:14px; cursor:pointer}
 .tmap .popt .poe{font-size:20px}
+
+/* v81: done on map = check + light, no strike */
+.tmap .tlab.done b{text-decoration:none!important; opacity:1!important; color:#b9ab92!important; text-shadow:none}
+.tmap .tlab.done .tdate{color:#cdbfa6!important; background:rgba(255,248,225,.55)!important}
+.tmap .tnode.done:not(.hasimg){background:rgba(255,248,225,.75)!important; border-color:#c9b99a!important; color:#b9ab92!important}
+.tmap .tnode.done:not(.hasimg) b{display:none!important}
+.tmap .tnode.done:not(.hasimg) i{display:grid!important; color:#8d7d60}
+.tmap .tsub.done:not(.hasimg){background:#f3ead6!important; border-color:#c9b99a!important; color:#8d7d60!important}
+.tmap .tsub.hasimg.done .tsubimg,.tmap .tnode.hasimg.done .tsubimg{opacity:.4}
+.tmap .tnode.hasimg.done::after{background:#8d7d60}
+.tmap .tsub.hasimg.done i{background:#8d7d60}
+.tmap .trew.got{opacity:.45; filter:grayscale(.3)}
+.tmap .trew.got::after{content:"✓"; position:absolute; bottom:-4px; inset-inline-end:-4px; width:22px; height:22px; border-radius:50%; background:#8d7d60; color:#fff; display:grid; place-items:center; font-size:13px}
+.tmap .tlab.rewlab.done b{color:#c9b28f!important}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -2923,7 +2937,7 @@ VIEWS.plan=function(root,meta){
     var L=labs[id]; if(!L) return; var x=L.obj;
     if(L.kind==='rew'){ var rw=rewById(x.rid), ok=rewEarned(g,x);
       L.b.textContent='🎁 '+(rw?rpLabel(rw):'مكافأة محذوفة'); L.d.textContent=rw&&rw.got?'حصلتِ عليها ✓':(ok?'استحققتِها 🎉':'بعد الخطوات اللي قبلها'); L.d.hidden=false;
-      L.node.classList.toggle('earned',ok); L.node.classList.toggle('got',!!(rw&&rw.got)); L.lab.classList.toggle('earned',ok); return; }
+      L.node.classList.toggle('earned',ok); L.node.classList.toggle('got',!!(rw&&rw.got)); L.lab.classList.toggle('earned',ok); L.lab.classList.toggle('done',!!(rw&&rw.got)); return; }
     if(L.kind==='sub'){
       var m=realSteps(g).filter(function(s){return s.sub===x.id}), dn=m.filter(function(s){return s.done}).length;
       if(L.pic){var ps=picOf(x); L.pic.hidden=!ps; if(ps) L.pic.src=ps;}
