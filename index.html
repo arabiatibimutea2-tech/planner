@@ -1365,6 +1365,13 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .btn.iconsave .ic{width:20px; height:20px}
 .bplus{gap:8px}
 .btn.iconsave.gplus{width:34px; min-width:34px; height:34px; min-height:34px; border-radius:50%}
+
+/* white options menus */
+.tpop{background:var(--field)!important; color:var(--ink)}
+.ghead{position:relative}
+.ghead:has(.tpop){z-index:20}
+.ghead .gmenu .mbtn{background:var(--field); border:1.5px solid var(--line); border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.subpanel .subadd{display:flex; flex-direction:column; gap:8px}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -2499,8 +2506,8 @@ VIEWS.board=function(root,meta){
     grid.append(h('button',{type:'button',class:'stk goal t-'+g.hue+(i%2?' alt':(i%3===2?' alt2':''))+(src?'':' txt'),'aria-label':g.title+'. فتح الخطة',onclick:function(){ui.goal=g.id; go('plan')}},
       src?h('img',{class:'stkimg',src:src,alt:g.title}):h('span',{class:'stktxt'},g.title),
       src?h('span',{class:'stklabel'},g.title):null,
-      h('span',{class:'stkcap sm'},
-        h('span',{class:'stkmeta'},(g.done?'تحقق ✓':(p.t?n(p.d)+' من '+n(p.t):'بلا خطوات'))+(g.freq?' · '+g.freq:'')))));
+      (g.done||g.freq)?h('span',{class:'stkcap sm'},
+        h('span',{class:'stkmeta'},[g.done?'تحقق ✓':'',g.freq||''].filter(Boolean).join(' · '))):null));
   });
   if(form) root.append(form);
   root.append(grid);
@@ -2672,7 +2679,10 @@ VIEWS.plan=function(root,meta){
       g.pic='p'+uid(); putBlob(g.pic,{t:'pic',src:out}); touch('goals'); render(); toast('أُزيلت الخلفية'); }); },30); }
   function goalBgUndo(){ if(!g.picOrig) return; if(g.pic&&g.pic!==g.picOrig) delBlob(g.pic); g.pic=g.picOrig; delete g.picOrig; touch('goals'); render(); toast('رجعت الصورة الأصلية'); }
   var gfile=pickImage(function(src){ if(g.picOrig){delBlob(g.picOrig); delete g.picOrig;} if(g.pic) delBlob(g.pic); g.pic='p'+uid(); putBlob(g.pic,{t:'pic',src:src}); touch('goals'); render(); toast('تغيّرت صورة الهدف'); });
+  var subPanel=h('section',{class:'card subpanel',hidden:true});
+  function openSub(){subPanel.hidden=false; setTimeout(function(){try{subPanel.scrollIntoView({behavior:'smooth',block:'center'}); var f=subPanel.querySelector('input'); if(f) f.focus({preventScroll:true});}catch(e){}},40);}
   var gmenu=menuButton('خيارات الهدف',function(){return [
+    {label:'إضافة هدف فرعي',icon:'plus',on:openSub},
     {label:'تعديل الهدف',icon:'pen',on:function(){ui.goalEdit=g.id; render();}},
     {label:goalSrc(g)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){ui.goalEdit=g.id; render();}}].concat(
     goalSrc(g)&&!g.picOrig?[{label:'إزالة خلفية الصورة',icon:'magic',on:goalBg}]:[],
@@ -2709,7 +2719,7 @@ VIEWS.plan=function(root,meta){
   var rpc=rpChips(g,true);
   if(rpc.length) info.append(h('div',{class:'glinks'+(g.done?' gdone':'')},h('span',{},'مكافأة وعقاب:'),rpc));
   gcard.append(h('div',{class:'gmenu'},gmenu,gfile),h('div',{class:'gside'},goalArt(g,'gsart'),info),h('div',{class:'bar'},bar),plab);
-  wrap.append(gcard);
+  wrap.append(gcard,subPanel);
   prog();
   var steps=h('div',{class:'roadmap tmap'}), mapPts=[], labs={}, subPaints=[];
   function hsh(str){var x=2166136261; for(var i=0;i<str.length;i++){x^=str.charCodeAt(i); x=Math.imul(x,16777619);} return x>>>0;}
@@ -2877,10 +2887,12 @@ VIEWS.plan=function(root,meta){
   var subIn=h('input',{class:'txt',placeholder:'هدف فرعي جديد… (مثل: هدف هذا الشهر)','aria-label':'هدف فرعي جديد'});
   var subD=h('input',{class:'txt',type:'date','aria-label':'موعد الهدف الفرعي الجديد'});
   var subForm=h('form',{class:'subadd',onsubmit:function(e){e.preventDefault(); var v=subIn.value.trim(); if(!v) return; if(!g.subs) g.subs=[]; var sb={id:uid(),t:v,d:subD.value||'',done:false}; g.subs.push(sb); subIn.value=''; subD.value=''; touch('goals'); drawSteps(); fillSel(); ssel.value=sb.id; toast('أُضيف الهدف الفرعي');}},
-    h('h4',{class:'lbl'},'الأهداف الفرعية'),h('p',{class:'sub'},'قسّمي هدفك الكبير إلى أهداف أصغر، مثل هدف لكل شهر، ثم أضيفي لكل منها خطواته.'),
-    h('div',{class:'addrow'},subIn,btn('إضافة',{icon:'plus',type:'submit'})),h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),subD));
+    h('h3',{class:'block-t'},'إضافة هدف فرعي'),h('p',{class:'sub'},'قسّمي هدفك الكبير إلى أهداف أصغر، مثل هدف لكل شهر، ثم أضيفي لكل منها خطواته. يظهر الهدف الفرعي على الخريطة.'),
+    h('div',{class:'addrow'},subIn,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'})),h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),subD),
+    h('div',{class:'row'},btn('إغلاق',{cls:'ghost small',on:function(){subPanel.hidden=true;}})));
   wrap.append(h('section',{class:'card field'},h('h3',{class:'block-t'},'خريطة الخطوات'),steps,
-    h('form',{class:'addrow',onsubmit:function(e){e.preventDefault(); var v=sin.value.trim(); if(!v) return; var ns={id:uid(),t:v,done:false,ink:'',d:'',tm:'',sub:ssel.hidden?'':ssel.value}; g.steps.push(ns); sin.value=''; touch('goals'); drawSteps(); prog(); sin.focus();}},ssel,sin,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'})),subForm));
+    h('form',{class:'addrow',onsubmit:function(e){e.preventDefault(); var v=sin.value.trim(); if(!v) return; var ns={id:uid(),t:v,done:false,ink:'',d:'',tm:'',sub:ssel.hidden?'':ssel.value}; g.steps.push(ns); sin.value=''; touch('goals'); drawSteps(); prog(); sin.focus();}},ssel,sin,btn('إضافة',{icon:'plus',type:'submit',cls:'primary'}))));
+  subPanel.append(subForm);
   wrap.append(goalHabitsCard(g));
   wrap.append(goalLearnCard(g));
   wrap.append(stagesCard(g));
