@@ -1513,6 +1513,8 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .tmap .trew.got{opacity:.45; filter:grayscale(.3)}
 .tmap .trew.got::after{content:"✓"; position:absolute; bottom:-4px; inset-inline-end:-4px; width:22px; height:22px; border-radius:50%; background:#8d7d60; color:#fff; display:grid; place-items:center; font-size:13px}
 .tmap .tlab.rewlab.done b{color:#c9b28f!important}
+
+.tmap .tlab b{white-space:pre-line!important; line-height:1.35}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -2936,14 +2938,14 @@ VIEWS.plan=function(root,meta){
   function paintLab(id){
     var L=labs[id]; if(!L) return; var x=L.obj;
     if(L.kind==='rew'){ var rw=rewById(x.rid), ok=rewEarned(g,x);
-      L.b.textContent='🎁 '+(rw?rpLabel(rw):'مكافأة محذوفة'); L.d.textContent=rw&&rw.got?'حصلتِ عليها ✓':(ok?'استحققتِها 🎉':'بعد الخطوات اللي قبلها'); L.d.hidden=false;
+      L.b.textContent=wrap4('🎁 '+(rw?rpLabel(rw):'مكافأة محذوفة')); L.d.textContent=[x.d?whenTxt(x.d,''):'',rw&&rw.got?'حصلتِ عليها ✓':(ok?'استحققتِها 🎉':'بعد الخطوات اللي قبلها')].filter(Boolean).join(' · '); L.d.hidden=false;
       L.node.classList.toggle('earned',ok); L.node.classList.toggle('got',!!(rw&&rw.got)); L.lab.classList.toggle('earned',ok); L.lab.classList.toggle('done',!!(rw&&rw.got)); return; }
     if(L.kind==='sub'){
       var m=realSteps(g).filter(function(s){return s.sub===x.id}), dn=m.filter(function(s){return s.done}).length;
       if(L.pic){var ps=picOf(x); L.pic.hidden=!ps; if(ps) L.pic.src=ps;}
-      L.b.textContent=(x.t||'هدف فرعي'); L.d.textContent=[whenTxt(x.d,''),m.length?n(dn)+'/'+n(m.length):''].filter(Boolean).join(' · ');
+      L.b.textContent=wrap4(x.t||'هدف فرعي'); L.d.textContent=[whenTxt(x.d,''),m.length?n(dn)+'/'+n(m.length):''].filter(Boolean).join(' · ');
     } else {
-      L.b.textContent=stepName(x); L.d.textContent=x.d?(whenTxt(x.d,x.tm)+(x.tm?'':' · '+((PERIODS.filter(function(q){return q[0]===stepPeriod(x)})[0]||[])[1]||''))):''; L.d.classList.toggle('late',lateOf(x.d,x.tm,x.done));
+      L.b.textContent=wrap4(stepName(x)); L.d.textContent=x.d?(whenTxt(x.d,x.tm)+(x.tm?'':' · '+((PERIODS.filter(function(q){return q[0]===stepPeriod(x)})[0]||[])[1]||''))):''; L.d.classList.toggle('late',lateOf(x.d,x.tm,x.done));
     }
     L.d.hidden=!L.d.textContent;
     L.node.setAttribute('aria-pressed',x.done?'true':'false'); L.node.classList.toggle('done',!!x.done); L.lab.classList.toggle('done',!!x.done);
@@ -2973,13 +2975,14 @@ VIEWS.plan=function(root,meta){
   }
   function addRewAt(i){
     var ps=posOf(i), a=mapPts[i], b=mapPts[i+1];
-    function put(r){ g.steps.splice(ps.idx,0,{id:uid(),kind:'rew',rid:r.id,sub:ps.sub,done:false}); checkRew(g); touch('goals'); closeFloat(); drawSteps(); prog(); toast('🎁 أُضيفت المكافأة على الطريق'); }
+    var rdIn=h('input',{class:'txt',type:'date','aria-label':'تاريخ المكافأة'});
+    function put(r){ g.steps.splice(ps.idx,0,{id:uid(),kind:'rew',rid:r.id,sub:ps.sub,done:false,d:rdIn.value||''}); checkRew(g); touch('goals'); closeFloat(); drawSteps(); prog(); toast('🎁 أُضيفت المكافأة على الطريق'); }
     var nIn=h('input',{class:'txt',placeholder:'مكافأة جديدة… (مثل: أشتري كتابًا أحبه)','aria-label':'مكافأة جديدة'});
     function saveNew(){var v=nIn.value.trim(); if(!v){toast('اكتبي المكافأة'); return;} var r={id:uid(),text:v,ink:'',when:'',got:false,pic:''}; S.rewards.unshift(r); touch('rewards'); put(r);}
     nIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); saveNew();}});
     var L=S.rewards.filter(function(r){return (r.text||'').trim()||r.ink});
     floatAt((a.y+b.y)/2+18,[h('b',{class:'tft'},'🎁 مكافأة على الطريق'),h('p',{class:'sub tiny'},'تستحقينها لما تخلصين كل الخطوات اللي قبلها.'),
-      nIn,h('div',{class:'row'},btn('إضافة',{icon:'plus',cls:'primary small',on:saveNew}),btn('إلغاء',{cls:'ghost small',on:closeFloat})),
+      nIn,h('div',{class:'tfrow'},h('label',{class:'lbl'},'التاريخ (اختياري)'),rdIn),h('div',{class:'row'},btn('إضافة',{icon:'plus',cls:'primary small',on:saveNew}),btn('إلغاء',{cls:'ghost small',on:closeFloat})),
       L.length?h('div',{class:'lpick'},h('label',{class:'lbl'},'أو اختاري من مكافآتك'),h('div',{class:'chorechips'},L.map(function(r){return h('button',{type:'button',class:'chorechip',onclick:function(){put(r)}},picOf(r)?h('img',{class:'chico',src:picOf(r),alt:''}):h('span',{},'🎁'),h('span',{},rpLabel(r)))}))):null]);
   }
   function addAt(i){
@@ -3002,8 +3005,8 @@ VIEWS.plan=function(root,meta){
   }
   function pick(x,kind,field,p){
     var dIn=h('input',{class:'txt',type:'date',value:x.d||'','aria-label':'التاريخ'}), tIn=kind==='step'?h('input',{class:'txt',type:'time',value:x.tm||'','aria-label':'الوقت'}):null, po={pk:kind==='step'?stepPeriod(x):''}, pIn=kind==='step'?pkSelect(po):null;
-    floatAt(p.y+30,[h('b',{class:'tft'},kind==='sub'?'موعد الهدف الفرعي':'موعد الخطوة'),h('div',{class:'tfrow'},h('label',{class:'lbl'},'التاريخ'),dIn),pIn?h('div',{class:'tfrow'},h('label',{class:'lbl'},'الفترة'),pIn):null,tIn?h('div',{class:'tfrow'},h('label',{class:'lbl'},'الوقت (اختياري)'),tIn):null,
-      h('div',{class:'row'},btn('حفظ',{icon:'check',cls:'primary small',on:function(){x.d=dIn.value||''; if(tIn) x.tm=tIn.value||''; if(pIn) x.pk=po.pk; touch('goals'); paintLab(x.id); closeFloat(); toast(x.d?('الموعد: '+whenTxt(x.d,x.tm)):'حُفظ');}}),btn('إلغاء',{cls:'ghost small',on:closeFloat}))]);
+    floatAt(p.y+30,[h('b',{class:'tft'},kind==='sub'?'موعد الهدف الفرعي':(kind==='rew'?'موعد المكافأة':'موعد الخطوة')),h('div',{class:'tfrow'},h('label',{class:'lbl'},'التاريخ'),dIn),pIn?h('div',{class:'tfrow'},h('label',{class:'lbl'},'الفترة'),pIn):null,tIn?h('div',{class:'tfrow'},h('label',{class:'lbl'},'الوقت (اختياري)'),tIn):null,
+      h('div',{class:'row'},btn('حفظ',{icon:'check',cls:'primary small',on:function(){x.d=dIn.value||''; if(tIn) x.tm=tIn.value||''; if(pIn) x.pk=po.pk; touch('goals'); closeFloat(); drawSteps(); prog(); checkRew(g); toast(x.d?('الموعد: '+whenTxt(x.d,x.tm)):'حُفظ');}}),btn('إلغاء',{cls:'ghost small',on:closeFloat}))]);
   }
   function rename(x,kind){
     var L=labs[x.id]; if(!L) return;
@@ -3017,7 +3020,7 @@ VIEWS.plan=function(root,meta){
   function postpone(x,k){var base=parseKey(x.d)||today(); x.d=dkey(addDays(base,k)); touch('goals'); paintLab(x.id); toast('تأجّلت إلى '+fmtDate(parseKey(x.d)));}
   function menuItems(x,kind,p,node){
     if(kind==='rew'){ var rw=rewById(x.rid);
-      return [{head:'🎁 '+(rw?rpLabel(rw):'مكافأة')}].concat(rw?[{label:rw.got?'لم أحصل عليها بعد':'حصلت عليها',icon:'check',on:function(){rw.got=!rw.got; touch('rewards'); paintLab(x.id);}},{label:'فتح المكافآت',icon:'right',on:function(){go('rewards')}}]:[],
+      return [{head:'🎁 '+(rw?rpLabel(rw):'مكافأة')},{label:x.d?'تغيير التاريخ':'تحديد التاريخ',icon:'bell',on:function(){pick(x,'rew','d',p)}}].concat(rw?[{label:rw.got?'لم أحصل عليها بعد':'حصلت عليها',icon:'check',on:function(){rw.got=!rw.got; touch('rewards'); paintLab(x.id);}},{label:'فتح المكافآت',icon:'right',on:function(){go('rewards')}}]:[],
         [{label:'إزالة من الخريطة',icon:'trash',danger:true,on:function(){g.steps=g.steps.filter(function(s){return s!==x}); touch('goals'); drawSteps(); prog();}}]); }
     var nm=kind==='sub'?(x.t||'هدف فرعي'):stepName(x);
     if(delAsk===x.id){ delAsk='';
@@ -3091,7 +3094,7 @@ VIEWS.plan=function(root,meta){
       }
       if(it.end){
         var xe=svgEl(XMARK,'tx mnode'+(g.done?' done':''),pos);
-        steps.append(xe,h('div',{class:'tlab tend '+side,style:lstyle},h('b',{},g.title||'الهدف')));
+        steps.append(xe,h('div',{class:'tlab tend '+side,style:lstyle},h('b',{},wrap4(g.title||'الهدف'))));
         return;
       }
       var x=it.st||it.sb, kind=it.sb?'sub':(x.kind==='rew'?'rew':'step'); if(kind==='step') num++;
@@ -4769,10 +4772,15 @@ function learnToMap(g){
   mine.forEach(function(it){ if(!g.steps.some(function(st){return st.lid===it.id})){ g.steps.push({id:uid(),t:(it.text||'').trim(),ink:'',done:!!it.done,d:it.d||'',tm:it.tm||'',sub:'',lid:it.id}); ch=true; } });
   if(ch) touch('goals');
 }
+function wrap4(t){var w=String(t||'').trim().split(/\s+/), out=[]; for(var i=0;i<w.length;i+=4) out.push(w.slice(i,i+4).join(' ')); return out.join('\n')}
+function whenKey(x){return x&&x.d?(x.d+' '+(x.tm||'99:99')):'9999'}
+function byWhen(arr,get){return arr.map(function(x,i){return {x:x,i:i}}).sort(function(a,b){var ka=get(a.x),kb=get(b.x); return ka<kb?-1:ka>kb?1:a.i-b.i}).map(function(o){return o.x})}
 function goalOrder(g){
   if(!g.subs) g.subs=[]; var subIds={}; g.subs.forEach(function(sb){subIds[sb.id]=1});
-  var order=g.steps.filter(function(x){return !x.sub||!subIds[x.sub]}).map(function(x){return {st:x}});
-  g.subs.forEach(function(sb){order.push({sb:sb}); g.steps.forEach(function(x){if(x.sub===sb.id) order.push({st:x})});});
+  var items=g.steps.filter(function(x){return !x.sub||!subIds[x.sub]}).map(function(x){return {st:x}});
+  g.subs.forEach(function(sb){items.push({sb:sb,kids:byWhen(g.steps.filter(function(x){return x.sub===sb.id}),whenKey)})});
+  var order=[];
+  byWhen(items,function(it){return whenKey(it.st||it.sb)}).forEach(function(it){ if(it.st) order.push({st:it.st}); else {order.push({sb:it.sb}); it.kids.forEach(function(x){order.push({st:x})});} });
   return order;
 }
 function rewById(id){return S.rewards.filter(function(r){return r.id===id})[0]}
