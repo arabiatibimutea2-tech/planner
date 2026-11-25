@@ -1435,6 +1435,7 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .hero.mini{padding:8px 14px; border-radius:18px; margin:0 0 10px; gap:8px}
 .hero.mini .motto{font-size:18px; line-height:1.35}
 .hero.mini img{width:auto; height:56px; object-fit:contain}
+.hero.mini{height:auto!important; min-height:72px; max-height:none!important; align-items:center}
 .todoletter{margin:0 0 12px; padding:6px 12px 6px; background-image:none}
 .todoletter .lhead{margin:2px 0}
 .todoletter .lto b{font-size:16px}
@@ -1457,6 +1458,18 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .todo .mrow .chips{gap:2px 10px}
 .todo .mrow .chips .chip{background:none!important; border:0!important; box-shadow:none!important; color:#d9756b!important; padding:0; opacity:1}
 .todo .mrow .chips .chip *{color:inherit!important}
+
+/* v75: done tasks = gray, no strike */
+.todo .mrow.done,.todo .mrow.done *{text-decoration:none!important}
+.todo .mrow.done{opacity:1!important}
+.todo .mrow.done .stbody .txt,.todo .mrow.done .habn,.todo .mrow.done .stbody .note .txt{color:#9a9a9a!important; -webkit-text-fill-color:#9a9a9a}
+.todo .mrow.done .chips .chip{color:#e9b9b4!important}
+.todo .mrow.done .mhpic,.todo .mrow.done .tico{opacity:.55}
+.todo .mrow.done .txt{opacity:1!important}
+
+/* v77: plain A4 sheet */
+.todo section[data-period]{background:#fff!important; border:1px solid #e6e6e6; border-radius:4px; padding-inline-start:14px; box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.todo section[data-period]::before,.todo section[data-period]::after{display:none!important}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -1907,13 +1920,13 @@ function secHead(meta){if(meta.embed) return document.createDocumentFragment(); 
 /* ---------- navigation ---------- */
 function buildNav(){
   var nav=$('#nav'); nav.replaceChildren();
-  SECS.forEach(function(s){
+  SECS.filter(function(s){return s.id==='todo'||s.id==='home'}).forEach(function(s){
     nav.append(h('button',{type:'button',class:'nb t-'+s.hue,'data-id':s.id,onclick:function(){go(s.id)}},h('span',{},s.label)));
   });
 }
 function updateNav(){
   document.querySelectorAll('.nb').forEach(function(b){
-    var on=b.getAttribute('data-id')===ui.cur;
+    var id=b.getAttribute('data-id'), on=id===ui.cur||(id==='home'&&ui.cur!=='todo');
     if(on){b.setAttribute('aria-current','page'); try{b.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}} else b.removeAttribute('aria-current');
   });
 }
