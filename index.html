@@ -1478,6 +1478,27 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .tmap .tsub.hasimg.done .tsubimg{opacity:.55}
 .tmap .tsub.hasimg.done b{display:none}
 .learnpanel{display:flex; flex-direction:column; gap:8px}
+
+.lpick{border-top:1px dashed var(--line); padding-top:8px; display:flex; flex-direction:column; gap:6px}
+.chorechip.ldone{opacity:.6}
+
+/* v80 */
+.tmap .tnode.hasimg{width:58px; height:58px; border:0; border-radius:12px; background:transparent; padding:0}
+.tmap .tnode.hasimg .tsubimg{width:58px; height:58px; object-fit:contain; display:block; filter:drop-shadow(0 3px 4px rgba(0,0,0,.25))}
+.tmap .tnode.hasimg.done{background:transparent}
+.tmap .tnode.hasimg.done .tsubimg{opacity:.5}
+.tmap .tnode.hasimg i{display:none!important}
+.tmap .tnode.hasimg.done::after{content:"✓"; position:absolute; bottom:-4px; inset-inline-end:-4px; width:22px; height:22px; border-radius:50%; background:#2b2b2b; color:#fff; display:grid; place-items:center; font-size:13px}
+.tmap .trew{position:absolute; transform:translate(-50%,-50%); z-index:3; width:46px; height:46px; border-radius:50%; border:2.5px dashed #b4541a; background:#fff6dc; display:grid; place-items:center; padding:0; font-size:22px; cursor:pointer; filter:grayscale(.6); opacity:.85}
+.tmap .trew.earned{border-style:solid; border-color:#e0a21b; background:#fff1c2; filter:none; opacity:1; box-shadow:0 0 0 5px rgba(240,190,60,.35)}
+.tmap .trew.got{opacity:.6}
+.tmap .trew.hasimg{border-radius:14px; width:60px; height:60px; overflow:hidden}
+.tmap .trew.hasimg .tsubimg{width:100%; height:100%; object-fit:contain}
+.tmap .tlab.rewlab b{color:#9a4a12}
+.tmap .tlab.rewlab.earned b{color:#b4541a}
+.tmap .popts{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.tmap .popt{display:flex; align-items:center; gap:8px; padding:10px; border:1.5px solid var(--line); border-radius:12px; background:var(--sheet); color:var(--ink); font:inherit; font-size:14px; cursor:pointer}
+.tmap .popt .poe{font-size:20px}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -2579,7 +2600,8 @@ VIEWS.home=function(root,meta){
 };
 
 /* ---------- goals ---------- */
-function goalProg(g){var tot=g.steps.length, d=g.steps.filter(function(x){return x.done}).length; return {t:tot,d:d,pct:tot?Math.round(d/tot*100):0}}
+function realSteps(g){return (g.steps||[]).filter(function(x){return x.kind!=='rew'})}
+function goalProg(g){var rs=realSteps(g), tot=rs.length, d=rs.filter(function(x){return x.done}).length; return {t:tot,d:d,pct:tot?Math.round(d/tot*100):0}}
 function goalArt(g,cls){
   var src=goalSrc(g); return src? h('div',{class:cls},h('img',{src:src,alt:g.title})) : h('div',{class:cls+' txtart'},g.title);
 }
@@ -2799,22 +2821,24 @@ VIEWS.plan=function(root,meta){
   var subPanel=h('section',{class:'card subpanel',hidden:true});
   learnToMap(g);
   var learnPanel=h('section',{class:'card subpanel learnpanel',hidden:true});
-  function openLearn(){
+  function openLearn(pos){
     var tIn=h('input',{class:'txt',placeholder:'ما الذي أحتاج أتعلمه لهذا الهدف؟','aria-label':'شيء أتعلمه'}), dIn=h('input',{class:'txt',type:'date','aria-label':'موعده'});
     function save(){var v=tIn.value.trim(); if(!v){toast('اكتبي ما تريدين تعلّمه'); return;}
       var it={id:uid(),text:v,ink:'',done:false,d:dIn.value||'',tm:'',goal:g.id}; S.learn.unshift(it); touch('learn');
-      g.steps.push({id:uid(),t:v,ink:'',done:false,d:it.d,tm:'',sub:'',lid:it.id}); touch('goals');
+      var lst={id:uid(),t:v,ink:'',done:false,d:it.d,tm:'',sub:pos?pos.sub:'',lid:it.id}; if(pos) g.steps.splice(pos.idx,0,lst); else g.steps.push(lst); checkRew(g); touch('goals');
       learnPanel.hidden=true; drawSteps(); prog(); toast('أُضيف إلى الخريطة وإلى «أشياء أريد أن أتعلمها»');}
     tIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); save();}});
+    var pool=S.learn.filter(function(x){return x.goal!==g.id&&((x.text||'').trim()||x.ink)}).sort(function(a,b){return (a.done?1:0)-(b.done?1:0)});
+    var pick=pool.length?h('div',{class:'lpick'},h('label',{class:'lbl'},'أو اختاري من قائمة «أشياء أريد أن أتعلمها»'),h('div',{class:'chorechips'},pool.map(function(x){var og=goalById(x.goal);
+      return h('button',{type:'button',class:'chorechip'+(x.done?' ldone':''),onclick:function(){x.goal=g.id; touch('learn'); if(pos&&!g.steps.some(function(st){return st.lid===x.id})) g.steps.splice(pos.idx,0,{id:uid(),t:(x.text||'').trim(),ink:'',done:!!x.done,d:x.d||'',tm:x.tm||'',sub:pos.sub,lid:x.id}); learnToMap(g); checkRew(g); learnPanel.hidden=true; drawSteps(); prog(); toast('أُضيف «'+((x.text||'').trim()||'شيء أتعلمه')+'» إلى الخريطة');}},
+        picOf(x)?h('img',{class:'chico',src:picOf(x),alt:''}):ic('plus'),h('span',{},((x.text||'').trim()||'✎ بخط اليد')+(og?' · من «'+og.title+'»':'')+(x.done?' ✓':'')));}))):null;
     learnPanel.replaceChildren(h('h3',{class:'block-t'},'📚 شيء أتعلمه لهذا الهدف'),h('p',{class:'sub'},'يظهر خطوة على الخريطة، وفي قسم «أشياء أريد أن أتعلمها». تشطبينه في مكان فينشطب في الثاني.'),
-      tIn,h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),dIn),
-      h('div',{class:'row'},btn('إضافة',{icon:'plus',cls:'primary small',on:save}),btn('إغلاق',{cls:'ghost small',on:function(){learnPanel.hidden=true}})));
+      h('label',{class:'lbl'},'اكتبي شيئًا جديدًا'),tIn,h('div',{class:'field'},h('label',{class:'lbl'},'موعده (اختياري)'),dIn),
+      h('div',{class:'row'},btn('إضافة',{icon:'plus',cls:'primary small',on:save}),btn('إغلاق',{cls:'ghost small',on:function(){learnPanel.hidden=true}})),pick);
     learnPanel.hidden=false; setTimeout(function(){try{learnPanel.scrollIntoView({behavior:'smooth',block:'center'}); tIn.focus({preventScroll:true});}catch(e){}},40);
   }
   function openSub(){subPanel.hidden=false; setTimeout(function(){try{subPanel.scrollIntoView({behavior:'smooth',block:'center'}); var f=subPanel.querySelector('input'); if(f) f.focus({preventScroll:true});}catch(e){}},40);}
   var gmenu=menuButton('خيارات الهدف',function(){return [
-    {label:'إضافة هدف فرعي',icon:'plus',on:openSub},
-    {label:'إضافة شيء أتعلمه',icon:'book',on:openLearn},
     {label:'تعديل الهدف',icon:'pen',on:function(){ui.goalEdit=g.id; render();}},
     {label:goalSrc(g)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){ui.goalEdit=g.id; render();}}].concat(
     goalSrc(g)&&!g.picOrig?[{label:'إزالة خلفية الصورة',icon:'magic',on:goalBg}]:[],
@@ -2897,8 +2921,11 @@ VIEWS.plan=function(root,meta){
   function stepName(x){var li=x.lid&&learnById(x.lid); if(li) return '📚 '+(((li.text||'').trim())||'شيء أتعلمه'); return (x.t||'').trim()||(x.ink?'✎ بخط اليد':'خطوة')}
   function paintLab(id){
     var L=labs[id]; if(!L) return; var x=L.obj;
+    if(L.kind==='rew'){ var rw=rewById(x.rid), ok=rewEarned(g,x);
+      L.b.textContent='🎁 '+(rw?rpLabel(rw):'مكافأة محذوفة'); L.d.textContent=rw&&rw.got?'حصلتِ عليها ✓':(ok?'استحققتِها 🎉':'بعد الخطوات اللي قبلها'); L.d.hidden=false;
+      L.node.classList.toggle('earned',ok); L.node.classList.toggle('got',!!(rw&&rw.got)); L.lab.classList.toggle('earned',ok); return; }
     if(L.kind==='sub'){
-      var m=g.steps.filter(function(s){return s.sub===x.id}), dn=m.filter(function(s){return s.done}).length;
+      var m=realSteps(g).filter(function(s){return s.sub===x.id}), dn=m.filter(function(s){return s.done}).length;
       if(L.pic){var ps=picOf(x); L.pic.hidden=!ps; if(ps) L.pic.src=ps;}
       L.b.textContent=(x.t||'هدف فرعي'); L.d.textContent=[whenTxt(x.d,''),m.length?n(dn)+'/'+n(m.length):''].filter(Boolean).join(' · ');
     } else {
@@ -2913,20 +2940,49 @@ VIEWS.plan=function(root,meta){
   var floatP=null;
   function closeFloat(){ if(floatP){floatP.remove(); floatP=null;} }
   function floatAt(y,kids){ closeFloat(); floatP=h('div',{class:'tfloat',style:'top:'+Math.max(4,y)+'px',onclick:function(e){e.stopPropagation()}},kids); steps.append(floatP); setTimeout(function(){try{floatP.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}},40); return floatP;}
-  function addAt(i){
+  function posOf(i){
     var prev=mapPts[i].it, sub='', idx=g.steps.length;
     if(prev.start) idx=0;
     else if(prev.st){ sub=(prev.st.sub&&(g.subs||[]).some(function(q){return q.id===prev.st.sub}))?prev.st.sub:''; idx=g.steps.indexOf(prev.st)+1; }
     else if(prev.sb){ sub=prev.sb.id; var f=-1; g.steps.forEach(function(q,k){if(f<0&&q.sub===sub) f=k}); idx=f<0?g.steps.length:f; }
+    return {idx:idx,sub:sub};
+  }
+  function plusMenu(i){
+    var a=mapPts[i], b=mapPts[i+1];
+    function opt(em,label,fn){return h('button',{type:'button',class:'popt',onclick:function(e){e.stopPropagation(); fn();}},h('span',{class:'poe'},em),h('span',{},label))}
+    floatAt((a.y+b.y)/2+18,[h('b',{class:'tft'},'ماذا تضيفين هنا؟'),h('div',{class:'popts'},
+      opt('👣','خطوة',function(){addAt(i)}),
+      opt('🎁','مكافأة',function(){addRewAt(i)}),
+      opt('📚','شيء أتعلمه',function(){closeFloat(); openLearn(posOf(i))}),
+      opt('⭐','هدف فرعي',function(){closeFloat(); openSub()})),
+      h('div',{class:'row'},btn('إلغاء',{cls:'ghost small',on:closeFloat}))]);
+  }
+  function addRewAt(i){
+    var ps=posOf(i), a=mapPts[i], b=mapPts[i+1];
+    function put(r){ g.steps.splice(ps.idx,0,{id:uid(),kind:'rew',rid:r.id,sub:ps.sub,done:false}); checkRew(g); touch('goals'); closeFloat(); drawSteps(); prog(); toast('🎁 أُضيفت المكافأة على الطريق'); }
+    var nIn=h('input',{class:'txt',placeholder:'مكافأة جديدة… (مثل: أشتري كتابًا أحبه)','aria-label':'مكافأة جديدة'});
+    function saveNew(){var v=nIn.value.trim(); if(!v){toast('اكتبي المكافأة'); return;} var r={id:uid(),text:v,ink:'',when:'',got:false,pic:''}; S.rewards.unshift(r); touch('rewards'); put(r);}
+    nIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); saveNew();}});
+    var L=S.rewards.filter(function(r){return (r.text||'').trim()||r.ink});
+    floatAt((a.y+b.y)/2+18,[h('b',{class:'tft'},'🎁 مكافأة على الطريق'),h('p',{class:'sub tiny'},'تستحقينها لما تخلصين كل الخطوات اللي قبلها.'),
+      nIn,h('div',{class:'row'},btn('إضافة',{icon:'plus',cls:'primary small',on:saveNew}),btn('إلغاء',{cls:'ghost small',on:closeFloat})),
+      L.length?h('div',{class:'lpick'},h('label',{class:'lbl'},'أو اختاري من مكافآتك'),h('div',{class:'chorechips'},L.map(function(r){return h('button',{type:'button',class:'chorechip',onclick:function(){put(r)}},picOf(r)?h('img',{class:'chico',src:picOf(r),alt:''}):h('span',{},'🎁'),h('span',{},rpLabel(r)))}))):null]);
+  }
+  function addAt(i){
+    var ps0=posOf(i), sub=ps0.sub, idx=ps0.idx;
     var sbn=sub&&g.subs.filter(function(q){return q.id===sub})[0];
+    var stSrc='', stPv=h('div',{class:'subpv'});
+    function paintStPv(){stPv.replaceChildren(stSrc?h('img',{src:stSrc,alt:''}):'',stSrc?btn('إزالة الخلفية',{icon:'magic',cls:'small',on:function(){toast('جارٍ إزالة الخلفية…'); setTimeout(function(){removeBg(stSrc,function(out,err){ if(!out){toast(err||'تعذّرت إزالة الخلفية'); return;} stSrc=out; paintStPv(); toast('أُزيلت الخلفية');});},30);}}):'',stSrc?btn('إزالة',{cls:'small ghost',on:function(){stSrc=''; paintStPv();}}):'');}
     var nIn=h('input',{class:'txt',placeholder:'اكتبي الخطوة…','aria-label':'الخطوة الجديدة'}), dIn=h('input',{class:'txt',type:'date','aria-label':'تاريخ الخطوة'}), tIn=h('input',{class:'txt',type:'time','aria-label':'وقت الخطوة'}), po={pk:'fajr'}, pIn=pkSelect(po);
     function save(){ var v=nIn.value.trim(); if(!v){toast('اكتبي الخطوة أولًا'); try{nIn.focus()}catch(e){} return;}
-      g.steps.splice(idx,0,{id:uid(),t:v,done:false,ink:'',d:dIn.value||'',tm:tIn.value||'',pk:po.pk,sub:sub}); touch('goals'); closeFloat(); drawSteps(); prog();
+      var nst={id:uid(),t:v,done:false,ink:'',d:dIn.value||'',tm:tIn.value||'',pk:po.pk,sub:sub}; if(stSrc){nst.pic='p'+uid(); putBlob(nst.pic,{t:'pic',src:stSrc});}
+      g.steps.splice(idx,0,nst); checkRew(g); touch('goals'); closeFloat(); drawSteps(); prog();
       toast(dIn.value?'أُضيفت الخطوة، وستظهر في مهام '+fmtDate(parseKey(dIn.value)):'أُضيفت الخطوة'); }
     nIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); save();}});
     var a=mapPts[i], b=mapPts[i+1];
     floatAt((a.y+b.y)/2+18,[h('b',{class:'tft'},'خطوة جديدة'+(sbn?' في «'+(sbn.t||'هدف فرعي')+'»':'')),nIn,
       h('div',{class:'tfrow'},h('label',{class:'lbl'},'التاريخ'),dIn),h('div',{class:'tfrow'},h('label',{class:'lbl'},'الفترة'),pIn),h('div',{class:'tfrow'},h('label',{class:'lbl'},'الوقت (اختياري)'),tIn),
+      h('div',{class:'tfrow'},h('label',{class:'lbl'},'صورة (اختياري)'),picLabel('اختيار صورة',function(src){stSrc=src; paintStPv();})),stPv,
       h('div',{class:'row'},btn('إضافة',{icon:'plus',cls:'primary small',on:save}),btn('إلغاء',{cls:'ghost small',on:closeFloat}))]);
     setTimeout(function(){try{nIn.focus({preventScroll:true})}catch(e){}},80);
   }
@@ -2946,6 +3002,9 @@ VIEWS.plan=function(root,meta){
   }
   function postpone(x,k){var base=parseKey(x.d)||today(); x.d=dkey(addDays(base,k)); touch('goals'); paintLab(x.id); toast('تأجّلت إلى '+fmtDate(parseKey(x.d)));}
   function menuItems(x,kind,p,node){
+    if(kind==='rew'){ var rw=rewById(x.rid);
+      return [{head:'🎁 '+(rw?rpLabel(rw):'مكافأة')}].concat(rw?[{label:rw.got?'لم أحصل عليها بعد':'حصلت عليها',icon:'check',on:function(){rw.got=!rw.got; touch('rewards'); paintLab(x.id);}},{label:'فتح المكافآت',icon:'right',on:function(){go('rewards')}}]:[],
+        [{label:'إزالة من الخريطة',icon:'trash',danger:true,on:function(){g.steps=g.steps.filter(function(s){return s!==x}); touch('goals'); drawSteps(); prog();}}]); }
     var nm=kind==='sub'?(x.t||'هدف فرعي'):stepName(x);
     if(delAsk===x.id){ delAsk='';
       return [{head:kind==='sub'?'حذف الهدف الفرعي؟ خطواته تبقى في الهدف الرئيسي.':'حذف هذه الخطوة نهائيًا؟'},
@@ -2964,7 +3023,7 @@ VIEWS.plan=function(root,meta){
     }
     its.push({label:kind==='sub'?'تعديل الاسم':'تعديل الخطوة',icon:'pen',on:function(){rename(x,kind)}});
     its.push({label:has?'تغيير الموعد والفترة':'تحديد التاريخ والفترة',icon:'bell',on:function(){pick(x,kind,'d',p)}});
-    if(kind==='sub'){
+    if(kind==='sub'||kind==='step'){
       its.push({label:picOf(x)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){subFor=x; try{subFile.click()}catch(e){}}});
       bgMenu(x,'goals',function(){drawSteps()}).forEach(function(m){its.push(m)});
       if(picOf(x)) its.push({label:'إزالة الصورة',icon:'x',on:function(){clearPic(x); touch('goals'); drawSteps();}});
@@ -2991,9 +3050,7 @@ VIEWS.plan=function(root,meta){
   function drawSteps(){
     steps.replaceChildren(); labs={}; subPaints=[]; floatP=null;
     if(!g.subs) g.subs=[];
-    var subIds={}; g.subs.forEach(function(sb){subIds[sb.id]=1});
-    var order=g.steps.filter(function(x){return !x.sub||!subIds[x.sub]}).map(function(x){return {st:x}});
-    g.subs.forEach(function(sb){order.push({sb:sb}); g.steps.forEach(function(x){if(x.sub===sb.id) order.push({st:x})});});
+    var order=goalOrder(g);
     var all=[{start:1}].concat(order,[{end:1}]), GAP=104, TOP=78, prevX=74;
     mapPts=all.map(function(it,i){
       var key=it.start?'start':(it.end?'end':(it.st||it.sb).id), hv=hsh(g.id+':'+key), x;
@@ -3023,9 +3080,18 @@ VIEWS.plan=function(root,meta){
         steps.append(xe,h('div',{class:'tlab tend '+side,style:lstyle},h('b',{},g.title||'الهدف')));
         return;
       }
-      var x=it.st||it.sb, kind=it.sb?'sub':'step'; if(kind==='step') num++;
-      var sp=kind==='sub'&&picOf(x);
-      var node=nodeMenu(x,kind,p,kind==='sub'?('هدف فرعي: '+(x.t||'')):('خيارات الخطوة '+n(num)),[kind==='sub'?(sp?h('img',{class:'tsubimg',src:sp,alt:''}):h('b',{},ic('star'))):h('b',{},n(num)),h('i',{},ic('check'))],kind==='sub'?('tsub'+(sp?' hasimg':'')):'tnode');
+      var x=it.st||it.sb, kind=it.sb?'sub':(x.kind==='rew'?'rew':'step'); if(kind==='step') num++;
+      if(kind==='rew'){
+        var rw=rewById(x.rid), rp=rw&&picOf(rw);
+        var rnode=nodeMenu(x,'rew',p,'مكافأة',[rp?h('img',{class:'tsubimg',src:rp,alt:''}):h('b',{},'🎁')],'trew'+(rp?' hasimg':''));
+        var rb=h('b',{}), rd=h('span',{class:'tdate'});
+        var rlab=h('div',{role:'button',class:'tlab rewlab '+side,style:lstyle,tabindex:'-1',onclick:function(e){e.stopPropagation(); rnode.click();}},rb,rd);
+        labs[x.id]={obj:x,kind:'rew',node:rnode,lab:rlab,b:rb,d:rd};
+        steps.append(rnode,rlab); paintLab(x.id); subPaints.push(function(){paintLab(x.id)});
+        return;
+      }
+      var sp=picOf(x);
+      var node=nodeMenu(x,kind,p,kind==='sub'?('هدف فرعي: '+(x.t||'')):('خيارات الخطوة '+n(num)),[kind==='sub'?(sp?h('img',{class:'tsubimg',src:sp,alt:''}):h('b',{},ic('star'))):(sp?h('img',{class:'tsubimg',src:sp,alt:''}):h('b',{},n(num))),h('i',{},ic('check'))],kind==='sub'?('tsub'+(sp?' hasimg':'')):('tnode'+(sp?' hasimg':'')));
       var bb=h('b',{}), dd=h('span',{class:'tdate'}), pi=null;
       var lab=h('div',{role:'button',class:'tlab '+side+(kind==='sub'?' issub':''),style:lstyle,tabindex:'-1',onclick:function(e){e.stopPropagation(); node.click();}},pi,bb,dd);
       labs[x.id]={obj:x,kind:kind,num:num,node:node,lab:lab,b:bb,d:dd,pic:pi};
@@ -3033,7 +3099,7 @@ VIEWS.plan=function(root,meta){
       if(kind==='sub') subPaints.push(function(){paintLab(x.id)});
     });
     mapPts.slice(0,-1).forEach(function(a,j){ var b=mapPts[j+1];
-      steps.append(h('button',{type:'button',class:'tplus',style:'left:'+((a.x+b.x)/2)+'%;top:'+((a.y+b.y)/2)+'px','aria-label':'إضافة خطوة هنا',title:'إضافة خطوة هنا',onclick:function(e){e.stopPropagation(); addAt(j);}},ic('plus')));
+      steps.append(h('button',{type:'button',class:'tplus',style:'left:'+((a.x+b.x)/2)+'%;top:'+((a.y+b.y)/2)+'px','aria-label':'إضافة هنا',title:'إضافة هنا',onclick:function(e){e.stopPropagation(); plusMenu(j);}},ic('plus')));
     });
     setTimeout(drawPath,0);
   }
@@ -4689,6 +4755,16 @@ function learnToMap(g){
   mine.forEach(function(it){ if(!g.steps.some(function(st){return st.lid===it.id})){ g.steps.push({id:uid(),t:(it.text||'').trim(),ink:'',done:!!it.done,d:it.d||'',tm:it.tm||'',sub:'',lid:it.id}); ch=true; } });
   if(ch) touch('goals');
 }
+function goalOrder(g){
+  if(!g.subs) g.subs=[]; var subIds={}; g.subs.forEach(function(sb){subIds[sb.id]=1});
+  var order=g.steps.filter(function(x){return !x.sub||!subIds[x.sub]}).map(function(x){return {st:x}});
+  g.subs.forEach(function(sb){order.push({sb:sb}); g.steps.forEach(function(x){if(x.sub===sb.id) order.push({st:x})});});
+  return order;
+}
+function rewById(id){return S.rewards.filter(function(r){return r.id===id})[0]}
+function rewEarned(g,e){var o=goalOrder(g), prior=[]; for(var i=0;i<o.length;i++){ if(o[i].st===e) break; if(o[i].st&&o[i].st.kind!=='rew') prior.push(o[i].st); } return prior.length>0&&prior.every(function(x){return x.done});}
+function checkRew(g){ (g.steps||[]).forEach(function(e){ if(e.kind!=='rew') return; var v=rewEarned(g,e);
+  if(v&&!e.earned){e.earned=true; var r=rewById(e.rid); if(r) setTimeout(function(){toast('🎁 وصلتِ لمكافأتك: '+rpLabel(r))},1100);} else if(!v&&e.earned) e.earned=false; }); }
 function setGoalDone(g,v){
   g.done=!!v; g.doneAt=v?dkey(today()):''; touch('goals');
   if(v){
@@ -4699,8 +4775,8 @@ function setGoalDone(g,v){
 function stepChanged(g,st){
   if(st.lid){var li=learnById(st.lid); if(li&&!!li.done!==!!st.done){li.done=!!st.done; touch('learn');}}
   var sb=st.sub&&(g.subs||[]).filter(function(s){return s.id===st.sub})[0];
-  if(sb){var m=g.steps.filter(function(s){return s.sub===sb.id}); if(m.length) sb.done=m.every(function(s){return s.done});}
-  touch('goals');
+  if(sb){var m=realSteps(g).filter(function(s){return s.sub===sb.id}); if(m.length) sb.done=m.every(function(s){return s.done});}
+  checkRew(g); touch('goals');
   if(!st.done) return;
   var q=goalProg(g);
   if(q.t&&q.d===q.t&&!g.done) toast('🎉 أنجزتِ كل خطوات «'+g.title+'»');
