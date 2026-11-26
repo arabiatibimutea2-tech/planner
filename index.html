@@ -1541,6 +1541,9 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 
 .tmap .tlab .tdate,.tmap .tlab .tdate *{background:none!important; background-color:transparent!important; box-shadow:none!important; color:#d0453a!important; -webkit-text-fill-color:#d0453a!important; font-size:9.5px!important}
 .tmap .tlab.done .tdate{color:#ecaaa4!important; -webkit-text-fill-color:#ecaaa4!important}
+
+.tmap .tlab.done .tdate,.tmap .tlab.done .tdate *,.tmap .tlab .tdate[class]{background:none!important; background-color:transparent!important; box-shadow:none!important; border:0!important; padding:0!important}
+.trw[data-k="h:wake"] .mvbtns{visibility:hidden}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -4302,10 +4305,11 @@ function ordersMap(){if(!S.orders||typeof S.orders!=='object'||Array.isArray(S.o
 function orderBox(box,key){
   var ord=ordersMap()[key]||[], ws=[].slice.call(box.children).filter(function(e){return e.classList&&e.classList.contains('trw')});
   if(ord.length){ ws.map(function(w,i){var k=ord.indexOf(w.getAttribute('data-k')); return {w:w,k:k<0?1e6+i:k}}).sort(function(a,b){return a.k-b.k}).forEach(function(o){box.append(o.w)}); }
+  var pin=box.querySelector('.trw[data-k="h:wake"]'); if(pin) box.insertBefore(pin,box.firstChild);
   ws.forEach(function(w){
     var row=w.querySelector('.mrow'); if(!row||row.querySelector('.mvbtns')) return;
     function mv(dir){ var sib=dir<0?w.previousElementSibling:w.nextElementSibling; while(sib&&!sib.classList.contains('trw')) sib=dir<0?sib.previousElementSibling:sib.nextElementSibling;
-      if(!sib){toast(dir<0?'هي أول مهمة':'هي آخر مهمة'); return;} if(dir<0) box.insertBefore(w,sib); else sib.after(w); saveOrder(box,key);
+      if(!sib){toast(dir<0?'هي أول مهمة':'هي آخر مهمة'); return;} if(sib.getAttribute('data-k')==='h:wake'){toast('عادة الاستيقاظ مثبتة أول القائمة'); return;} if(dir<0) box.insertBefore(w,sib); else sib.after(w); saveOrder(box,key);
       w.classList.add('moved'); setTimeout(function(){w.classList.remove('moved')},400); }
     var g=h('div',{class:'mvbtns'},h('button',{type:'button','aria-label':'رفع المهمة',title:'رفع',onclick:function(e){e.stopPropagation(); mv(-1)}},'▲'),h('button',{type:'button','aria-label':'إنزال المهمة',title:'إنزال',onclick:function(e){e.stopPropagation(); mv(1)}},'▼'));
     row.insertBefore(g,row.lastElementChild);
