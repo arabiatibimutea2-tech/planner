@@ -1535,6 +1535,9 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 
 .alarmbox.still{animation:none}
 .alarmbox input.txt{max-width:200px; text-align:center; font-size:20px}
+
+.tmap .tlab .tdate{background:none!important; box-shadow:none!important; border:0!important; padding:0!important; font-size:9.5px!important; font-weight:500!important; color:#6f5f42; opacity:1}
+.tmap .tfloat .chorechip .tico{width:22px; height:22px}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -3062,6 +3065,11 @@ VIEWS.plan=function(root,meta){
       its.push({label:'تأجيل أسبوعًا',icon:'right',on:function(){postpone(x,7)}});
     }
     its.push({label:kind==='sub'?'تعديل الاسم':'تعديل الخطوة',icon:'pen',on:function(){rename(x,kind)}});
+    if(kind==='step') its.push({label:x.hid?('🔁 مرتبطة بعادة: '+(habitShort(x.hid)||'—')):'ربط بعادة',icon:'link',on:function(){
+      var chips=HABITS.map(function(hb){return h('button',{type:'button',class:'chorechip','aria-pressed':x.hid===hb.id?'true':'false',onclick:function(){x.hid=hb.id; stepChanged(g,x); touch('goals'); closeFloat(); paintLab(x.id); toast('ارتبطت بعادة «'+(hb.short||hb.name)+'». في يومها تظهر الخطوة بدل العادة في المهام');}},h('span',{class:'mhpic tico'},habitArt(hb)),h('span',{},hb.short||hb.name))});
+      floatAt(p.y+30,[h('b',{class:'tft'},'ربط الخطوة بعادة'),h('p',{class:'sub tiny'},'في يوم الخطوة تظهر الخطوة بس في المهام، ولما تنجزينها تنحسب العادة بعد.'),h('div',{class:'chorechips'},chips),
+        h('div',{class:'row'},x.hid?btn('فك الربط',{cls:'small ghost',on:function(){delete x.hid; touch('goals'); closeFloat(); paintLab(x.id); toast('انفك الربط');}}):null,btn('إغلاق',{cls:'small ghost',on:closeFloat}))]);
+    }});
     its.push({label:has?'تغيير الموعد والفترة':'تحديد التاريخ والفترة',icon:'bell',on:function(){pick(x,kind,'d',p)}});
     if(kind==='sub'||kind==='step'){
       its.push({label:picOf(x)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){subFor=x; try{subFile.click()}catch(e){}}});
@@ -4330,6 +4338,7 @@ function validPk(pk){return PERIODS.some(function(p){return p[0]===pk})}
 function dayHabits(day,pk){
   var d=parseKey(day); if(!d) return [];
   var linked={}; PERIODS.forEach(function(p){todoList(day,p[0]).forEach(function(t){if(t.link&&t.link.t==='habit') linked[t.link.id]=1;})});
+  S.goals.forEach(function(g){(g.steps||[]).forEach(function(st){if(st.hid&&st.d===day) linked[st.hid]=1;})});
   return HABITS.filter(function(hb){return !linked[hb.id]&&!habitEnded(hb,d.getFullYear(),d.getMonth(),d.getDate())&&habitPkOn(hb,day)===pk});
 }
 function habitDoneOn(hb,day){var d=parseKey(day); return d?isDone(hb.id,d.getFullYear(),d.getMonth(),d.getDate()):false}
@@ -4473,7 +4482,7 @@ VIEWS.todo=function(root,meta){
       });
       row=h('div',{class:'stepr mrow'+(st.done?' done':'')},chk,goalSrc(g)?h('span',{class:'mhpic tico'},h('img',{src:goalSrc(g),alt:''})):null,
         h('div',{class:'stbody'},nfield,
-          h('div',{class:'chips'},h('span',{class:'chip t-'+g.hue},'🎯 '+g.title),st.tm?h('span',{class:'chip'},'الساعة '+fmtTime(st.tm)):null,stc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(stc.length)):null)),menuB);
+          h('div',{class:'chips'},st.hid&&habitShort(st.hid)?h('span',{class:'chip'},'🔁 '+habitShort(st.hid)):null,h('span',{class:'chip t-'+g.hue},'🎯 '+g.title),st.tm?h('span',{class:'chip'},'الساعة '+fmtTime(st.tm)):null,stc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(stc.length)):null)),menuB);
       box.append(h('div',{class:'trw','data-k':'s:'+st.id},row,scp,panel));
     }
     function draw(){
@@ -4899,6 +4908,7 @@ function setGoalDone(g,v){
   } else { var b0=S.wins.length; S.wins=S.wins.filter(function(w){return !(w.auto&&w.goal===g.id)}); if(S.wins.length!==b0) touch('wins'); }
 }
 function stepChanged(g,st){
+  if(st.hid&&st.d){var dq=parseKey(st.d); if(dq&&HABITS.some(function(x){return x.id===st.hid})&&isDone(st.hid,dq.getFullYear(),dq.getMonth(),dq.getDate())!==!!st.done) toggleHabit(st.hid,dq.getFullYear(),dq.getMonth(),dq.getDate());}
   if(st.lid){var li=learnById(st.lid); if(li&&!!li.done!==!!st.done){li.done=!!st.done; touch('learn');}}
   var sb=st.sub&&(g.subs||[]).filter(function(s){return s.id===st.sub})[0];
   if(sb){var m=realSteps(g).filter(function(s){return s.sub===sb.id}); if(m.length) sb.done=m.every(function(s){return s.done});}
