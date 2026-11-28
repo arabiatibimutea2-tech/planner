@@ -1560,6 +1560,12 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .icob .svgico{width:78%; height:78%}
 .chorechip .chemo .svgico{width:18px; height:18px}
 .mrow .tico.emo .svgico{width:30px; height:30px}
+
+.todo .mrow .chips .chip.repico{display:inline-flex; align-items:center}
+.todo .mrow .chips .chip.repico .ic{width:14px; height:14px}
+.mvbtns{gap:0}
+.mvbtns button{width:18px; height:15px; border:0!important; background:none!important; box-shadow:none!important; color:#b5b5b5; font-size:9px; padding:0}
+.mvbtns button:active{color:var(--ink); background:none!important}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -4518,7 +4524,7 @@ VIEWS.todo=function(root,meta){
         function paintRp(){rpC.replaceChildren.apply(rpC,rpChips(t));}
         function openRp(){rpWrap.replaceChildren(h('label',{class:'lbl'},'ربط المهمة بمكافأة أو عقاب'),rpPicker(t,'todo',paintRp,function(){rpWrap.hidden=true})); rpWrap.hidden=false;}
         var repChip=h('span',{class:'chip'},''), panel=h('div',{class:'reppanel',hidden:true});
-        function paintChip(){repChip.textContent='🔁'; repChip.title=t.rep?repText(t.rep):''; repChip.setAttribute('aria-label',t.rep?('متكررة: '+repText(t.rep)):''); repChip.hidden=!t.rep;}
+        function paintChip(){repChip.replaceChildren(ic('repeat')); repChip.classList.add('repico'); repChip.title=t.rep?repText(t.rep):''; repChip.setAttribute('aria-label',t.rep?('متكررة: '+repText(t.rep)):''); repChip.hidden=!t.rep;}
         function openPanel(){
           panel.replaceChildren(); var cur=t.rep||{type:'daily',days:[parseKey(day).getDay()],until:dkey(addDays(parseKey(day),6))};
           var st={type:cur.type,days:cur.days.slice(),until:cur.until};
