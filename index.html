@@ -1588,6 +1588,40 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .prow.isdone .shopico{opacity:.45}
 .npic.npemo{display:block; font-size:44px; line-height:1; width:auto; height:auto; border:0; background:none; margin:2px 0 4px}
 .npic.npemo .svgico{width:56px; height:56px}
+
+/* v101: clearer evaluation */
+.evexp{font-size:13.5px; line-height:1.8; margin:4px 0 8px; color:var(--ink)}
+.evexp b{font-size:15px}
+.evhl{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 10px}
+.evhl span{font-size:12.5px; padding:4px 10px; border-radius:99px; background:var(--sheet)}
+.evhl .good{background:#e3f4ea; color:#24704a}
+.evhl .low{background:#fdeeea; color:#a8442f}
+.evsubt{font-size:14.5px; margin:14px 0 6px}
+.mdgrid{display:flex; flex-direction:column; gap:10px}
+.mdhead{display:flex; align-items:baseline; gap:8px; margin-bottom:4px}
+.mdhead .mdn{font-weight:700; font-size:14px}
+.mdhead small{color:var(--muted); font-size:11.5px; flex:1}
+.mdhead b{color:var(--c); font-size:15px}
+.mddots{display:grid; gap:2px}
+.mddots i,.mdleg i{display:block; aspect-ratio:1; border-radius:3px}
+.mddots i.on,.mdleg i.on{background:var(--c)}
+.mddots i.off,.mdleg i.off{background:#e8e3d8}
+.mddots i.fut,.mdleg i.fut{background:transparent; border:1px dashed #d8d2c4}
+.mdleg{display:flex; gap:12px; margin-top:8px; font-size:11.5px; color:var(--muted)}
+.mdleg span{display:flex; align-items:center; gap:4px}
+.mdleg i{width:10px; height:10px; display:inline-block}
+.mdscale{display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); margin-top:3px}
+.dcwrap{display:flex; gap:6px; align-items:stretch}
+.dcy{display:flex; flex-direction:column; justify-content:space-between; font-size:10px; color:var(--muted); padding-bottom:0}
+.dchart{flex:1; height:110px; display:flex; align-items:flex-end; gap:2px; border-bottom:1.5px solid #d8d2c4; background:repeating-linear-gradient(to top,transparent 0,transparent calc(50% - 1px),#eee8dc calc(50% - 1px),#eee8dc 50%)}
+.dcol{flex:1; height:100%; display:flex; align-items:flex-end}
+.dcol i{display:block; width:100%; background:#8fb9a6; border-radius:3px 3px 0 0}
+.dcol.full i{background:#e0a21b}
+.dcol.fut i{background:none}
+.ychart{margin-top:22px}
+.ychart .ycol em{position:absolute; left:50%; transform:translateX(-50%); bottom:calc(var(--p) * 1% + 2px); font-style:normal; font-size:9.5px; font-weight:700; color:var(--ink); white-space:nowrap}
+.ychart .ycol.cur i{outline:2px solid #e0a21b; outline-offset:1px}
+.ychart .ycol.fut span{opacity:.45}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -3322,12 +3356,25 @@ VIEWS.monthly=function(root,meta){
   var hc=card('العادات',n(hPct)+'٪ التزام');
   if(!past) hc.append(h('p',{class:'sub'},'هذا الشهر لم يبدأ بعد.'));
   else {
-    var mdays=[]; for(var d5=1;d5<=dim;d5++) mdays.push(d5<=past?new Date(y,m,d5):null);
-    hc.append(habitLinesChart(mdays,meta,'رسم بياني خطي لكل عادة خلال الشهر'));
-    var list=h('div',{class:'mhab'});
-    rows.sort(function(a,b){return b.c-a.c}).forEach(function(r){var p=Math.round(r.c/past*100);
-      list.append(h('div',{class:'mhrow t-'+r.hb.hue},h('span',{class:'mhn'},r.hb.short||r.hb.name),h('div',{class:'bar'},h('i',{style:'width:'+p+'%'})),h('b',{},n(r.c)+'/'+n(past))));});
-    hc.append(list);
+    rows.sort(function(a,b){return b.c-a.c});
+    var bestR=rows[0], lowR=rows[rows.length-1];
+    hc.append(h('p',{class:'evexp'},'التزامك = كم مرة أنجزتِ عاداتك من كل الأيام اللي مرّت. أنجزتِ ',h('b',{},n(hTot)),' من ',h('b',{},n(hPoss)),' ('+n(HABITS.length)+' عادات × '+n(past)+' يوم).'));
+    if(rows.length>1) hc.append(h('div',{class:'evhl'},h('span',{class:'good'},'🌟 الأقوى: '+(bestR.hb.short||bestR.hb.name)+' '+n(Math.round(bestR.c/past*100))+'٪'),h('span',{class:'low'},'🌱 تحتاج اهتمام: '+(lowR.hb.short||lowR.hb.name)+' '+n(Math.round(lowR.c/past*100))+'٪')));
+    hc.append(h('h4',{class:'evsubt'},'كل عادة يومًا بيوم'));
+    var mg=h('div',{class:'mdgrid'});
+    rows.forEach(function(r){var p=Math.round(r.c/past*100), dots=h('div',{class:'mddots',style:'grid-template-columns:repeat('+dim+',1fr)'});
+      for(var dd=1;dd<=dim;dd++){ var cls=dd>past?'fut':(isDone(r.hb.id,y,m,dd)?'on':'off'); dots.append(h('i',{class:cls,title:n(dd)+' '+MONTHS[m]+(cls==='on'?' ✓':'')})); }
+      mg.append(h('div',{class:'mdrow t-'+r.hb.hue},h('div',{class:'mdhead'},h('span',{class:'mdn'},r.hb.short||r.hb.name),h('small',{},n(r.c)+' من '+n(past)+' يوم'),h('b',{},n(p)+'٪')),dots));
+    });
+    hc.append(mg,h('div',{class:'mdleg'},h('span',{},h('i',{class:'on'}),'أنجزتها'),h('span',{},h('i',{class:'off'}),'ما أنجزتها'),h('span',{},h('i',{class:'fut'}),'أيام جاية')),
+      h('div',{class:'mdscale'},h('span',{},'يوم ١'),h('span',{},'يوم '+n(dim))));
+    hc.append(h('h4',{class:'evsubt'},'كم عادة أنجزتِ كل يوم'));
+    var dchart=h('div',{class:'dchart',role:'img','aria-label':'عدد العادات المنجزة في كل يوم'});
+    for(var d6=1;d6<=dim;d6++){ var v=perDay[d6-1], hp=v==null?0:Math.round(v/Math.max(1,HABITS.length)*100);
+      dchart.append(h('div',{class:'dcol'+(v==null?' fut':'')+(v===HABITS.length?' full':''),title:n(d6)+': '+(v==null?'—':n(v)+' من '+n(HABITS.length))},h('i',{style:'height:'+Math.max(v?6:0,hp)+'%'}))); }
+    hc.append(h('div',{class:'dcwrap'},h('div',{class:'dcy'},h('span',{},n(HABITS.length)),h('span',{},n(Math.round(HABITS.length/2))),h('span',{},'٠')),dchart),
+      h('div',{class:'mdscale'},h('span',{},'يوم ١'),h('span',{},'يوم '+n(dim))),
+      h('p',{class:'sub tiny'},'كل عمود يوم. العمود الكامل الذهبي = أنجزتِ كل عاداتك ذاك اليوم.'));
     report.push('العادات: التزام '+hPct+'%. '+rows.map(function(r){return (r.hb.short||r.hb.name)+' '+r.c+'/'+past}).join('، '));
   }
   root.append(hc);
@@ -3415,10 +3462,12 @@ function yearView(root,meta){
   if(!monthsPast.length) hc.append(h('p',{class:'sub'},'هذه السنة لم تبدأ بعد.'));
   else {
     var chart=h('div',{class:'capchart ychart',role:'img','aria-label':'نسبة الالتزام بالعادات في كل شهر'});
-    for(var m2=0;m2<12;m2++){var p=0; if(maxDay(y,m2)&&HABITS.length){p=Math.round(HABITS.reduce(function(a,hb){return a+monthRate(hb.id,y,m2)},0)/HABITS.length);} chart.append(h('div',{class:'capcol',title:MONTHS[m2]+': '+n(p)+'٪'},h('i',{style:'height:'+p+'%'}),h('span',{},MONTHS[m2].slice(0,3))));}
+    hc.append(h('p',{class:'evexp'},'كل عمود شهر، وطوله نسبة التزامك بكل عاداتك في ذاك الشهر. الرقم فوقه هو النسبة.'));
+    for(var m2=0;m2<12;m2++){var p=0, has=!!maxDay(y,m2); if(has&&HABITS.length){p=Math.round(HABITS.reduce(function(a,hb){return a+monthRate(hb.id,y,m2)},0)/HABITS.length);} chart.append(h('div',{class:'capcol ycol'+(has?'':' fut')+(y===t.getFullYear()&&m2===t.getMonth()?' cur':''),style:'--p:'+p,title:MONTHS[m2]+': '+n(p)+'٪'},h('em',{},has?n(p)+'٪':''),h('i',{style:'height:'+p+'%'}),h('span',{},MONTHS[m2].slice(0,3))));}
     hc.append(chart);
+    hc.append(h('h4',{class:'evsubt'},'نسبة التزامك (٪) بكل عادة في كل شهر'),h('p',{class:'sub tiny'},'اللون الأغمق = التزام أعلى. المربع الفاضي = شهر ما جاء بعد.'));
     var grid=h('div',{class:'yhgrid'});
-    grid.append(h('span',{})); for(var mh=0;mh<12;mh++) grid.append(h('span',{class:'yhm'},n(mh+1)));
+    grid.append(h('span',{})); for(var mh=0;mh<12;mh++) grid.append(h('span',{class:'yhm'},MONTHS[mh].slice(0,3)));
     HABITS.forEach(function(hb){grid.append(h('span',{class:'yhn'},hb.short||hb.name));
       for(var m3=0;m3<12;m3++){var md=maxDay(y,m3), r=md?monthRate(hb.id,y,m3):null; grid.append(h('span',{class:'yhc t-'+hb.hue+(r==null?' na':''),style:r==null?'':'--p:'+r,title:MONTHS[m3]+(r==null?'':': '+n(r)+'٪')},r==null?'':n(r)));}});
     hc.append(h('div',{class:'yhwrap'},grid));
