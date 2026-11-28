@@ -3114,7 +3114,7 @@ VIEWS.plan=function(root,meta){
     }});
     its.push({label:has?'تغيير الموعد والفترة':'تحديد التاريخ والفترة',icon:'bell',on:function(){pick(x,kind,'d',p)}});
     if(kind==='sub'||kind==='step'){
-      its.push({label:'اختيار أيقونة جاهزة',icon:'star',on:function(){iconPicker(function(e){clearPic(x); x.emo=e; touch('goals'); drawSteps();},x.emo)}});
+      its.push({label:'🧺 اختيار أيقونة جاهزة',icon:'star',on:function(){iconPicker(function(e){clearPic(x); x.emo=e; touch('goals'); drawSteps();},x.emo)}});
       its.push({label:picOf(x)?'تغيير الصورة':'صورة من الجهاز',icon:'image',on:function(){subFor=x; try{subFile.click()}catch(e){}}});
       bgMenu(x,'goals',function(){drawSteps()}).forEach(function(m){its.push(m)});
       if(picOf(x)||x.emo) its.push({label:'إزالة الصورة',icon:'x',on:function(){clearPic(x); delete x.emo; touch('goals'); drawSteps();}});
@@ -3778,7 +3778,7 @@ function menuButton(label,getItems){
     if(openMenu&&openMenu.btn===b){closeMenu(); return;}
     closeMenu();
     var pop=h('div',{class:'tpop',role:'menu'});
-    getItems().forEach(function(it){
+    getItems().filter(Boolean).forEach(function(it){
       if(it.head){pop.append(h('div',{class:'tsep'},it.head)); return;}
       var bt=h('button',{type:'button',role:'menuitem',class:'titem'+(it.danger?' danger':'')},it.icon?ic(it.icon):null,h('span',{},it.label));
       bt.addEventListener('click',function(ev){ev.stopPropagation(); closeMenu(); it.on();});
@@ -4513,8 +4513,12 @@ VIEWS.todo=function(root,meta){
       }
       var nfield=noteField({obj:st,key:'t',inkKey:'ink',sec:'goals',ph:'خطوة…',label:'الخطوة',single:true,onChange:prog});
       var scp=h('div',{}), stc=capsFor(day,'s:'+st.id);
+      var sIco=pickImage(function(src){clearPic(st); delete st.emo; st.pic='p'+uid(); putBlob(st.pic,{t:'pic',src:src}); touch('goals'); rerender();});
       var menuB=menuButton('خيارات الخطوة',function(){
         var its=[{label:'كبسولة تركيز (مؤقت)',icon:'bell',on:function(){scp.replaceChildren(capPanel(day,{id:'s:'+st.id,text:st.t||'خطوة'},function(){scp.replaceChildren()}));}},
+          {label:'🧺 اختيار أيقونة جاهزة',icon:'star',on:function(){iconPicker(function(e){clearPic(st); st.emo=e; touch('goals'); rerender();},st.emo)}},
+          {label:picOf(st)?'تغيير الصورة':'صورة من الجهاز',icon:'image',on:function(){try{sIco.click()}catch(e){}}},
+          (picOf(st)||st.emo)?{label:'إزالة الأيقونة',icon:'x',on:function(){clearPic(st); delete st.emo; touch('goals'); rerender();}}:null,
           {label:'الكتابة بخط اليد',icon:'pen',on:function(){var pb=nfield.querySelector('.penbtn'); if(pb) pb.click();}},
           {label:'فتح الهدف',icon:'right',on:function(){ui.goal=g.id; go('plan')}},
           {label:'فك الربط (تبقى مهمة)',icon:'link',on:function(){
@@ -4528,7 +4532,7 @@ VIEWS.todo=function(root,meta){
       row=h('div',{class:'stepr mrow'+(st.done?' done':'')},chk,picOf(st)?h('span',{class:'mhpic tico'},h('img',{src:picOf(st),alt:''})):(st.emo?h('span',{class:'mhpic tico emo'},emoNode(st.emo)):(goalSrc(g)?h('span',{class:'mhpic tico'},h('img',{src:goalSrc(g),alt:''})):null)),
         h('div',{class:'stbody'},h('div',{class:'tnamerow'},st.hid?h('span',{class:'rpi','aria-label':'مرتبطة بعادة'},ic('repeat')):null,nfield),
           h('div',{class:'chips'},st.hid&&habitShort(st.hid)?h('span',{class:'chip'},habitShort(st.hid)):null,h('span',{class:'chip t-'+g.hue},'🎯 '+g.title),st.tm?h('span',{class:'chip'},'الساعة '+fmtTime(st.tm)):null,stc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(stc.length)):null)),menuB);
-      box.append(h('div',{class:'trw','data-k':'s:'+st.id},row,scp,panel));
+      box.append(h('div',{class:'trw','data-k':'s:'+st.id},row,scp,panel,sIco));
     }
     function draw(){
       box.replaceChildren();
