@@ -1566,6 +1566,13 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .mvbtns{gap:0}
 .mvbtns button{width:18px; height:15px; border:0!important; background:none!important; box-shadow:none!important; color:#b5b5b5; font-size:9px; padding:0}
 .mvbtns button:active{color:var(--ink); background:none!important}
+
+.tnamerow{display:flex; align-items:center; gap:5px; min-width:0}
+.tnamerow>.note,.tnamerow>*:last-child{flex:1; min-width:0}
+.rpi{display:inline-flex; color:#d9756b; flex:none; vertical-align:middle; margin-inline-end:4px}
+.rpi[hidden]{display:none}
+.rpi .ic{width:15px; height:15px}
+.todo .mrow.done .rpi{color:#ecaaa4}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -4472,7 +4479,7 @@ VIEWS.todo=function(root,meta){
       return its;
     });
     row=h('div',{class:'stepr mrow habr'+(dn?' done':'')},chk,h('span',{class:'mhpic'},habitArt(hb)),
-      h('div',{class:'stbody'},h('b',{class:'habn'},hb.name),h('div',{class:'chips'},h('span',{class:'chip t-'+hb.hue},'🔁 عادة'),hb.rm?h('span',{class:'chip'},'⏰ '+fmtTime(hb.rm)):null,hb.goal?h('span',{class:'chip'},hb.goal):null,hc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(hc.length)):null)),menuB);
+      h('div',{class:'stbody'},h('b',{class:'habn'},h('span',{class:'rpi','aria-label':'عادة'},ic('repeat')),hb.name),h('div',{class:'chips'},hb.rm?h('span',{class:'chip'},'⏰ '+fmtTime(hb.rm)):null,hb.goal?h('span',{class:'chip'},hb.goal):null,hc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(hc.length)):null)),menuB);
     box.append(h('div',{class:'trw','data-k':'h:'+hb.id},row,cp));
   }
 
@@ -4510,8 +4517,8 @@ VIEWS.todo=function(root,meta){
         return its;
       });
       row=h('div',{class:'stepr mrow'+(st.done?' done':'')},chk,goalSrc(g)?h('span',{class:'mhpic tico'},h('img',{src:goalSrc(g),alt:''})):null,
-        h('div',{class:'stbody'},nfield,
-          h('div',{class:'chips'},st.hid&&habitShort(st.hid)?h('span',{class:'chip'},'🔁 '+habitShort(st.hid)):null,h('span',{class:'chip t-'+g.hue},'🎯 '+g.title),st.tm?h('span',{class:'chip'},'الساعة '+fmtTime(st.tm)):null,stc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(stc.length)):null)),menuB);
+        h('div',{class:'stbody'},h('div',{class:'tnamerow'},st.hid?h('span',{class:'rpi','aria-label':'مرتبطة بعادة'},ic('repeat')):null,nfield),
+          h('div',{class:'chips'},st.hid&&habitShort(st.hid)?h('span',{class:'chip'},habitShort(st.hid)):null,h('span',{class:'chip t-'+g.hue},'🎯 '+g.title),st.tm?h('span',{class:'chip'},'الساعة '+fmtTime(st.tm)):null,stc.length?h('span',{class:'chip capchip'},h('span',{class:'capico sm','aria-hidden':'true'}),'×'+n(stc.length)):null)),menuB);
       box.append(h('div',{class:'trw','data-k':'s:'+st.id},row,scp,panel));
     }
     function draw(){
@@ -4523,8 +4530,8 @@ VIEWS.todo=function(root,meta){
         var rpWrap=h('div',{class:'reppanel',hidden:true}), rpC=h('span',{class:'chips',style:'display:contents'});
         function paintRp(){rpC.replaceChildren.apply(rpC,rpChips(t));}
         function openRp(){rpWrap.replaceChildren(h('label',{class:'lbl'},'ربط المهمة بمكافأة أو عقاب'),rpPicker(t,'todo',paintRp,function(){rpWrap.hidden=true})); rpWrap.hidden=false;}
-        var repChip=h('span',{class:'chip'},''), panel=h('div',{class:'reppanel',hidden:true});
-        function paintChip(){repChip.replaceChildren(ic('repeat')); repChip.classList.add('repico'); repChip.title=t.rep?repText(t.rep):''; repChip.setAttribute('aria-label',t.rep?('متكررة: '+repText(t.rep)):''); repChip.hidden=!t.rep;}
+        var repChip=h('span',{class:'chip'},''), repIco=h('span',{class:'rpi','aria-label':'مهمة متكررة'},ic('repeat')), panel=h('div',{class:'reppanel',hidden:true});
+        function paintChip(){repIco.hidden=!t.rep; repChip.replaceChildren(); repChip.hidden=true; return; repChip.title=t.rep?repText(t.rep):''; repChip.setAttribute('aria-label',t.rep?('متكررة: '+repText(t.rep)):''); repChip.hidden=!t.rep;}
         function openPanel(){
           panel.replaceChildren(); var cur=t.rep||{type:'daily',days:[parseKey(day).getDay()],until:dkey(addDays(parseKey(day),6))};
           var st={type:cur.type,days:cur.days.slice(),until:cur.until};
@@ -4615,7 +4622,7 @@ VIEWS.todo=function(root,meta){
         var icoAsk=(ui.icoAsk===t.id&&picOf(t)&&!t.picOrig)?h('div',{class:'icoask'},h('img',{src:picOf(t),alt:''}),h('span',{},'تبين تشيلين خلفية الأيقونة؟'),
           btn('إزالة الخلفية',{icon:'magic',cls:'small primary',on:function(){ui.icoAsk=''; itemBg(t,'todo',function(){ if(t.chore){var c1=choresList().filter(function(c){return c.id===t.chore})[0]; if(c1){clearPic(c1); c1.pic=copyPic(t); touch('chores');}} rerender();});}}),
           btn('تمام',{cls:'small ghost',on:function(){ui.icoAsk=''; rerender();}})):null;
-        row=h('div',{class:'stepr mrow'+(taskDone(t,day)?' done':'')},chk,picOf(t)?h('span',{class:'mhpic tico'+(t.picOrig?' nobg':'')},h('img',{src:picOf(t),alt:''})):(t.emo?h('span',{class:'mhpic tico emo','aria-hidden':'true',title:'تغيير الأيقونة',onclick:function(e){e.stopPropagation(); iconPicker(function(x){t.emo=x; touch('todo'); rerender();},t.emo)}},emoNode(t.emo)):null),h('div',{class:'stbody'},nfield,h('div',{class:'chips'},capChip,repChip,linkChip,remChip,rpC)),menuB);
+        row=h('div',{class:'stepr mrow'+(taskDone(t,day)?' done':'')},chk,picOf(t)?h('span',{class:'mhpic tico'+(t.picOrig?' nobg':'')},h('img',{src:picOf(t),alt:''})):(t.emo?h('span',{class:'mhpic tico emo','aria-hidden':'true',title:'تغيير الأيقونة',onclick:function(e){e.stopPropagation(); iconPicker(function(x){t.emo=x; touch('todo'); rerender();},t.emo)}},emoNode(t.emo)):null),h('div',{class:'stbody'},h('div',{class:'tnamerow'},repIco,nfield),h('div',{class:'chips'},capChip,repChip,linkChip,remChip,rpC)),menuB);
         paintChip(); paintLink(); paintRem(); paintRp();
         box.append(h('div',{class:'trw','data-k':'t:'+t.id},row,icoAsk||'',cpwrap,lpanel,rpWrap,panel,rpanel,tIco));
       });
