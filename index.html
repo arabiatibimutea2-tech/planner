@@ -4615,7 +4615,7 @@ VIEWS.todo=function(root,meta){
         var icoAsk=(ui.icoAsk===t.id&&picOf(t)&&!t.picOrig)?h('div',{class:'icoask'},h('img',{src:picOf(t),alt:''}),h('span',{},'تبين تشيلين خلفية الأيقونة؟'),
           btn('إزالة الخلفية',{icon:'magic',cls:'small primary',on:function(){ui.icoAsk=''; itemBg(t,'todo',function(){ if(t.chore){var c1=choresList().filter(function(c){return c.id===t.chore})[0]; if(c1){clearPic(c1); c1.pic=copyPic(t); touch('chores');}} rerender();});}}),
           btn('تمام',{cls:'small ghost',on:function(){ui.icoAsk=''; rerender();}})):null;
-        row=h('div',{class:'stepr mrow'+(taskDone(t,day)?' done':'')},chk,picOf(t)?h('span',{class:'mhpic tico'+(t.picOrig?' nobg':'')},h('img',{src:picOf(t),alt:''})):(t.emo?h('span',{class:'mhpic tico emo','aria-hidden':'true',title:'تغيير الأيقونة',onclick:function(e){e.stopPropagation(); iconPicker(function(x){t.emo=x; touch('todo'); rerender();},t.emo)}},emoNode(t.emo)):null),h('div',{class:'stbody'},nfield,h('div',{class:'chips'},t.chore?h('span',{class:'chip'},'🏠 البيت'):null,capChip,repChip,linkChip,remChip,rpC)),menuB);
+        row=h('div',{class:'stepr mrow'+(taskDone(t,day)?' done':'')},chk,picOf(t)?h('span',{class:'mhpic tico'+(t.picOrig?' nobg':'')},h('img',{src:picOf(t),alt:''})):(t.emo?h('span',{class:'mhpic tico emo','aria-hidden':'true',title:'تغيير الأيقونة',onclick:function(e){e.stopPropagation(); iconPicker(function(x){t.emo=x; touch('todo'); rerender();},t.emo)}},emoNode(t.emo)):null),h('div',{class:'stbody'},nfield,h('div',{class:'chips'},capChip,repChip,linkChip,remChip,rpC)),menuB);
         paintChip(); paintLink(); paintRem(); paintRp();
         box.append(h('div',{class:'trw','data-k':'t:'+t.id},row,icoAsk||'',cpwrap,lpanel,rpWrap,panel,rpanel,tIco));
       });
