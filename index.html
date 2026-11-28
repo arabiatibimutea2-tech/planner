@@ -1580,6 +1580,14 @@ form.addrow:has(.ssel:not([hidden])){flex-wrap:wrap}
 .tmap .tnode.hasimg .tsubemo,.tmap .tsub.hasimg .tsubemo{font-size:40px; line-height:58px; display:block; text-align:center}
 .subpv .emopv{font-size:40px; width:64px; height:64px; display:grid; place-items:center}
 .subpv .emopv .svgico{width:56px; height:56px}
+
+.shopico{width:38px; height:38px; flex:none; border:0; background:none; padding:0; border-radius:10px; font-size:26px; line-height:1; display:grid; place-items:center; cursor:pointer; overflow:hidden}
+.shopico img{width:100%; height:100%; object-fit:contain}
+.shopico.empty{border:1.5px dashed var(--line); color:#b5b5b5}
+.shopico.empty .ic{width:16px; height:16px}
+.prow.isdone .shopico{opacity:.45}
+.npic.npemo{display:block; font-size:44px; line-height:1; width:auto; height:auto; border:0; background:none; margin:2px 0 4px}
+.npic.npemo .svgico{width:56px; height:56px}
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -3533,8 +3541,12 @@ VIEWS.shop=function(root,meta){
   function upCnt(){var b=S.shop.filter(function(x){return x.bought}).length; cnt.textContent=n(b)+'/'+n(S.shop.length);} upCnt();
   S.shop.forEach(function(it){
     var row, bb=h('button',{type:'button',class:'mini ok','aria-pressed':it.bought?'true':'false','aria-label':'تم الشراء',title:'تم الشراء',onclick:function(){it.bought=!it.bought; touch('shop'); bb.setAttribute('aria-pressed',it.bought?'true':'false'); row.classList.toggle('isdone',it.bought); tot(); upCnt();}},ic('check'));
+    var sInp=picInput(function(src){setItemPic(it,'shop',src)});
+    var slot=h('button',{type:'button',class:'shopico'+((picOf(it)||it.emo)?'':' empty'),'aria-label':'أيقونة أو صورة',title:'أيقونة أو صورة',onclick:function(){
+      iconPicker(function(e){clearPic(it); it.emo=e; touch('shop'); rerender();},it.emo,[{label:'صورة من الجهاز',icon:'image',on:function(){try{sInp.click()}catch(e){}}}].concat((picOf(it)||it.emo)?[{label:'إزالة',icon:'x',on:function(){clearPic(it); delete it.emo; touch('shop'); rerender();}}]:[]),'أيقونة للمشتريات');
+    }},picOf(it)?h('img',{src:picOf(it),alt:''}):(it.emo?emoNode(it.emo):ic('image')));
     var price=h('input',{class:'txt pricein',inputmode:'decimal',placeholder:'السعر','aria-label':'السعر',value:it.price}); price.addEventListener('input',function(){it.price=price.value; touch('shop'); tot();});
-    row=h('div',{class:'prow'+(it.bought?' isdone':''),'data-id':it.id},noteField({obj:it,key:'text',inkKey:'ink',sec:'shop',ph:'ما الذي أريد شراءه؟',label:'اسم الشيء',single:true}),price,bb,miniConfirm('trash','إزالة من القائمة',function(){delEntry('shop',it)}));
+    row=h('div',{class:'prow'+(it.bought?' isdone':''),'data-id':it.id},slot,sInp,noteField({obj:it,key:'text',inkKey:'ink',sec:'shop',ph:'ما الذي أريد شراءه؟',label:'اسم الشيء',single:true}),price,bb,miniConfirm('trash','إزالة من القائمة',function(){delEntry('shop',it)}));
     rows.append(row);
   });
   if(!S.shop.length) rows.append(emptyMsg('القائمة فارغة. اضغطي + لتضيفي أول ما تريدين شراءه.'));
@@ -4436,9 +4448,11 @@ function removeFutureSeries(rid,afterDay){
   return cnt;
 }
 function seriesIcon(t,day){
-  if(!t.rid) return 0; var n0=0;
-  Object.keys(S.todo||{}).forEach(function(k){ if(k<=day) return; var d=S.todo[k]; if(!d||typeof d!=='object') return;
-    PERIODS.forEach(function(p){(d[p[0]]||[]).forEach(function(x){ if(x.rid!==t.rid||x===t) return;
+  var txt=String(t.text||'').trim(), n0=0;
+  if(!t.rid&&!t.rep&&!t.chore) return 0;
+  function same(x){ if(x===t) return false; if(t.rid&&x.rid===t.rid) return true; if(t.chore&&x.chore===t.chore) return true; return !!txt&&(!!x.rep||!!t.rep)&&String(x.text||'').trim()===txt; }
+  Object.keys(S.todo||{}).forEach(function(k){ if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<=day) return; var d=S.todo[k]; if(!d||typeof d!=='object') return;
+    PERIODS.forEach(function(p){(d[p[0]]||[]).forEach(function(x){ if(!same(x)) return;
       clearPic(x); delete x.emo; if(t.emo) x.emo=t.emo; else if(picOf(t)) x.pic=copyPic(t); n0++; });}); });
   if(n0) touch('todo'); return n0;
 }
@@ -4906,11 +4920,12 @@ function picInput(onSrc){
 function itemPic(it,sec,inp){
   var b=it.pic&&BLOBS[it.pic];
   return [
-    {label:(b&&b.src)?'تغيير الصورة':'إضافة صورة',icon:'image',on:function(){try{inp.click()}catch(e){}}}
-  ].concat(bgMenu(it,sec),(b&&b.src)?[{label:'إزالة الصورة',icon:'x',on:function(){clearPic(it); touch(sec); rerender();}}]:[]);
+    {label:'🧺 اختيار أيقونة جاهزة',icon:'star',on:function(){iconPicker(function(e){clearPic(it); it.emo=e; touch(sec); rerender();},it.emo)}},
+    {label:(b&&b.src)?'تغيير الصورة':'صورة من الجهاز',icon:'image',on:function(){try{inp.click()}catch(e){}}}
+  ].concat(bgMenu(it,sec),((b&&b.src)||it.emo)?[{label:'إزالة الصورة',icon:'x',on:function(){clearPic(it); delete it.emo; touch(sec); rerender();}}]:[]);
 }
-function setItemPic(it,sec,src){ clearPic(it); it.pic='p'+uid(); putBlob(it.pic,{t:'pic',src:src}); touch(sec); rerender(); toast('أُضيفت الصورة'); }
-function npic(it){var b=it.pic&&BLOBS[it.pic]; return (b&&b.src)?h('img',{class:'npic'+(it.picOrig?' nobg':''),src:b.src,alt:''}):null}
+function setItemPic(it,sec,src){ clearPic(it); delete it.emo; it.pic='p'+uid(); putBlob(it.pic,{t:'pic',src:src}); touch(sec); rerender(); toast('أُضيفت الصورة'); }
+function npic(it){var b=it.pic&&BLOBS[it.pic]; if(b&&b.src) return h('img',{class:'npic'+(it.picOrig?' nobg':''),src:b.src,alt:''}); return it.emo?h('span',{class:'npic npemo'},emoNode(it.emo)):null}
 function rpLabel(x){var t=((x&&x.text)||'').trim(); return t||'✎ بخط اليد'}
 function rpOf(ids,list){return (ids||[]).map(function(id){return list.filter(function(x){return x.id===id})[0]}).filter(Boolean)}
 function rpChips(o,onTap){
@@ -5006,6 +5021,7 @@ var ICON_SETS=[
  {t:'العناية والصحة',e:[['🏃‍♀️','رياضة مشي'],['🧘‍♀️','تأمل يوغا استرخاء'],['💧','شرب الماء'],['🥑','أكل صحي'],['😴','نوم راحة قيلولة'],['💆‍♀️','عناية بالبشرة'],['💅','أظافر'],['🛀','استحمام عناية'],['🦷','الأسنان'],['⚖️','الوزن']]},
  {t:'العبادة',e:[['🕌','الصلاة المسجد'],['📖','القرآن قراءة'],['📿','الأذكار تسبيح'],['🤲','الدعاء'],['🌙','قيام الليل'],['🕋','العمرة الحج'],['💝','صدقة'],['🌅','أذكار الصباح'],['🌇','أذكار المساء']]},
 
+ {t:'المشتريات',e:[['👗','فستان ملابس عباية'],['👚','بلوزة'],['👠','حذاء كعب'],['👟','حذاء رياضي'],['👜','شنطة حقيبة'],['💄','مكياج'],['🧴','كريم عطر عناية'],['💍','ذهب خاتم'],['⌚','ساعة'],['👓','نظارة'],['📱','جوال'],['💻','لابتوب'],['🎧','سماعة'],['📚','كتب'],['🧸','ألعاب'],['🎁','هدية'],['🪑','كرسي أثاث'],['🛋️','كنب'],['🖼️','لوحة ديكور'],['🕯️','شموع'],['🪞','مراية'],['🍳','أدوات المطبخ'],['🧺','سلة'],['🎒','حقيبة مدرسة'],['🍼','أغراض الطفل'],['💊','دواء صيدلية'],['🛒','مقاضي'],['🧥','جاكيت']]},
  {t:'الرياضة والحركة',e:[['🏋️‍♀️','نادي رياضة أوزان'],['🚴‍♀️','دراجة'],['🏊‍♀️','سباحة'],['⚽','كرة قدم'],['🏀','كرة سلة'],['🎾','تنس'],['🥾','هايكنج مشي'],['🤸‍♀️','تمارين إطالة'],['⛹️‍♀️','نشاط'],['🧗‍♀️','تسلق']]},
  {t:'السفر والمناسبات',e:[['✈️','سفر طيران'],['🧳','حقيبة تجهيز السفر'],['🏨','فندق حجز'],['🏖️','بحر إجازة'],['🗺️','خريطة رحلة'],['🎂','عيد ميلاد'],['🎉','حفلة مناسبة'],['💐','ورد زيارة'],['🕯️','مناسبة'],['🎈','احتفال']]},
  {t:'الأكل والشرب',e:[['🍎','فاكهة'],['🥕','خضار'],['🍗','دجاج'],['🐟','سمك'],['🍚','رز'],['🥛','حليب'],['🍯','عسل'],['🥚','بيض'],['🍪','بسكويت'],['🍕','بيتزا']]},
@@ -5013,12 +5029,12 @@ var ICON_SETS=[
  {t:'العمل والتعلم',e:[['💻','عمل حاسوب'],['📝','ملاحظات كتابة'],['📅','تخطيط مواعيد'],['📧','إيميل رسائل'],['🎓','دراسة دورة'],['🎧','بودكاست استماع'],['📷','تصوير'],['🎬','مونتاج فيديو'],['💰','ميزانية مال'],['📈','مشروع']]}
 ];
 function autoEmo(t){t=String(t||''); if(!t.trim()) return ''; var best='', bl=0; ICON_SETS.forEach(function(g){g.e.forEach(function(it){ it[1].split(' ').forEach(function(w){ if(w.length>2&&w.length+(String(it[0]).indexOf('svg:')===0?0.5:0)>bl&&t.indexOf(w)>=0){best=it[0]; bl=w.length+(String(it[0]).indexOf('svg:')===0?0.5:0);} }); })}); return best;}
-function iconPicker(onPick,cur){
+function iconPicker(onPick,cur,extra,title){
   var old=document.querySelector('.alarmov'); if(old) old.remove();
   var body=h('div',{class:'icogrid'});
   ICON_SETS.forEach(function(g){ body.append(h('b',{class:'icogt'},g.t),h('div',{class:'icoset'},g.e.map(function(it){return h('button',{type:'button',class:'icob','aria-pressed':cur===it[0]?'true':'false','aria-label':it[1].split(' ')[0],title:it[1].split(' ')[0],onclick:function(){ov.remove(); onPick(it[0]);}},emoNode(it[0]))}))); });
   var ov=h('div',{class:'alarmov',role:'dialog','aria-label':'اختيار أيقونة',onclick:function(e){if(e.target===ov) ov.remove()}},h('div',{class:'alarmbox still icobox'},
-    h('b',{class:'alt'},'اختاري أيقونة للمهمة'),body,h('div',{class:'row'},btn('إغلاق',{cls:'ghost',on:function(){ov.remove()}}))));
+    h('b',{class:'alt'},title||'اختاري أيقونة'),body,h('div',{class:'row'},(extra||[]).map(function(x){return btn(x.label,{icon:x.icon,cls:'small',on:function(){ov.remove(); x.on();}})}),btn('إغلاق',{cls:'ghost',on:function(){ov.remove()}}))));
   document.body.append(ov);
 }
 function copyPic(it){var src=picOf(it); if(!src) return ''; var id='p'+uid(); putBlob(id,{t:'pic',src:src}); return id}
